@@ -10,7 +10,8 @@ import {
   viewCart,
   viewMenu,
   deleteFromCart,
-  updateCartItemQuantity, // ✅ Import deleteFromCart
+  updateCartItemQuantity,
+  searchFood,
 } from "../controllers/customeControllers.js";
 
 const customerRouter = express.Router();
@@ -44,5 +45,8 @@ customerRouter.post("/payment/initiate", authenticateCustomer, initiatePayment);
 
 // Verify Payment Route
 customerRouter.post("/payment/verify", authenticateCustomer, verifyPayment);
+
+// search route 
+customerRouter.get("/search", authenticateCustomer, searchFood);
 
 export default customerRouter;

@@ -1,3 +1,4 @@
+
 import Food from "../model/foodModel.js";
 
 
@@ -146,3 +147,33 @@ export const deleteFoodItem = async (req, res) => {
   }
 };
 
+export const searchFood = async (req, res) => {
+  const { q, category, veg, sort } = req.query;
+  const query = {};
+  if (q) query.name = { $regex: q, $options: "i" };
+  if (category) query.category = category;
+  if (veg === "true") query.isVegetarian = true;
+
+  let sortOption = {};
+  if (sort === "price_asc") sortOption.price = 1;
+  else if (sort === "price_desc") sortOption.price = -1;
+
+  try {
+    const results = await Food.find(query).sort(sortOption);
+
+    if (results.length === 0) {
+      req.flash("error", "No food items found.");
+      return res.redirect("/api/admin/dashboard");
+    }
+
+    req.flash("success", `${results.length} item(s) found.`);
+    res.render("admin/search-results", {
+      results,
+      query: q,
+      messages: req.flash(),
+    });
+  } catch (err) {
+    req.flash("error", "Search failed. Try again.");
+    res.redirect("/api/admin/dashboard");
+  }
+};

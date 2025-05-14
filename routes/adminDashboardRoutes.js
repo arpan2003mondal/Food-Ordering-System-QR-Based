@@ -9,7 +9,8 @@ import {
   deleteFoodItem,
   updateFoodItem,
   renderAddFoodPage,
-  renderEditFoodPage
+  renderEditFoodPage,
+  searchFood
 } from "../controllers/adminDashBoard.js";
 import { authenticateUser } from "../middleware/adminAuthMiddleware.js";
 
@@ -22,5 +23,8 @@ adminDashboardRouter.get("/update-food/:id",authenticateUser,renderEditFoodPage)
 adminDashboardRouter.post("/update-food/:id",  upload.single('image'),authenticateUser, updateFoodItem);
 
 adminDashboardRouter.get("/delete-food/:id",authenticateUser, deleteFoodItem);
+
+// search route 
+adminDashboardRouter.get("/search", authenticateUser, searchFood);
 
 export default adminDashboardRouter;
