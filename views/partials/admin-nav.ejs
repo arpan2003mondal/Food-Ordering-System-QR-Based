@@ -1,0 +1,27 @@
+<nav class="fixed top-0 left-0 w-full z-40 bg-gray-100 shadow px-6 py-4 flex justify-between items-center">
+  <div class="flex space-x-4">
+    <a href="/api/admin/dashboard" class="px-5 py-2 rounded-full bg-blue-500 text-white font-medium shadow">Home</a>
+    <a href="/api/admin/ordered-items" class="px-5 py-2 rounded-full bg-white text-black font-medium shadow">Ordered Items</a>
+    <a href="/api/admin/dashboard/add-food" class="px-5 py-2 rounded-full bg-white text-black font-medium shadow">Add New Items</a>
+  </div>
+
+  <h1 class="text-3xl font-bold text-[#C0392B] text-center flex-grow ml-6">Admin Dashboard</h1>
+
+
+  <div class="flex items-center space-x-4">
+  <!-- Search bar -->
+  <input
+    type="text"
+    placeholder="Search item"
+    class="rounded-full px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+  />
+
+  <!-- Logout button in a POST form -->
+  <form action="/api/admin/logout" method="POST">
+    <button type="submit" class="px-5 py-2 bg-red-500 text-white rounded-full font-medium shadow">
+      Logout
+    </button>
+  </form>
+</div>
+
+</nav>

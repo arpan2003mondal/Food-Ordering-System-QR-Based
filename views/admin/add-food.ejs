@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Add Food Item</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white min-h-screen flex flex-col items-center justify-center p-6 pt-15 bg-gray-100">
+  
+  <%- include('../partials/admin-nav') %>
+  
+    <div class="w-full max-w-4xl bg-white p-8 mt-12 rounded-lg shadow-md border border-gray-200">
+    <h1 class="text-3xl font-bold text-green-700 mb-6 text-center">Add New Food Item</h1>
+
+    <form action="/api/admin/dashboard/add-food" method="POST" enctype="multipart/form-data">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- Food Name -->
+        <div>
+          <label class="block text-blue-700 font-semibold">Food Name</label>
+          <input type="text" name="name" required class="w-full border rounded px-3 py-2 mt-1 outline-none focus:ring-2 focus:ring-blue-400"/>
+        </div>
+
+        <!-- Category -->
+        <div>
+          <label class="block text-blue-700 font-semibold">Category</label>
+          <select name="category" required class="w-full border rounded px-3 py-2 mt-1 outline-none focus:ring-2 focus:ring-blue-400">
+            <option value="">-- Select Category --</option>
+            <option value="Pizza">Pizza</option>
+            <option value="Burger">Burger</option>
+            <option value="Dessert">Dessert</option>
+            <option value="Beverage">Beverage</option>
+            <option value="Snacks">Snacks</option>
+            <option value="chinese">Chinese</option>
+            <option value="Others">Others</option>
+          </select>
+        </div>
+
+        <!-- Description -->
+        <div class="md:col-span-2">
+          <label class="block text-blue-700 font-semibold">Description</label>
+          <textarea name="description" rows="3" required class="w-full border rounded px-3 py-2 mt-1 outline-none focus:ring-2 focus:ring-blue-400"></textarea>
+        </div>
+
+        <!-- Price -->
+        <div>
+          <label class="block text-blue-700 font-semibold">Price (₹)</label>
+          <input type="number" name="price" step="0.01" required class="w-full border rounded px-3 py-2 mt-1 outline-none focus:ring-2 focus:ring-blue-400"/>
+        </div>
+
+        <!-- Discount -->
+        <div>
+          <label class="block text-blue-700 font-semibold">Discount (%)</label>
+          <input type="number" name="discount" min="0" max="100" class="w-full border rounded px-3 py-2 mt-1 outline-none focus:ring-2 focus:ring-blue-400"/>
+        </div>
+
+        <!-- Food Image -->
+        <div>
+          <label class="block text-blue-700 font-semibold">Food Image</label>
+          <input type="file" name="image" accept="image/*" required class="w-full mt-1"/>
+        </div>
+
+        <!-- Ingredients -->
+        <div>
+          <label class="block text-blue-700 font-semibold">Ingredients</label>
+          <input type="text" name="ingredients" placeholder="e.g. cheese, tomato, basil" class="w-full border rounded px-3 py-2 mt-1 outline-none focus:ring-2 focus:ring-blue-400"/>
+        </div>
+
+        <!-- Vegetarian Checkbox -->
+        <div class="md:col-span-2 flex items-center space-x-2 mt-2">
+          <input type="checkbox" name="isVegetarian" id="isVegetarian" class="w-4 h-4"/>
+          <label for="isVegetarian" class="text-blue-700 font-semibold">Is Vegetarian?</label>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex justify-evenly space-x-4 mt-8">
+        <button type="submit" class="w-1/2 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded shadow">
+          Add Food Item
+        </button>
+        <!-- <a href="/api/admin/dashboard" class="w-1/2 text-center bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 rounded shadow">
+          Go to Dashboard
+        </a> -->
+      </div>
+    </form>
+  </div>
+</body>
+</html>

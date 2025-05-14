@@ -1,0 +1,35 @@
+
+<%- include('../partials/admin-header') %>
+
+
+  <!-- Navigation Bar -->
+  <%- include('../partials/admin-nav') %>
+
+  <!-- Flash Messages -->
+<div class="fixed top-0 left-0 w-full z-50">
+  <%- include('../partials/alert') %>
+</div>
+
+
+  <!-- Items List -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+    <% foodItems.forEach(item => { %>
+      <div class="bg-white rounded-xl shadow p-4 flex flex-col justify-between h-full">
+        <img src="<%= item.imageUrl %>" alt="Food Image" class="rounded-xl w-full h-48 object-cover mb-4" />
+
+        <div class="flex-grow">
+          <h2 class="text-lg font-semibold mb-1"><%= item.name %></h2>
+          <p class="text-gray-800 font-medium mb-2">₹<%= item.price %></p>
+          <p class="text-gray-600 text-sm line-clamp-2 mb-4"><%= item.description %></p>
+        </div>
+
+        <div class="flex justify-between gap-2 mt-auto">
+          <a href="/api/admin/dashboard/update-food/<%= item._id %>" class="flex-1 text-center bg-green-500 hover:bg-green-600 text-white py-2 rounded">Edit Item</a>
+          <a href="/api/admin/dashboard/delete-food/<%= item._id %>" class="flex-1 text-center bg-red-500 hover:bg-red-600 text-white py-2 rounded">Delete Item</a>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+
+
+<%- include('../partials/admin-footer') %>
