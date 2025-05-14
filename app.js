@@ -11,10 +11,6 @@ import path from "path";
 import flash from "connect-flash";
 
 
-
-
-
-
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -22,10 +18,11 @@ connectDb();
 
 app.set("views",path.resolve("./views"));
 app.use(express.static(path.resolve('./public')));
-// app.use(express.static(path.join(__dirname, 'public')));
+
 
 // Middleware to parse application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
+
 // Middleware to parse application/json
 app.use(express.json());
 
@@ -45,9 +42,20 @@ app.use((req, res, next) => {
   next();
 });
 
-
-
-
+// Session middleware
+app.use(
+  "/api/customer",
+  session({
+    secret: process.env.SESSION_SECRET || "mySecretKey",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      secure: false,
+      httpOnly: true,
+      maxAge: 60 * 60 * 1000,
+    },
+  })
+);
 
 
 // Admin Routes wih no Session

@@ -1,4 +1,9 @@
 
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 import Food from "../model/foodModel.js";
 
 
@@ -139,6 +144,20 @@ export const deleteFoodItem = async (req, res) => {
       return res.redirect("/api/admin/dashboard");
     }
 
+    // Delete the image file if it exists
+    if (deletedFood.imageUrl) {
+      const imagePath = path.join(__dirname, "..", "public", deletedFood.imageUrl);
+      fs.unlink(imagePath, (err) => {
+        if (err) {
+           req.flash("error", "Error deleting food item: " + error.message);
+           return res.redirect("/api/admin/dashboard");
+        } 
+        // else {
+        //   console.log("Image deleted:", deletedFood.imageUrl);
+        // }
+      });
+    }
+
     req.flash("success", "Food item deleted successfully!");
     return res.redirect("/api/admin/dashboard");
   } catch (error) {
@@ -146,6 +165,11 @@ export const deleteFoodItem = async (req, res) => {
     return res.redirect("/api/admin/dashboard");
   }
 };
+
+
+
+
+
 
 export const searchFood = async (req, res) => {
   const { q, category, veg, sort } = req.query;

@@ -17,7 +17,7 @@ import {
 const customerRouter = express.Router();
 
 // QR Code Scan Route
-customerRouter.get("/menu/:tableId", qrScanRoute);
+customerRouter.get("/home/:tableId", qrScanRoute);
 
 // View menu Route
 customerRouter.get("/menu/", authenticateCustomer, viewMenu);

@@ -24,25 +24,40 @@ export const checkSession = (req, res, next) => {
 
 export const qrScanRoute = async (req, res) => {
   const { tableId } = req.params;
+
   try {
+    // Save table ID to session
     req.session.tableId = tableId;
-    const foodItems = await Food.find();
-    res.status(200).json({
-      success: true,
-      message: "Menu fetched successfully! qrScan",
+    
+    // Fetch all food items
+    const foodItems = await Food.find().sort({ name: 1 });
+
+    // Extract unique categories from food items
+    const categorySet = new Set(foodItems.map(item => item.category));
+    const categories = Array.from(categorySet);
+    
+
+    // Flash a success message
+    req.flash("success", "Menu loaded successfully!");
+
+    // Render the home page with categories instead of individual food items
+    res.render("customer/home", {
+      categories,   // Pass category names
       tableId,
-      menu: foodItems,
+      messages: req.flash(),
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Error fetching menu!",
-        error: error.message,
-      });
+    console.error("Error loading menu:", error.message);
+
+    req.flash("error", "Something went wrong loading the menu.");
+    res.status(500).render("customer/home", {
+      categories: [],
+      tableId,
+      messages: req.flash(),
+    });
   }
 };
+
 
 export const viewMenu = async (req, res) => {
   try {
