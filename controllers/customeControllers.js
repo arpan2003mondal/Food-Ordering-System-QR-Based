@@ -28,7 +28,29 @@ export const qrScanRoute = async (req, res) => {
   try {
     // Save table ID to session
     req.session.tableId = tableId;
-    
+
+    // Flash a success message
+    req.flash("success", "Welcome To Our Restaurant");
+
+    // Redirect to the category page
+    return res.redirect("/api/customer/category");
+  } catch (error) {
+    console.error("QR Scan Error:", error.message);
+
+    // Flash an error message
+    req.flash("error", "Something went wrong loading the page. Please scan the QR code again.");
+
+    // Redirect to a safe fallback route (e.g., home or QR scan entry point)
+    return res.redirect("/"); // or replace with an appropriate fallback
+  }
+};
+
+
+export const viewCategory = async (req, res) => {
+
+  try {    
+    const tableId = req.session.tableId || null;
+
     // Fetch all food items
     const foodItems = await Food.find().sort({ name: 1 });
 
@@ -41,7 +63,7 @@ export const qrScanRoute = async (req, res) => {
     req.flash("success", "Menu loaded successfully!");
 
     // Render the home page with categories instead of individual food items
-    res.render("customer/home", {
+    res.render("customer/category", {
       categories,   // Pass category names
       tableId,
       messages: req.flash(),
@@ -58,24 +80,57 @@ export const qrScanRoute = async (req, res) => {
   }
 };
 
-
 export const viewMenu = async (req, res) => {
+  const { categoryName } = req.params;
+
   try {
-    const foodItems = await Food.find();
-    res.status(200).json({
-      success: true,
-      message: "Menu fetched successfully! viewMenu",
+    // Filter food items by category (case insensitive)
+    const foodItems = await Food.find({ category: { $regex: new RegExp(`^${categoryName}$`, 'i') } });
+
+    if (foodItems.length === 0) {
+      req.flash("error", `No items found in ${categoryName} category.`);
+
+    } else {
+      req.flash("success", `${categoryName} items loaded successfully!`);
+    }
+
+    res.render("customer/category-menu", {
+      category: categoryName,
+      foodItems,
       tableId: req.session.tableId,
-      menu: foodItems,
+      messages: req.flash(),
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Error fetching menu!",
-        error: error.message,
-      });
+    console.error("Error loading category menu:", error.message);
+    req.flash("error", "Failed to load menu items for this category.");
+    res.status(500).render("customer/category-items", {
+      category: categoryName,
+      foodItems: [],
+      tableId: req.session.tableId,
+      messages: req.flash(),
+    });
+  }
+};
+
+
+export const getAllFoods = async (req, res) => {
+  try {
+    const tableId = req.session.tableId || null;
+
+    // Fetch and sort food items alphabetically
+    const foodItems = await Food.find().sort({ name: 1 });
+
+    req.flash("success", "All Menu Items Loaded");
+
+    res.render("customer/all-menu", {
+      foodItems,
+      tableId,
+      messages: req.flash(),
+    });
+  } catch (error) {
+    // console.error("Error fetching menu:", error.message);
+    req.flash("error", "Failed to load menu.");
+    res.status(500).redirect("/api/customer/category");
   }
 };
 

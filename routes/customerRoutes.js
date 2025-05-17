@@ -6,9 +6,11 @@ import {
   initiatePayment,
   placeOrder,
   qrScanRoute,
+  viewCategory,
   verifyPayment,
   viewCart,
   viewMenu,
+  getAllFoods,
   deleteFromCart,
   updateCartItemQuantity,
   searchFood,
@@ -19,8 +21,14 @@ const customerRouter = express.Router();
 // QR Code Scan Route
 customerRouter.get("/home/:tableId", qrScanRoute);
 
+// redirect to category page
+customerRouter.get("/category", authenticateCustomer, viewCategory);
+
 // View menu Route
-customerRouter.get("/menu/", authenticateCustomer, viewMenu);
+customerRouter.get("/category/:categoryName", authenticateCustomer, viewMenu);
+
+// Get All Food Items 
+customerRouter.get("/all-menu", authenticateCustomer, getAllFoods);
 
 // Get Food Item Details with Query String
 customerRouter.get("/food/details", authenticateCustomer, getFoodDetails);

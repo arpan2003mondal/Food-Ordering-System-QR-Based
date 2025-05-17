@@ -1,42 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <%- include('./partials/customer-header', { title: 'Menu' }) %>
-
+    <%- include('./partials/customer-header', { title: `${category} Menu` }) %>
   </head>
   
   <body class="bg-gray-100 min-h-screen">
-  
     <!-- Navigation Bar -->
-  <%- include('./partials/customer-nav') %>
+    <%- include('./partials/customer-nav') %>
 
-  <!-- Flash Messages -->
-<div class="fixed top-0 left-0 w-full z-50">
-  <%- include('../partials/alert') %>
-</div>
+    <!-- Flash Messages -->
+    <div class="fixed top-0 left-0 w-full z-50">
+      <%- include('../partials/alert') %>
+    </div>
 
+    <!-- Category Heading -->
+    <div class="m-6">
+      <h1 class="text-xl font-bold capitalize"><%= category %> Items</h1>
+    </div>
 
-<!-- display all food items -->
+    <!-- Food Items -->
+    <div class="m-5 p-4">
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-4">
+        <% if (foodItems.length === 0) { %>
+          <div class="col-span-full text-center text-gray-600">No items found in this category.</div>
+        <% } %>
+        
+        <% foodItems.forEach(item => { %>
+          <div class="bg-white rounded-xl shadow p-3 flex flex-col justify-between">
+            <img src="<%= item.imageUrl %>" alt="Food Image" class="rounded-xl w-full h-32 object-cover mb-3" />
 
-<div class="category m-5 p-4">
-  <div class="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-4">
-    <% categories.forEach(category => { %>
-      <div class="bg-white rounded-xl shadow p-3 flex flex-col justify-between">
-        <img src="/images/categories/<%= category.toLowerCase() %>.jpg" alt="<%= category %> Image" class="rounded-xl w-full h-32 object-cover mb-3" />
+            <div class="flex-grow">
+              <h2 class="text-sm font-semibold mb-1"><%= item.name %></h2>
+              <p class="text-gray-800 font-medium mb-1 text-sm">₹<%= item.price %></p>
+              <p class="text-gray-600 text-xs line-clamp-2 mb-3"><%= item.description %></p>
+            </div>
 
-        <div class="flex-grow text-center">
-          <h2 class="text-sm font-semibold mb-2 capitalize"><%= category %></h2>
-        </div>
-
-        <div class="flex justify-center mt-auto">
-          <a href="/category/<%= category.toLowerCase() %>" class="bg-green-500 hover:bg-green-600 text-white py-1 px-3 rounded text-xs">
-            View Items
-          </a>
-        </div>
+            <div class="flex justify-center gap-2 mt-auto">
+              <a href="/api/customer/cart/add/<%= item._id %>" class="flex-1 text-center bg-green-500 hover:bg-green-600 text-white py-1 rounded text-xs">
+                Add To Cart
+              </a>
+            </div>
+          </div>
+        <% }) %>
       </div>
-    <% }) %>
-  </div>
-</div>
+    </div>
 
-
-<%- include('./partials/customer-footer') %>
+    <%- include('./partials/customer-footer') %>
+  </body>
+</html>

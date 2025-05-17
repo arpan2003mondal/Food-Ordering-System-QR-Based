@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/customer-header', { title: 'Menu' }) %>
+  </head>
+
+  <body class="bg-gray-100 min-h-screen">
+
+    <!-- Navigation Bar -->
+    <%- include('./partials/customer-nav') %>
+
+    <!-- Flash Messages -->
+    <div class="fixed top-0 left-0 w-full z-50">
+      <%- include('../partials/alert') %>
+    </div>
+
+    <!-- Menu Items List -->
+    <div class="category m-2 p-4">
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-4">
+        <% foodItems.forEach(food => { %>
+          <div class="bg-white rounded-xl shadow p-3 flex flex-col justify-between">
+            <img src="<%= food.imageUrl || '/images/default-food.jpg' %>" alt="<%= food.name %>" class="rounded-xl w-full h-32 object-cover mb-3" />
+
+            <div class="flex-grow text-center">
+              <h2 class="text-sm font-semibold mb-1 capitalize"><%= food.name %></h2>
+              <!-- <p class="text-xs text-gray-500 mb-2 capitalize"><%= food.category %></p> -->
+              <p class="text-green-600 font-semibold text-sm mb-1">₹<%= food.price %></p>
+            </div>
+
+            <div class="flex justify-center mt-auto">
+              <form action="/api/customer/add-to-cart/<%= food._id %>" method="POST">
+                <button type="submit" class="bg-green-500 hover:bg-green-600 text-white py-1 px-3 rounded text-xs">
+                  Add to Cart
+                </button>
+              </form>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+
+
+
+<!-- Footer -->
+<%- include('./partials/customer-footer') %>
+
