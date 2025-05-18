@@ -198,25 +198,79 @@ export const searchFood = async (req, res) => {
   }
 };
 
+// Add to cart
+
+// export const addToCart = async (req, res) => {
+//   const { itemId, quantity } = req.query;
+//   const tableId = req.session.tableId;
+//   if (!itemId || isNaN(quantity)) {
+//     return res
+//       .status(400)
+//       .json({ success: false, message: "Invalid itemId or quantity!" });
+//   }
+//   try {
+//     const foodItem = await Food.findById(itemId);
+//     if (!foodItem) {
+//       return res
+//         .status(404)
+//         .json({ success: false, message: "Food item not found!" });
+//     }
+//     let cart = await Cart.findOne({ tableId, status: "active" }).populate(
+//       "items.foodId"
+//     );
+//     const qty = parseInt(quantity) || 1;
+//     if (!cart) {
+//       cart = new Cart({
+//         tableId,
+//         items: [{ foodId: itemId, quantity: qty }],
+//         totalAmount: foodItem.price * qty,
+//       });
+//     } else {
+//       const itemIndex = cart.items.findIndex(
+//         (item) => item.foodId._id.toString() === itemId
+//       );
+//       if (itemIndex > -1) {
+//         cart.items[itemIndex].quantity += qty;
+//       } else {
+//         cart.items.push({ foodId: itemId, quantity: qty });
+//       }
+//       cart.totalAmount = calculateTotalAmount(cart.items);
+//     }
+//     await cart.save();
+//     await cart.populate("items.foodId");
+//     res
+//       .status(200)
+//       .json({ success: true, message: "Item added to cart!", cart });
+//   } catch (error) {
+//     res
+//       .status(500)
+//       .json({
+//         success: false,
+//         message: "Error adding to cart!",
+//         error: error.message,
+//       });
+//   }
+// };
+
 export const addToCart = async (req, res) => {
-  const { itemId, quantity } = req.query;
+  const { itemId, quantity } = req.body;
   const tableId = req.session.tableId;
+
   if (!itemId || isNaN(quantity)) {
-    return res
-      .status(400)
-      .json({ success: false, message: "Invalid itemId or quantity!" });
+    req.flash("error", "Invalid request to add item.");
+    return res.redirect("/api/customer/category");
   }
+
   try {
     const foodItem = await Food.findById(itemId);
     if (!foodItem) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Food item not found!" });
+      req.flash("error", "Food item not found.");
+      return res.redirect("/api/customer/category");
     }
-    let cart = await Cart.findOne({ tableId, status: "active" }).populate(
-      "items.foodId"
-    );
+
+    let cart = await Cart.findOne({ tableId, status: "active" }).populate("items.foodId");
     const qty = parseInt(quantity) || 1;
+
     if (!cart) {
       cart = new Cart({
         tableId,
@@ -224,58 +278,91 @@ export const addToCart = async (req, res) => {
         totalAmount: foodItem.price * qty,
       });
     } else {
-      const itemIndex = cart.items.findIndex(
-        (item) => item.foodId._id.toString() === itemId
-      );
-      if (itemIndex > -1) {
-        cart.items[itemIndex].quantity += qty;
+      const index = cart.items.findIndex(item => item.foodId._id.toString() === itemId);
+      if (index > -1) {
+        cart.items[index].quantity += qty;
       } else {
         cart.items.push({ foodId: itemId, quantity: qty });
       }
-      cart.totalAmount = calculateTotalAmount(cart.items);
+
+      cart.totalAmount = cart.items.reduce(
+        (sum, item) => {
+          const price = item.foodId?.price || 0;
+          const quantity = item.quantity || 0;
+          return sum + price * quantity;
+        },
+        0
+      );
+
     }
+
     await cart.save();
-    await cart.populate("items.foodId");
-    res
-      .status(200)
-      .json({ success: true, message: "Item added to cart!", cart });
-  } catch (error) {
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Error adding to cart!",
-        error: error.message,
-      });
+    req.flash("success", "Item added to cart!");
+    res.redirect("/api/customer/category");
+  } catch (err) {
+    console.error("Cart error:", err.message);
+    req.flash("error", "Error adding item to cart.");
+    res.redirect("/api/customer/category");
   }
 };
+
+// View cart items
+
+// export const viewCart = async (req, res) => {
+//   const tableId = req.session.tableId;
+//   try {
+//     const cart = await Cart.findOne({ tableId, status: "active" }).populate(
+//       "items.foodId"
+//     );
+//     if (!cart || cart.items.length === 0) {
+//       return res
+//         .status(404)
+//         .json({ success: false, message: "Cart is empty!" });
+//     }
+//     cart.totalAmount = calculateTotalAmount(cart.items);
+//     await cart.save();
+//     res
+//       .status(200)
+//       .json({ success: true, message: "Cart fetched successfully!", cart });
+//   } catch (error) {
+//     res
+//       .status(500)
+//       .json({
+//         success: false,
+//         message: "Error fetching cart!",
+//         error: error.message,
+//       });
+//   }
+// };
 
 export const viewCart = async (req, res) => {
   const tableId = req.session.tableId;
   try {
-    const cart = await Cart.findOne({ tableId, status: "active" }).populate(
-      "items.foodId"
-    );
+    const cart = await Cart.findOne({ tableId, status: "active" }).populate("items.foodId");
+   
     if (!cart || cart.items.length === 0) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Cart is empty!" });
+      return res.render("customer/cart", {
+        cart: { items: [], totalAmount: 0 },
+        messages: req.flash(),
+      });
     }
     cart.totalAmount = calculateTotalAmount(cart.items);
     await cart.save();
-    res
-      .status(200)
-      .json({ success: true, message: "Cart fetched successfully!", cart });
+    res.render("customer/cart", {
+      cart,
+      messages: req.flash(),
+    });
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Error fetching cart!",
-        error: error.message,
-      });
+    console.error("Error loading cart:", error.message);
+    req.flash("error", "Unable to load cart!");
+    res.render("customer/cart", {
+      cart: { items: [], totalAmount: 0 },
+      messages: req.flash(),
+    });
   }
 };
+
+
 
 export const deleteFromCart = async (req, res) => {
   const { itemId } = req.query;
@@ -339,6 +426,7 @@ export const updateCartItemQuantity = async (req, res) => {
       });
   }
 };
+
 
 export const placeOrder = async (req, res) => {
   const tableId = req.session.tableId;

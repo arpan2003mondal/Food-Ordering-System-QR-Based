@@ -15,24 +15,25 @@
   <%- include('../partials/alert') %>
 </div>
 
+<!-- Category Heading -->
+<div class="flex justify-between items-center  p-2 mt-3 bg-white rounded-xl shadow-md">
+        <h1 class="text-2xl font-bold">Categories</h1>
+</div>
 
 <!-- display all food category wise-->
 
 <!-- Items List -->
-<div class="category m-5 p-4">
+<div class="category m-2 mt-1 p-4">
   <div class="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-4">
     <% categories.forEach(category => { %>
       <div class="bg-white rounded-xl shadow p-3 flex flex-col justify-between">
         <img src="/images/categories/<%= category.toLowerCase() %>.jpg" alt="<%= category %> Image" class="rounded-xl w-full h-32 object-cover mb-3" />
 
-        <div class="flex-grow text-center">
-          <h2 class="text-sm font-semibold mb-2 capitalize"><%= category %></h2>
-        </div>
-
         <div class="flex justify-center mt-auto">
-          <a href="/api/customer/category/<%= category.toLowerCase() %>" class="bg-green-500 hover:bg-green-600 text-white py-1 px-3 rounded text-xs">
-            View Items
-          </a>
+         <a href="/api/customer/category/<%= category.toLowerCase() %>" class="text-black py-1 px-3 rounded text-lg underline font-bold">
+           <%= category %>
+         </a>
+
         </div>
       </div>
     <% }) %>

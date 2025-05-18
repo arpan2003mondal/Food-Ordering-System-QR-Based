@@ -13,13 +13,16 @@
       <%- include('../partials/alert') %>
     </div>
 
-    <!-- Category Heading -->
-    <div class="m-6">
-      <h1 class="text-xl font-bold capitalize"><%= category %> Items</h1>
+   <!-- Category Heading -->
+  <div class="max-w-lg mx-auto p-2 mt-6 bg-white rounded-xl shadow-md">
+    <div class="flex  justify-between items-center gap-2">
+      <h1 class="text-xl font-bold ml-5 capitalize"><%= category %> Items</h1>
+       <a href="javascript:history.back()" class="text-gray-500 text-lg mr-5">✕</a>
     </div>
+  </div>
 
     <!-- Food Items -->
-    <div class="m-5 p-4">
+    <div class="m-2 p-2">
       <div class="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-4">
         <% if (foodItems.length === 0) { %>
           <div class="col-span-full text-center text-gray-600">No items found in this category.</div>
@@ -32,14 +35,18 @@
             <div class="flex-grow">
               <h2 class="text-sm font-semibold mb-1"><%= item.name %></h2>
               <p class="text-gray-800 font-medium mb-1 text-sm">₹<%= item.price %></p>
-              <p class="text-gray-600 text-xs line-clamp-2 mb-3"><%= item.description %></p>
+              <!-- <p class="text-gray-600 text-xs line-clamp-2 mb-3"><%= item.description %></p> -->
             </div>
 
-            <div class="flex justify-center gap-2 mt-auto">
-              <a href="/api/customer/cart/add/<%= item._id %>" class="flex-1 text-center bg-green-500 hover:bg-green-600 text-white py-1 rounded text-xs">
-                Add To Cart
-              </a>
-            </div>
+            <!-- Add to Cart Button -->
+            <form action="/api/customer/cart/add" method="POST" class="w-full">
+                <input type="hidden" name="itemId" value="<%= item._id %>">
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white py-1 rounded text-xs">
+                  Add To Cart
+                </button>
+            </form>
+
           </div>
         <% }) %>
       </div>

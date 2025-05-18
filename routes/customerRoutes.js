@@ -14,7 +14,7 @@ import {
   deleteFromCart,
   updateCartItemQuantity,
   searchFood,
-} from "../controllers/customeControllers.js";
+} from "../controllers/customerControllers.js";
 
 const customerRouter = express.Router();
 

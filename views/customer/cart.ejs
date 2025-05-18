@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/customer-header', { title: 'Cart' }) %>
+  </head>
+  <body class="bg-gray-100 min-h-screen">
+    <!-- Navigation Bar -->
+    <%- include('./partials/customer-nav') %>
+
+    <!-- Flash Messages -->
+    <div class="fixed top-0 left-0 w-full z-50">
+      <%- include('../partials/alert') %>
+    </div>
+
+    <div class="max-w-md mx-auto p-4 mt-6 bg-white rounded-xl shadow-md">
+      <div class="flex justify-between items-center mb-4">
+        <h1 class="text-xl font-bold">Cart</h1>
+        <a href="javascript:history.back()" class="text-gray-500 text-lg">✕</a>
+      </div>
+
+      <% if (cart.items.length > 0) { %>
+        <% cart.items.forEach(item => { %>
+        <div class="flex items-center mb-4">
+            <img src="<%= item.foodId.imageUrl || 'default.jpg' %>" alt="<%= item.foodId.name %>" class="w-14 h-14 rounded-full object-cover" />
+            <div class="ml-3 flex-1">
+              <h2 class="font-semibold"><%= item.foodId.name %></h2>
+              <p class="text-gray-600 text-sm">₹ <%= item.foodId.price.toFixed(2) %></p>
+            </div>
+            <div class="flex items-center bg-green-100 rounded-full px-2">
+              <button onclick="updateQty('<%= item.foodId._id %>', 'decrease')" class="text-green-700 font-bold px-2">−</button>
+              <span class="px-2 font-medium"><%= item.quantity %></span>
+              <button onclick="updateQty('<%= item.foodId._id %>', 'increase')" class="text-green-700 font-bold px-2">+</button>
+            </div>
+        </div>
+        <% }) %>
+
+                    <!-- Fixed Total and Checkout Section -->
+            <div class="fixed bottom-20 left-0 w-full bg-white rounded-2xl shadow-md px-4 py-3">
+                <div class="flex justify-between font-bold text-lg mb-3">
+                    <span>Total :</span>
+                    <span>₹ <%= cart.totalAmount.toFixed(2) %></span>
+                </div>
+
+                <form action="/api/customer/checkout" method="POST" class="flex justify-center">
+                    <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-full font-semibold w-full max-w-xs">
+                    CHECK OUT
+                    </button>
+                </form>
+            </div>
+
+                <% } else { %>
+            <div>
+                <p class="text-center text-gray-500">Your cart is empty.</p>
+                <% } %>
+            </div>
+
+    <script>
+      function updateQty(itemId, action) {
+        fetch(`/api/customer/cart/update?itemId=${itemId}&action=${action}`, {
+          method: 'PUT'
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) location.reload();
+          else alert(data.message);
+        })
+        .catch(err => console.error("Error updating cart:", err));
+      }
+    </script>
+
+    <%- include('./partials/customer-footer') %>
+

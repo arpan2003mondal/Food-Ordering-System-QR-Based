@@ -14,6 +14,14 @@
       <%- include('../partials/alert') %>
     </div>
 
+    <!-- All Items  -->
+    <div class="max-w-lg mx-auto p-2 mt-6 bg-white rounded-xl shadow-md">
+    <div class="flex  justify-between items-center gap-2">
+      <h1 class="text-xl font-bold ml-5 capitalize">All Items</h1>
+       <!-- <a href="javascript:history.back()" class="text-gray-500 text-lg mr-5">✕</a> -->
+    </div>
+  </div>
+
     <!-- Menu Items List -->
     <div class="category m-2 p-4">
       <div class="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-4">
@@ -23,16 +31,19 @@
 
             <div class="flex-grow text-center">
               <h2 class="text-sm font-semibold mb-1 capitalize"><%= food.name %></h2>
-              <!-- <p class="text-xs text-gray-500 mb-2 capitalize"><%= food.category %></p> -->
+              <p class="text-xs text-gray-500 mb-2 capitalize"><%= food.description %></p>
               <p class="text-green-600 font-semibold text-sm mb-1">₹<%= food.price %></p>
             </div>
 
             <div class="flex justify-center mt-auto">
-              <form action="/api/customer/add-to-cart/<%= food._id %>" method="POST">
-                <button type="submit" class="bg-green-500 hover:bg-green-600 text-white py-1 px-3 rounded text-xs">
-                  Add to Cart
+               <!-- Add to Cart Button -->
+            <form action="/api/customer/cart/add" method="POST" class="w-full">
+                <input type="hidden" name="itemId" value="<%= food._id %>">
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white py-1 rounded text-xs">
+                  Add To Cart
                 </button>
-              </form>
+            </form>
             </div>
           </div>
         <% }) %>
