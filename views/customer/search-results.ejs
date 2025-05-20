@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <%- include('./partials/customer-header', { title: `${category} Menu` }) %>
+    <%- include('./partials/customer-header', { title: 'Menu' }) %>
   </head>
-  
+
   <body class="bg-gray-100 min-h-screen">
+
     <!-- Navigation Bar -->
     <%- include('./partials/customer-nav') %>
 
@@ -13,22 +14,10 @@
       <%- include('../partials/alert') %>
     </div>
 
-   <!-- Category Heading -->
-  <div class="max-w-lg mx-auto p-2 mt-6 bg-white rounded-xl shadow-md">
-    <div class="flex  justify-between items-center gap-2">
-      <h1 class="text-xl font-bold ml-5 capitalize"><%= category %> Items</h1>
-       <a href="javascript:history.back()" class="text-gray-500 text-lg mr-5">✕</a>
-    </div>
-  </div>
-
-    <!-- Food Items -->
-    <div class="m-2 p-2">
+  <div class="category m-2 p-4">
+    <h2 class="text-2xl font-bold mb-4">Search Results for "<%= query %>"</h2>
       <div class="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-4">
-        <% if (foodItems.length === 0) { %>
-          <div class="col-span-full text-center text-gray-600">No items found in this category.</div>
-        <% } %>
-        
-        <% foodItems.forEach(item => { %>
+        <% results.forEach(item => { %>
           <div class="bg-white rounded-xl shadow p-3 flex flex-col justify-between items-start">
             <img src="<%= item.imageUrl %>" alt="Food Image" class="rounded-xl w-full h-32 object-cover mb-3" />
 
@@ -67,6 +56,8 @@
       </div>
     </div>
 
-    <%- include('./partials/customer-footer') %>
-  </body>
-</html>
+
+
+<!-- Footer -->
+<%- include('./partials/customer-footer') %>
+

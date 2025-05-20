@@ -25,26 +25,40 @@
     <!-- Menu Items List -->
     <div class="category m-2 p-4">
       <div class="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-4">
-        <% foodItems.forEach(food => { %>
-          <div class="bg-white rounded-xl shadow p-3 flex flex-col justify-between">
-            <img src="<%= food.imageUrl || '/images/default-food.jpg' %>" alt="<%= food.name %>" class="rounded-xl w-full h-32 object-cover mb-3" />
+        <% foodItems.forEach(item => { %>
+          <div class="bg-white rounded-xl shadow p-3 flex flex-col justify-between items-start">
+            <img src="<%= item.imageUrl %>" alt="Food Image" class="rounded-xl w-full h-32 object-cover mb-3" />
 
-            <div class="flex-grow text-center">
-              <h2 class="text-sm font-semibold mb-1 capitalize"><%= food.name %></h2>
-              <p class="text-xs text-gray-500 mb-2 capitalize"><%= food.description %></p>
-              <p class="text-green-600 font-semibold text-sm mb-1">₹<%= food.price %></p>
+            <div class="flex-grow">
+              <h2 class="text-sm font-semibold mb-1"><%= item.name %></h2>
+              <div class="flex-grow">
+                <div class="flex items-start justify-start gap-2 mb-1">
+                      <% if (item.isVegetarian) { %>
+                        <div class="flex items-center gap-1">
+                          <span class="w-2 h-2 bg-green-600 rounded-full inline-block"></span>
+                          <span class="text-green-700 text-xs font-semibold">Veg</span>
+                        </div>
+                      <% } else { %>
+                        <div class="flex items-center gap-1">
+                          <span class="w-2 h-2 bg-red-600 rounded-full inline-block"></span>
+                          <span class="text-red-700 text-xs font-semibold">Non-Veg</span>
+                        </div>
+                      <% } %>            
+                </div>
+              </div>
+              <p class="text-gray-800 font-medium mb-1 text-sm">₹<%= item.price %></p>
+              <!-- <p class="text-gray-600 text-xs line-clamp-2 mb-3"><%= item.description %></p> -->
             </div>
 
-            <div class="flex justify-center mt-auto">
-               <!-- Add to Cart Button -->
+            <!-- Add to Cart Button -->
             <form action="/api/customer/cart/add" method="POST" class="w-full">
-                <input type="hidden" name="itemId" value="<%= food._id %>">
+                <input type="hidden" name="itemId" value="<%= item._id %>">
                 <input type="hidden" name="quantity" value="1">
                 <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white py-1 rounded text-xs">
                   Add To Cart
                 </button>
             </form>
-            </div>
+
           </div>
         <% }) %>
       </div>

@@ -1,8 +1,8 @@
-// Enhanced Customer Controller with Improvements
-
 import Food from "../model/foodModel.js";
 import Cart from "../model/cartModel.js";
 import Order from "../model/orderModel.js";
+import moment from "moment";
+
 
 // Helper: Calculate total amount
 const calculateTotalAmount = (items) => {
@@ -60,7 +60,7 @@ export const viewCategory = async (req, res) => {
     
 
     // Flash a success message
-    req.flash("success", "Menu loaded successfully!");
+    // req.flash("success", "Menu loaded successfully!");
 
     // Render the home page with categories instead of individual food items
     res.render("customer/category", {
@@ -166,35 +166,40 @@ export const getFoodDetails = async (req, res) => {
   }
 };
 
+
+// search food items 
 export const searchFood = async (req, res) => {
   const { q, category, veg, sort } = req.query;
   const query = {};
   if (q) query.name = { $regex: q, $options: "i" };
   if (category) query.category = category;
   if (veg === "true") query.isVegetarian = true;
+
   let sortOption = {};
   if (sort === "price_asc") sortOption.price = 1;
   else if (sort === "price_desc") sortOption.price = -1;
 
   try {
     const results = await Food.find(query).sort(sortOption);
+
     if (results.length === 0) {
-      return res
-        .status(404)
-        .json({ success: false, message: "No food items found." });
-    }
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: "Search successful!",
-        total: results.length,
+     req.flash("error", "No food items found.");
+      return res.render("customer/search-results", {
         results,
+        query: q,
+        messages: req.flash(),
       });
+    }
+
+    req.flash("success", `${results.length} item(s) found.`);
+    res.render("customer/search-results", {
+      results,
+      query: q,
+      messages: req.flash(),
+    });
   } catch (err) {
-    res
-      .status(500)
-      .json({ success: false, message: "Search failed", error: err.message });
+    req.flash("error", "Search failed. Try again.");
+    res.redirect("/api/customer/category");
   }
 };
 
@@ -258,14 +263,14 @@ export const addToCart = async (req, res) => {
 
   if (!itemId || isNaN(quantity)) {
     req.flash("error", "Invalid request to add item.");
-    return res.redirect("/api/customer/category");
+    return res.redirect("/api/customer/all-menu");
   }
 
   try {
     const foodItem = await Food.findById(itemId);
     if (!foodItem) {
       req.flash("error", "Food item not found.");
-      return res.redirect("/api/customer/category");
+      return res.redirect("/api/customer/all-menu");
     }
 
     let cart = await Cart.findOne({ tableId, status: "active" }).populate("items.foodId");
@@ -298,7 +303,7 @@ export const addToCart = async (req, res) => {
 
     await cart.save();
     req.flash("success", "Item added to cart!");
-    res.redirect("/api/customer/category");
+    res.redirect("/api/customer/all-menu");
   } catch (err) {
     console.error("Cart error:", err.message);
     req.flash("error", "Error adding item to cart.");
@@ -307,33 +312,6 @@ export const addToCart = async (req, res) => {
 };
 
 // View cart items
-
-// export const viewCart = async (req, res) => {
-//   const tableId = req.session.tableId;
-//   try {
-//     const cart = await Cart.findOne({ tableId, status: "active" }).populate(
-//       "items.foodId"
-//     );
-//     if (!cart || cart.items.length === 0) {
-//       return res
-//         .status(404)
-//         .json({ success: false, message: "Cart is empty!" });
-//     }
-//     cart.totalAmount = calculateTotalAmount(cart.items);
-//     await cart.save();
-//     res
-//       .status(200)
-//       .json({ success: true, message: "Cart fetched successfully!", cart });
-//   } catch (error) {
-//     res
-//       .status(500)
-//       .json({
-//         success: false,
-//         message: "Error fetching cart!",
-//         error: error.message,
-//       });
-//   }
-// };
 
 export const viewCart = async (req, res) => {
   const tableId = req.session.tableId;
@@ -428,39 +406,91 @@ export const updateCartItemQuantity = async (req, res) => {
 };
 
 
+// export const placeOrder = async (req, res) => {
+//   const tableId = req.session.tableId;
+//   try {
+//     const cart = await Cart.findOne({ tableId, status: "active" }).populate(
+//       "items.foodId"
+//     );
+//     if (!cart || cart.items.length === 0) {
+//       return res
+//         .status(400)
+//         .json({ success: false, message: "Cart is empty!" });
+//     }
+//     const newOrder = new Order({
+//       tableId,
+//       items: cart.items,
+//       totalAmount: cart.totalAmount,
+//       status: "pending",
+//     });
+//     await newOrder.save();
+//     cart.status = "ordered";
+//     await cart.save();
+//     res
+//       .status(200)
+//       .json({ success: true, message: "Order placed!", orderId: newOrder._id });
+//   } catch (error) {
+//     res
+//       .status(500)
+//       .json({
+//         success: false,
+//         message: "Error placing order!",
+//         error: error.message,
+//       });
+//   }
+// };
+
+
+// payment section 
+
 export const placeOrder = async (req, res) => {
   const tableId = req.session.tableId;
+
   try {
-    const cart = await Cart.findOne({ tableId, status: "active" }).populate(
-      "items.foodId"
-    );
+    const cart = await Cart.findOne({ tableId, status: "active" }).populate("items.foodId");
+
     if (!cart || cart.items.length === 0) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Cart is empty!" });
+      req.flash("error", "Cart is empty!");
+      return res.redirect("/api/customer/cart/view");
     }
+
+    // Get today's date range
+    const startOfDay = moment().startOf("day").toDate();
+    const endOfDay = moment().endOf("day").toDate();
+
+    // Count today's orders to generate token
+    const orderCountToday = await Order.countDocuments({
+      createdAt: { $gte: startOfDay, $lte: endOfDay }
+    });
+
+    const token = orderCountToday + 1;
+
+    // Create new order
     const newOrder = new Order({
       tableId,
       items: cart.items,
       totalAmount: cart.totalAmount,
       status: "pending",
+      token
     });
+
     await newOrder.save();
+
+    // Mark cart as ordered
     cart.status = "ordered";
     await cart.save();
-    res
-      .status(200)
-      .json({ success: true, message: "Order placed!", orderId: newOrder._id });
+
+    req.flash("success", `Order placed successfully! Your token number is ${token}.`);
+    res.redirect("/api/customer/order-confirmation");
+
+
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Error placing order!",
-        error: error.message,
-      });
+    console.error("Order error:", error.message);
+    req.flash("error", "Error placing order.");
+    res.redirect("/api/customer/cart/view");
   }
 };
+
 
 export const initiatePayment = async (req, res) => {
   const { orderId } = req.query;
@@ -517,5 +547,26 @@ export const verifyPayment = async (req, res) => {
         message: "Error verifying payment!",
         error: error.message,
       });
+  }
+};
+
+export const renderOrderConfirmation = async (req, res) => {
+  const tableId = req.session.tableId;
+
+  try {
+    const latestOrder = await Order.findOne({ tableId })
+      .sort({ createdAt: -1 }) // latest
+      .populate("items.foodId");
+
+    if (!latestOrder) {
+      req.flash("error", "No recent order found.");
+      return res.redirect("/api/customer/all-menu");
+    }
+
+    res.render("customer/order-confirmation", { order: latestOrder });
+  } catch (err) {
+    console.error("Error loading order confirmation:", err.message);
+    req.flash("error", "Unable to load order confirmation.");
+    res.redirect("/api/customer/all-menu");
   }
 };

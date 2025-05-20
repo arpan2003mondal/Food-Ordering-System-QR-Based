@@ -19,20 +19,28 @@
       </div>
 
       <% if (cart.items.length > 0) { %>
-        <% cart.items.forEach(item => { %>
-        <div class="flex items-center mb-4">
+       <% cart.items.forEach(item => { %>
+          <div class="flex items-center mb-4">
             <img src="<%= item.foodId.imageUrl || 'default.jpg' %>" alt="<%= item.foodId.name %>" class="w-14 h-14 rounded-full object-cover" />
+            
             <div class="ml-3 flex-1">
-              <h2 class="font-semibold"><%= item.foodId.name %></h2>
+              <div class="flex items-center gap-1">
+                <!-- Veg/Non-Veg Icon -->
+                <div class="w-2 h-2 rounded-full mt-1" 
+                    style="background-color: <%= item.foodId.isVegetarian ? 'green' : 'red' %>;">
+                </div>
+                <h2 class="font-semibold text-sm"><%= item.foodId.name %></h2>
+              </div>
               <p class="text-gray-600 text-sm">₹ <%= item.foodId.price.toFixed(2) %></p>
             </div>
+            
             <div class="flex items-center bg-green-100 rounded-full px-2">
               <button onclick="updateQty('<%= item.foodId._id %>', 'decrease')" class="text-green-700 font-bold px-2">−</button>
               <span class="px-2 font-medium"><%= item.quantity %></span>
               <button onclick="updateQty('<%= item.foodId._id %>', 'increase')" class="text-green-700 font-bold px-2">+</button>
             </div>
-        </div>
-        <% }) %>
+          </div>
+       <% }) %>
 
                     <!-- Fixed Total and Checkout Section -->
             <div class="fixed bottom-20 left-0 w-full bg-white rounded-2xl shadow-md px-4 py-3">
@@ -40,12 +48,21 @@
                     <span>Total :</span>
                     <span>₹ <%= cart.totalAmount.toFixed(2) %></span>
                 </div>
-
+<!-- 
                 <form action="/api/customer/checkout" method="POST" class="flex justify-center">
                     <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-full font-semibold w-full max-w-xs">
                     CHECK OUT
                     </button>
-                </form>
+                </form> -->
+
+            <form action="/api/customer/placeOrder" method="POST" class="flex justify-center">
+                <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-full font-semibold w-full max-w-xs">
+                  CHECK OUT
+                </button>
+            </form>
+
+
+
             </div>
 
                 <% } else { %>

@@ -74,6 +74,10 @@ const orderSchema = new mongoose.Schema({
     enum: ["pending", "preparing", "served", "completed"],
     default: "pending"
   },
+  token: {
+  type: Number,
+  required: true
+},
   createdAt: {
     type: Date,
     default: Date.now

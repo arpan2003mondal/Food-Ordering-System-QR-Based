@@ -72,6 +72,10 @@ app.get("/", (req, res) => {
   res.send("Server is running...");
 });
 
+app.get("/scan-qr", (req, res) => {
+  return res.render("scan-qr");
+});
+
 app.get("/test-flash", (req, res) => {
   req.flash("success", "This is a test success message");
   res.redirect("/api/admin/dashboard");

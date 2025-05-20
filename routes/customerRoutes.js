@@ -14,6 +14,7 @@ import {
   deleteFromCart,
   updateCartItemQuantity,
   searchFood,
+  renderOrderConfirmation
 } from "../controllers/customerControllers.js";
 
 const customerRouter = express.Router();
@@ -46,7 +47,7 @@ customerRouter.delete("/cart/delete", authenticateCustomer, deleteFromCart);
 customerRouter.put("/cart/update", authenticateCustomer, updateCartItemQuantity);
 
 // Place Order Route
-customerRouter.post("/place/order", authenticateCustomer, placeOrder);
+customerRouter.post("/placeOrder", authenticateCustomer, placeOrder);
 
 // Payment Route
 customerRouter.post("/payment/initiate", authenticateCustomer, initiatePayment);
@@ -56,5 +57,9 @@ customerRouter.post("/payment/verify", authenticateCustomer, verifyPayment);
 
 // search route 
 customerRouter.get("/search", authenticateCustomer, searchFood);
+
+// show my orders
+
+customerRouter.get("/order-confirmation", authenticateCustomer, renderOrderConfirmation);
 
 export default customerRouter;

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/customer-header', { title: 'Your Orders' }) %>
+  </head>
+  <body class="bg-gray-100 min-h-screen">
+    <!-- Navigation Bar -->
+    <%- include('./partials/customer-nav') %>
+
+    <!-- Flash Messages -->
+    <div class="fixed top-0 left-0 w-full z-50">
+      <%- include('../partials/alert') %>
+    </div>
+
+    <div class="max-w-md mx-auto p-4 mt-6 mb-28 bg-white rounded-xl shadow-md font-[Inter]">
+      <div class="flex items-center justify-between mb-6">
+        <div class="bg-red-500 text-white px-4 py-6 rounded-lg w-1/2 text-center">
+          <p class="text-lg font-bold">THANK YOU</p>
+          <p class="text-xs font-light">for your order</p>
+        </div>
+        <div class="bg-orange-400 text-white px-4 py-6 rounded-lg w-1/2 text-center ml-2">
+          <p class="text-xs">Your token number :</p>
+          <p class="text-3xl font-bold"><%= order.token %></p>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <p class="text-sm font-semibold mb-2">Your order items :</p>
+        <% order.items.forEach(item => { %>
+          <div class="flex items-center mb-3 bg-gray-50 rounded-lg p-2 shadow-sm">
+            <img src="<%= item.foodId.imageUrl || 'default.jpg' %>" alt="<%= item.foodId.name %>" class="w-12 h-12 rounded-full object-cover" />
+            <div class="ml-3 flex-1">
+              <p class="font-medium text-sm"><%= item.foodId.name %></p>
+              <p class="text-xs text-gray-600">₹ <%= item.foodId.price.toFixed(2) %> x <%= item.quantity %></p>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+
+      <div class="border-t pt-4">
+        <div class="flex justify-between text-base font-semibold">
+          <span>Total:</span>
+          <span>₹ <%= order.totalAmount.toFixed(2) %></span>
+        </div>
+        <div class="flex justify-between text-sm mt-2">
+          <span>Status:</span>
+          <span class="capitalize"><%= order.status %></span>
+        </div>
+      </div>
+    </div>
+
+    <%- include('./partials/customer-footer') %>

@@ -9,7 +9,7 @@ import Food from "../model/foodModel.js";
 
 export const dashboard = async (req, res) => {
   try {
-    const foodItems = await Food.find();
+    const foodItems = await Food.find().sort({ name: 1 });
 
     res.render("admin/dashboard", {
       foodItems,
