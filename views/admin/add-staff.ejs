@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/admin-header', { title: 'Register Staff' }) %>
+  </head>
+  <body class="bg-gray-100 min-h-screen p-10 pt-24">
+    <!-- Navigation Bar -->
+    <%- include('../partials/admin-nav') %>
+
+    <!-- Flash Messages -->
+    <div class="fixed top-0 left-0 w-full z-50">
+      <%- include('../partials/alert') %>
+    </div>
+
+    <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg p-8">
+      <h1 class="text-2xl font-semibold mb-6 text-gray-800 text-center">Register Staff</h1>
+
+      <form action="/api/admin/dashboard/register-staff" method="POST" class="space-y-6">
+        <div>
+          <label for="name" class="block text-gray-700 font-medium mb-1">Name</label>
+          <input
+            type="text"
+            name="name"
+            id="name"
+            placeholder="Enter staff name"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+        </div>
+
+        <div>
+          <label for="username" class="block text-gray-700 font-medium mb-1">Username</label>
+          <input
+            type="text"
+            name="username"
+            id="username"
+            placeholder="Enter username"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+        </div>
+
+        <div>
+          <label for="password" class="block text-gray-700 font-medium mb-1">Password</label>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            placeholder="Enter password"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+        </div>
+
+        <div>
+          <button
+            type="submit"
+            class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded"
+          >
+            Register
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <%- include('../partials/admin-footer') %>
+  </body>
+</html>

@@ -26,9 +26,10 @@
             <div class="ml-3 flex-1">
               <div class="flex items-center gap-1">
                 <!-- Veg/Non-Veg Icon -->
-                <div class="w-2 h-2 rounded-full mt-1" 
-                    style="background-color: <%= item.foodId.isVegetarian ? 'green' : 'red' %>;">
+                <div class="w-2 h-2 rounded-full mt-1 
+                   <%= item.foodId.isVegetarian ? 'bg-green-600' : 'bg-red-600' %>">
                 </div>
+
                 <h2 class="font-semibold text-sm"><%= item.foodId.name %></h2>
               </div>
               <p class="text-gray-600 text-sm">₹ <%= item.foodId.price.toFixed(2) %></p>

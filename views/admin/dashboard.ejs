@@ -13,6 +13,15 @@
   <%- include('../partials/alert') %>
 </div>
 
+ <div class="flex items-center justify-between bg-gray-100 px-6 py-4 rounded-lg shadow-sm mb-6">
+  <h2 class="text-xl font-semibold text-gray-800">
+    👋 Welcome, <%= adminName %>
+  </h2>
+  <div class="text-gray-700 font-medium text-lg">
+    Total Items: <span class="font-bold"><%= foodItems.length %></span>
+  </div>
+</div>
+
 
   <!-- Items List -->
   <div class="grid grid-cols-1 md:grid-cols-4 gap-6">

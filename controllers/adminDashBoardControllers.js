@@ -5,14 +5,21 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 import Food from "../model/foodModel.js";
+import adminModel from "../model/adminModel.js";
+import staffModel from "../model/staffModel.js";
+import { hashPassword } from "../utils/hashPassword.js";
+
 
 
 export const dashboard = async (req, res) => {
   try {
     const foodItems = await Food.find().sort({ name: 1 });
+    const admin = await adminModel.find();
+    const adminName = admin ? admin[0].name : "Admin";
 
     res.render("admin/dashboard", {
       foodItems,
+      adminName,
     });
   } catch (error) {
         req.flash("error", "Error loading dashboard. Please try again.");
@@ -199,5 +206,51 @@ export const searchFood = async (req, res) => {
   } catch (err) {
     req.flash("error", "Search failed. Try again.");
     res.redirect("/api/admin/dashboard");
+  }
+};
+
+
+// frontpage for adding staff
+export const renderAddStaffPage = (req, res) => {
+  try {
+    res.status(200).render("admin/add-staff");
+  } catch (error) {
+    
+    req.flash("error", "Error loading Add Staff page.");
+    res.redirect("/api/admin/dashboard");
+  }
+};
+
+// register staff in the staff database
+export const registerStaff = async (req, res) => {
+  const { name, username, password } = req.body;
+
+  if (!name || !username || !password) {
+    req.flash("error", "All fields are required");
+    return res.redirect("/api/admin/dashboard/register-staff");
+  }
+
+  try {
+    const existingStaff = await staffModel.findOne({ username });
+    if (existingStaff) {
+      req.flash("error", "Username already exists");
+      return res.redirect("/api/admin/dashboard/register-staff");
+    }
+
+    const hashed = await hashPassword(password);
+
+    await staffModel.create({
+      name,
+      username,
+      password: hashed,
+      role: "staff",
+    });
+
+    req.flash("success", "Staff registered successfully");
+    return res.redirect("/api/admin/dashboard");
+  } catch (error) {
+    console.error("Error registering staff:", error);
+    req.flash("error", "Something went wrong");
+    return res.redirect("/api/admin/dashboard/register-staff");
   }
 };

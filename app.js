@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import connectDb from "./config/connectDB.js";
 import adminRouter from "./routes/adminRoutes.js";
 import adminDashboardRouter from "./routes/adminDashboardRoutes.js";
+import staffRouter from "./routes/staffRoutes.js";
 import customerRouter from "./routes/customerRoutes.js";
 import { authenticateUser } from "./middleware/adminAuthMiddleware.js";
 import path from "path";  
@@ -61,6 +62,7 @@ app.use(
 // Admin Routes wih no Session
 app.use("/api/admin", adminRouter);
 app.use("/api/admin/dashboard", authenticateUser, adminDashboardRouter);
+app.use("/staff",staffRouter);
 
 // Customer Routes with Session
 app.use("/api/customer", customerRouter);

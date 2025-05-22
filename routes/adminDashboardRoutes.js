@@ -10,8 +10,10 @@ import {
   updateFoodItem,
   renderAddFoodPage,
   renderEditFoodPage,
-  searchFood
-} from "../controllers/adminDashBoard.js";
+  searchFood,
+  renderAddStaffPage,
+  registerStaff
+} from "../controllers/adminDashBoardControllers.js";
 import { authenticateUser } from "../middleware/adminAuthMiddleware.js";
 
 adminDashboardRouter.get("/", authenticateUser, dashboard);
@@ -26,5 +28,9 @@ adminDashboardRouter.get("/delete-food/:id",authenticateUser, deleteFoodItem);
 
 // search route 
 adminDashboardRouter.get("/search", authenticateUser, searchFood);
+
+adminDashboardRouter.get("/add-staff", authenticateUser, renderAddStaffPage);
+
+adminDashboardRouter.post("/register-staff", registerStaff);
 
 export default adminDashboardRouter;
