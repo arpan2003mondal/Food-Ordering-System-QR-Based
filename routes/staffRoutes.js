@@ -1,5 +1,5 @@
 import express from "express";
-import { login, logout } from "../controllers/staffControllers.js";
+import { getStaffDashboard, login, logout } from "../controllers/staffControllers.js";
 import { authenticateStaff } from "../middleware/staffAuthMiddleware.js";
 
 const staffRouter = express.Router();
@@ -10,6 +10,10 @@ staffRouter.get("/login", (req, res) => {
 });
 
 staffRouter.post("/login", login);
+
+staffRouter.get("/dashboard",authenticateStaff,getStaffDashboard);
+
+
 
 staffRouter.post("/logout", authenticateStaff, logout);
 

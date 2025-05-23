@@ -71,7 +71,7 @@ app.use("/api/customer", customerRouter);
 app.set("view engine","ejs");
 
 app.get("/", (req, res) => {
-  res.send("Server is running...");
+  res.render("home");
 });
 
 app.get("/scan-qr", (req, res) => {

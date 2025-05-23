@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Login</title>
+  <title>Staff Login</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-p1CmGf9L1Jj0BpLMEBR6DjXWxPL7fC4z+X3ktqP1ViAfGMvDStfcm5QY4n6lMwWwT7/4FkYV6vFZ2DDe4X8Tw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -11,16 +11,23 @@
 
   <%- include('../partials/alert') %>
 
-  <!-- Admin Login Form -->
+  <!-- Staff Login Form -->
   <div class="flex-grow flex items-center justify-center py-10">
     <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
-          
-      <h2 class="text-2xl font-bold mt-4 mb-6 text-center">Admin Login</h2>
+      
+      <!-- Back Link + Heading -->
+      <div class="mb-6">
+        <a href="/" class="inline-flex items-center text-sm text-blue-600 hover:underline hover:text-blue-800 transition duration-200">
+          <i class="fas fa-arrow-left mr-2"></i>
+          Back to Home
+        </a>
+        <h2 class="text-2xl font-bold mt-4 text-center">Staff Login</h2>
+      </div>
 
-      <form action="/api/admin/login" method="POST" class="space-y-4">
+      <form action="/staff/login" method="POST" class="space-y-4">
 
-        <!-- Email -->
-        <input type="email" name="email" placeholder="Admin Email" required
+        <!-- Username -->
+        <input type="text" name="username" placeholder="Staff Username" required
           class="w-full border rounded-full px-4 py-2 outline-none focus:border-green-500"/>
 
         <!-- Password -->
@@ -33,25 +40,10 @@
           LOGIN
         </button>
 
-        <!-- Forgot Password -->
-        <div class="text-center mt-4">
-          <a href="/api/admin/forgot-password" class="text-sm text-green-600 hover:underline">
-            Forgot/Reset Password?
-          </a>
-        </div>
-        <!-- Back to Home -->
-         <div class="text-center mt-4">
-          <a href="/" class="text-md text-blue-600 hover:underline">
-            Back
-          </a>
-        </div>
-
-    
-
-
       </form>
     </div>
   </div>
- <script src="/javascripts/flashMessages.js"></script>
+
+  <script src="/javascripts/flashMessages.js"></script>
 </body>
 </html>

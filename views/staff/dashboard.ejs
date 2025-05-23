@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('./partials/staff-header', { title: 'Staff Dashboard' }) %>
+</head>
+<body class="bg-gray-100 min-h-screen pt-24">
+
+  <!-- Navigation Bar -->
+  <%- include('./partials/staff-nav') %>
+
+  <!-- Flash Messages -->
+  <div class="fixed top-0 left-0 w-full z-50">
+    <%- include('../partials/alert') %>
+  </div>
+
+  <div class="max-w-6xl mx-auto p-6">
+    <% if (orders.length === 0) { %>
+      <div class="text-center py-10">
+        <p class="text-gray-500 text-lg">📭 No orders found for today.</p>
+      </div>
+    <% } else { %>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <% orders.forEach(order => { %>
+          <div class="bg-white shadow-xl rounded-2xl p-6 flex flex-col justify-between border border-gray-200">
+            
+            <!-- Header -->
+            <div class="flex justify-between items-start mb-4">
+                 <div class="flex flex-wrap items-center gap-6 mb-3 text-lg text-gray-700">
+                    <span class="font-bold text-violet-500">🧾 Token: <%= order.token %></span>
+                    <span class="font-bold text-green-500">Table: <%= order.tableId %></span>
+                    <span class="text-gray-500">🕒 <%= moment(order.createdAt).format("hh:mm A") %></span>
+                 </div>
+
+                <span class="text-sm px-3 py-1 rounded-full bg-blue-100 text-blue-800 capitalize font-semibold self-start">
+                    <%= order.status %>
+                </span>
+            </div>
+
+            <!-- Ordered Items -->
+            <ul class="text-base text-gray-800 mb-4 list-disc pl-5 space-y-1 font-medium">
+              <% order.items.forEach(i => { %>
+                <li><strong><%= i.foodId?.name %></strong> × <%= i.quantity %></li>
+              <% }) %>
+            </ul>
+
+            <!-- Total Paid -->
+            <div class="text-right text-green-700 font-bold text-lg mb-4">
+              Total: ₹<%= order.totalAmount %>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-wrap gap-6 justify-center">
+              <% if (order.status === "pending") { %>
+                <!-- Accept -->
+                <form action="/api/staff/orders/<%= order._id %>/status" method="POST">
+                  <input type="hidden" name="status" value="accepted" />
+                  <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-md text-sm font-medium">
+                    Mark as Accepted
+                  </button>
+                </form>
+                <!-- Cancel -->
+                <form action="/api/staff/orders/<%= order._id %>/status" method="POST">
+                  <input type="hidden" name="status" value="cancelled" />
+                  <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium">
+                    Cancel Order
+                  </button>
+                </form>
+
+              <% } else if (order.status === "accepted") { %>
+                <!-- Ready -->
+                <form action="/api/staff/orders/<%= order._id %>/status" method="POST">
+                  <input type="hidden" name="status" value="ready" />
+                  <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium">
+                    Mark as Ready
+                  </button>
+                </form>
+                <!-- Cancel -->
+                <form action="/api/staff/orders/<%= order._id %>/status" method="POST">
+                  <input type="hidden" name="status" value="cancelled" />
+                  <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium">
+                    Cancel Order
+                  </button>
+                </form>
+
+              <% } else if (order.status === "ready") { %>
+                <!-- Completed -->
+                <form action="/api/staff/orders/<%= order._id %>/status" method="POST">
+                  <input type="hidden" name="status" value="completed" />
+                  <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium">
+                    Mark as Completed
+                  </button>
+                </form>
+              <% } %>
+            </div>
+
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+
+</body>
+</html>
