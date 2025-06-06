@@ -1,87 +1,95 @@
+
 // import mongoose from "mongoose";
 
-// const orderSchema = new mongoose.Schema(
-//   {
-//     tableId: {
-//       type: String,
-//       required: true,
-//     },
-//     items: [
-//       {
-//         foodId: {
-//           type: mongoose.Schema.Types.ObjectId,
-//           ref: "Food",
-//           required: true,
-//         },
-//         quantity: {
-//           type: Number,
-//           required: true,
-//         },
-//       },
-//     ],
-//     totalAmount: {
-//       type: Number,
-//       required: true,
-//     },
-//     status: {
-//       type: String,
-//       enum: ["pending", "paid", "completed"],
-//       default: "pending",
-//     },
-//     paymentStatus: {
-//       type: String,
-//       enum: ["not_paid", "processing", "paid", "failed"],
-//       default: "not_paid",
-//     },
-//     paymentId: {
-//       type: String,
-//     },
+// const orderItemSchema = new mongoose.Schema({
+//   foodId: {
+//     type: mongoose.Schema.Types.ObjectId,
+//     ref: "Food",
+//     required: true
 //   },
-//   { timestamps: true }
-// );
+//   quantity: {
+//     type: Number,
+//     required: true
+//   }
+// });
+
+// const orderSchema = new mongoose.Schema({
+//   tableId: {
+//     type: String,
+//     required: true
+//   },
+//   items: [orderItemSchema],
+//   totalAmount: {
+//     type: Number,
+//     required: true
+//   },
+//   status: {
+//     type: String,
+//     enum: ["pending", "cancelled", "accepted", "ready", "completed"],
+//     default: "pending"
+//   },
+//   token: {
+//   type: Number,
+//   required: true
+// },
+//   createdAt: {
+//     type: Date,
+//     default: Date.now
+//   }
+// });
 
 // const Order = mongoose.model("Order", orderSchema);
-
 // export default Order;
 
-// models/Order.js
+
 import mongoose from "mongoose";
 
 const orderItemSchema = new mongoose.Schema({
   foodId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Food",
-    required: true
+    required: true,
   },
   quantity: {
     type: Number,
-    required: true
-  }
+    required: true,
+  },
 });
 
 const orderSchema = new mongoose.Schema({
   tableId: {
     type: String,
-    required: true
+    required: true,
+  },
+  sessionKey: {
+    type: String,
+    required: true, // Useful for debugging/grouping orders
   },
   items: [orderItemSchema],
   totalAmount: {
     type: Number,
-    required: true
+    required: true,
   },
   status: {
     type: String,
-    enum: ["pending", "cancelled", "accepted", "ready", "completed"],
-    default: "pending"
+    enum: ["completed", "cancelled"], // Only final outcomes
+    required: true,
   },
   token: {
-  type: Number,
-  required: true
-},
+    type: Number,
+    required: true,
+  },
   createdAt: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
+  updatedAt: Date,
+  completedAt: Date,
+});
+
+orderSchema.pre("save", function (next) {
+  this.updatedAt = new Date();
+  next();
 });
 
 const Order = mongoose.model("Order", orderSchema);

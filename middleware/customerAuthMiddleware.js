@@ -9,14 +9,14 @@
 // };
 
 const authenticateCustomer = (req, res, next) => {
-  if (req.session && req.session.tableId) {
+  if (req.session && req.session.tableId && req.session.sessionKey) {
     return next();
   }
 
   // Session is missing or expired
   req.flash("error", "Session expired. Please scan the QR code again to continue.");
-  return res.redirect("/scan-qr"); // Replace with your actual QR scan route
+  return res.redirect("/scan-qr");
 };
 
-
 export default authenticateCustomer;
+

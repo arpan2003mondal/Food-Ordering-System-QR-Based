@@ -1,6 +1,7 @@
 import staffModel from "../model/staffModel.js";
 import { hashPassword, comparePassword } from "../utils/hashPassword.js";
 import { generateToken } from "../utils/generateToken.js";
+import LiveOrder from "../model/liveOrder.js";
 import Order from "../model/orderModel.js";
 import moment from "moment";
 
@@ -54,10 +55,9 @@ export const getStaffDashboard = async (req, res) => {
     const startOfDay = moment().startOf("day").toDate();
     const endOfDay = moment().endOf("day").toDate();
 
-    // Today's relevant orders
-    const todayOrders = await Order.find({
+    const todayOrders = await LiveOrder.find({
       createdAt: { $gte: startOfDay, $lte: endOfDay },
-      status: { $in: ["pending", "ordered", "received"] }
+      status: { $nin: ["completed", "cancelled"] },  // show only active live orders
     })
       .sort({ createdAt: -1 })
       .limit(20)
@@ -74,6 +74,128 @@ export const getStaffDashboard = async (req, res) => {
   }
 };
 
+
+
+
+
+// export const updateOrderStatus = async (req, res) => {
+//   const { id } = req.params;
+//   const { status } = req.body;
+
+//   const validStatuses = ["accepted", "ready", "completed", "cancelled"];
+
+//   if (!validStatuses.includes(status)) {
+//     req.flash("error", "Invalid status");
+//     return res.redirect("/staff/dashboard");
+//   }
+
+//   try {
+//     const order = await Order.findById(id);
+
+//     if (!order) {
+//       req.flash("error", "Order not found");
+//       return res.redirect("/staff/dashboard");
+//     }
+
+//     // Optional: implement status transition rules
+//     const current = order.status;
+//     const allowedTransitions = {
+//       pending: ["accepted", "cancelled"],
+//       accepted: ["ready", "cancelled"],
+//       ready: ["completed"],
+//     };
+
+//     if (
+//       allowedTransitions[current] &&
+//       !allowedTransitions[current].includes(status)
+//     ) {
+//       req.flash("error", `Cannot change status from ${current} to ${status}`);
+//       return res.redirect("/staff/dashboard");
+//     }
+
+//     order.status = status;
+//     await order.save();
+
+//     req.flash("success", `Order marked as ${status}`);
+//     return res.redirect("/staff/dashboard");
+//   } catch (error) {
+//     console.error("Order Status Update Error:", error);
+//     req.flash("error", "Failed to update order status");
+//     return res.redirect("/staff/dashboard");
+//   }
+// };
+
+
+
+// order status update by staff -- > pending,accepted
+
+
+export const updateOrderStatus = async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  const validStatuses = ["accepted", "ready", "completed", "cancelled"];
+
+  if (!validStatuses.includes(status)) {
+    req.flash("error", "Invalid status");
+    return res.redirect("/staff/dashboard");
+  }
+
+  try {
+    const liveOrder = await LiveOrder.findById(id);
+
+    if (!liveOrder) {
+      req.flash("error", "Order not found");
+      return res.redirect("/staff/dashboard");
+    }
+
+    // Optional: implement status transition rules
+    const current = liveOrder.status;
+    const allowedTransitions = {
+      pending: ["accepted", "cancelled"],
+      accepted: ["ready", "cancelled"],
+      ready: ["completed"],
+    };
+
+    if (
+      allowedTransitions[current] &&
+      !allowedTransitions[current].includes(status)
+    ) {
+      req.flash("error", `Cannot change status from ${current} to ${status}`);
+      return res.redirect("/staff/dashboard");
+    }
+
+    liveOrder.status = status;
+    await liveOrder.save();
+
+    // If completed or cancelled, create a permanent order record
+    if (status === "completed" || status === "cancelled") {
+      // Avoid duplicate permanent order if it already exists (optional)
+      const existingOrder = await Order.findOne({ token: liveOrder.token, tableId: liveOrder.tableId });
+      if (!existingOrder) {
+        const permanentOrder = new Order({
+          tableId: liveOrder.tableId,
+          sessionKey: liveOrder.sessionKey,
+          items: liveOrder.items,
+          totalAmount: liveOrder.totalAmount,
+          status: status,
+          token: liveOrder.token,
+          createdAt: liveOrder.createdAt,
+          // Add any other fields if necessary, like completedAt for completed
+          ...(status === "completed" && { completedAt: new Date() }),
+        });
+        await permanentOrder.save();
+      }
+    }
+
+    req.flash("success", `Order marked as ${status}`);
+    return res.redirect("/staff/dashboard");
+  } catch (error) {
+    console.error("Order Status Update Error:", error);
+    req.flash("error", "Failed to update order status");
+    return res.redirect("/staff/dashboard");
+  }
+};
 
 
 export const logout = async (req, res) => {
