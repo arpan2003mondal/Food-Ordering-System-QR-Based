@@ -1,54 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <%- include('./partials/customer-header', { title: 'Your Orders' }) %>
-  </head>
-  <body class="bg-gray-100 min-h-screen">
 
-    <!-- Flash Messages -->
-    <div class="fixed top-0 left-0 w-full z-50">
-      <%- include('../partials/alert') %>
-    </div>
+<%- include('./partials/customer-header', { title: 'Your Orders' }) %>
 
-    <div class="max-w-md mx-auto p-4 mt-6 mb-28 bg-white rounded-xl shadow-md font-[Inter]">
-      <div class="flex items-center justify-between mb-6">
-        <div class="bg-red-500 text-white px-4 py-6 rounded-lg w-1/2 text-center">
-          <p class="text-lg font-bold">THANK YOU</p>
-          <p class="text-xs font-light">for your order</p>
-        </div>
-        <div class="bg-orange-400 text-white px-4 py-6 rounded-lg w-1/2 text-center ml-2">
-          <p class="text-xs">Your token number :</p>
-          <p class="text-3xl font-bold"><%= order.token %></p>
-        </div>
+<body class="bg-gray-100 min-h-screen font-[Inter]">
+
+  <!-- Page Header -->
+  <div class="w-full bg-yellow-300 text-gray-700 text-center py-3 shadow-md">
+    <h1 class="text-base font-semibold">Your Orders</h1>
+  </div>
+
+  <!-- Flash Messages -->
+  <!-- <div class="fixed top-0 left-0 w-full z-50">
+    <%- include('../partials/alert') %>
+  </div> -->
+
+  <!-- Orders -->
+  <div class="max-w-md mx-auto px-4 py-6 mb-28 space-y-6">
+    <% if (orders.length === 0) { %>
+      <div class="text-center text-gray-600 bg-white p-6 rounded-xl shadow-md">
+        <p class="text-lg font-semibold">No recent orders found.</p>
       </div>
+    <% } else { %>
+      <% orders.forEach(order => { %>
+        <div class="bg-white p-4 rounded-xl shadow-md">
+          
+       <!-- Thank You and Token -->
+          <div class="flex flex-row sm:flex-row items-center justify-between gap-3 mb-6">
+            <!-- Thank You -->
+            <div class="bg-red-500 text-white px-6 py-4 rounded-lg text-center w-full sm:w-1/2">
+              <p class="text-lg font-bold">THANK YOU</p>
+              <p class="text-xs font-light">for your order</p>
+            </div>
 
-      <div class="mb-4">
-        <p class="text-sm font-semibold mb-2">Your order items :</p>
-        <% order.items.forEach(item => { %>
-          <div class="flex items-center mb-3 bg-gray-50 rounded-lg p-2 shadow-sm">
-            <img src="<%= item.foodId.imageUrl || 'default.jpg' %>" alt="<%= item.foodId.name %>" class="w-12 h-12 rounded-full object-cover" />
-            <div class="ml-3 flex-1">
-              <div class="flex justify-between items-center">
-                  <p class="font-medium text-sm"><%= item.foodId.name %></p>    
-                  <p class="font-medium text-sm">Qty: <%= item.quantity %></p>
-
-              </div>
-              <p class="text-xs text-gray-600">₹ <%= item.foodId.price.toFixed(2) %> </p>
+            <!-- Token Number -->
+            <div class="bg-yellow-400 text-white px-6 py-4 rounded-lg text-center w-full sm:w-1/2">
+              <p class="text-xs font-semibold">Token Number</p>
+              <p class="text-3xl font-bold"><%= order.token %></p>
             </div>
           </div>
-        <% }) %>
-      </div>
 
-      <div class="border-t pt-4">
-        <div class="flex justify-between text-base font-semibold">
-          <span>Total:</span>
-          <span>₹ <%= order.totalAmount.toFixed(2) %></span>
-        </div>
-        <div class="flex justify-between text-sm mt-2">
-          <span>Status:</span>
-          <span class="capitalize"><%= order.status %></span>
-        </div>
-      </div>
-    </div>
+          <!-- Order Items -->
+          <div class="mb-4">
+            <p class="text-sm font-semibold mb-2">Your order items:</p>
+            <% order.items.forEach(item => { %>
+              <div class="flex items-center mb-3 bg-gray-50 rounded-lg p-2 shadow-sm">
+                <img src="<%= item.foodId.imageUrl || '/images/default.jpg' %>" alt="<%= item.foodId.name %>" class="w-12 h-12 rounded-full object-cover" />
+                <div class="ml-3 flex-1">
+                  <div class="flex justify-between items-center">
+                    <p class="font-medium text-sm"><%= item.foodId.name %></p>
+                    <p class="font-medium text-sm">Qty: <%= item.quantity %></p>
+                  </div>
+                  <p class="text-xs text-gray-600">₹ <%= item.foodId.price.toFixed(2) %></p>
+                </div>
+              </div>
+            <% }) %>
+          </div>
 
-    <%- include('./partials/customer-footer') %>
+          <!-- Total and Status -->
+          <div class="border-t pt-4">
+            <div class="flex justify-between text-base font-semibold">
+              <span>Total:</span>
+              <span>₹ <%= order.totalAmount.toFixed(2) %></span>
+            </div>
+            <div class="flex justify-between text-sm mt-2">
+              <span>Status:</span>
+              <span class="capitalize"><%= order.status %></span>
+            </div>
+            <div class="text-right text-xs text-gray-400 mt-1">
+              Ordered on <%= new Date(order.createdAt).toLocaleString() %>
+            </div>
+          </div>
+
+        </div>
+      <% }) %>
+    <% } %>
+  </div>
+
+  <%- include('./partials/customer-footer') %>
+

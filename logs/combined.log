@@ -1,0 +1,232 @@
+2025-06-06 12:49:52 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 12:50:55 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 12:50:55 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 12:51:42 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 12:51:42 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 12:52:32 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 12:52:32 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 12:53:35 [ERROR]: Server Error: Error: secret option required for sessions
+    at session (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express-session\index.js:204:12)
+    at sessionMiddleware (file:///E:/Projects%20Web/Food-Ordering-System-QR-Based/app.js:64:5)
+    at Layer.handleRequest (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\router\index.js:342:13)
+    at E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\router\index.js:297:9
+    at processParams (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\router\index.js:582:12)
+    at next (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\router\index.js:291:5)
+    at E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\connect-flash\lib\flash.js:21:5
+    at Layer.handleRequest (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\router\index.js:342:13)
+2025-06-06 12:53:38 [ERROR]: Server Error: Error: secret option required for sessions
+    at session (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express-session\index.js:204:12)
+    at sessionMiddleware (file:///E:/Projects%20Web/Food-Ordering-System-QR-Based/app.js:64:5)
+    at Layer.handleRequest (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\router\index.js:342:13)
+    at E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\router\index.js:297:9
+    at processParams (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\router\index.js:582:12)
+    at next (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\router\index.js:291:5)
+    at E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\connect-flash\lib\flash.js:21:5
+    at Layer.handleRequest (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\router\index.js:342:13)
+2025-06-06 12:54:38 [ERROR]: Server Error: Error: secret option required for sessions
+    at session (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express-session\index.js:204:12)
+    at sessionMiddleware (file:///E:/Projects%20Web/Food-Ordering-System-QR-Based/app.js:64:5)
+    at Layer.handleRequest (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\router\index.js:342:13)
+    at E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\router\index.js:297:9
+    at processParams (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\router\index.js:582:12)
+    at next (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\router\index.js:291:5)
+    at E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\connect-flash\lib\flash.js:21:5
+    at Layer.handleRequest (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\router\index.js:342:13)
+2025-06-06 12:56:30 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 12:56:30 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 12:57:43 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 12:57:43 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 19:46:55 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 19:46:55 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 19:54:01 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 19:54:01 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 19:54:04 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 19:54:04 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 20:04:57 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 20:04:57 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 20:05:15 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 20:05:15 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 21:10:37 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 21:10:37 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 21:10:44 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 21:10:44 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 21:34:20 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 21:34:20 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 21:34:53 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 21:34:53 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 21:38:20 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 21:38:20 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:02:14 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:02:14 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:02:57 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:02:57 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:03:12 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:03:12 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:04:59 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:04:59 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:05:03 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:05:03 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:05:09 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:05:09 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:08:22 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:08:22 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:08:34 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:08:34 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:17:18 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:17:18 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:18:15 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:18:15 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:18:16 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:18:16 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:18:19 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:18:19 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:19:01 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:19:01 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:19:11 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:19:11 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:31:02 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:31:02 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:33:10 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:33:10 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:33:11 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:33:11 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:33:19 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:33:19 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:34:07 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:34:08 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:34:10 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:34:10 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:34:15 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:34:15 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:35:18 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:35:18 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:35:55 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:35:55 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:35:56 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:35:56 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:35:59 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:35:59 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:36:07 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:36:07 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:36:08 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:36:08 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:36:15 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:36:15 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:36:19 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:36:19 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:36:34 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:36:34 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:37:56 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:37:56 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:39:11 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:39:11 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:39:15 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:39:15 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:39:22 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:39:22 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:39:43 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:39:43 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:39:51 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:39:51 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:39:55 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:39:55 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:39:57 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:39:57 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:40:06 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:40:06 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:40:08 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:40:08 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:40:13 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:40:13 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:40:21 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:40:21 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:40:24 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:40:24 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:40:37 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:40:37 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:41:06 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:41:06 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:41:10 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:41:10 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:41:20 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:41:20 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:41:21 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:41:21 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:41:29 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:41:29 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:41:31 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:41:31 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:41:33 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:41:33 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:41:38 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:41:38 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:41:44 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:41:44 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:41:47 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:41:47 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:41:48 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:41:48 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:41:50 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:41:50 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:41:52 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:41:52 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:42:01 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:42:01 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:42:05 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:42:05 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:42:18 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:42:18 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:42:20 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:42:20 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:42:27 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:42:27 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:42:33 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:42:33 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:42:37 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:42:37 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:56:47 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:56:47 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:57:57 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:57:57 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:57:59 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:57:59 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:58:51 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:58:51 [INFO]: ✅ MongoDB connected successfully
+2025-06-06 22:59:13 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-06 22:59:13 [INFO]: ✅ MongoDB connected successfully
+2025-06-07 00:52:36 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-07 00:52:36 [INFO]: ✅ MongoDB connected successfully
+2025-06-07 00:52:38 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-07 00:52:38 [INFO]: ✅ MongoDB connected successfully
+2025-06-07 00:56:22 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-07 00:56:22 [INFO]: ✅ MongoDB connected successfully
+2025-06-07 01:00:08 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-07 01:00:08 [INFO]: ✅ MongoDB connected successfully
+2025-06-07 01:13:05 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-07 01:13:05 [INFO]: ✅ MongoDB connected successfully
+2025-06-07 01:16:22 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-07 01:16:22 [INFO]: ✅ MongoDB connected successfully
+2025-06-07 01:17:13 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-07 01:17:13 [INFO]: ✅ MongoDB connected successfully
+2025-06-07 01:19:51 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-07 01:19:51 [INFO]: ✅ MongoDB connected successfully
+2025-06-07 01:29:30 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-07 01:29:30 [INFO]: ✅ MongoDB connected successfully
+2025-06-07 01:54:36 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-07 01:54:36 [INFO]: ✅ MongoDB connected successfully
+2025-06-07 01:54:46 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-07 01:54:46 [INFO]: ✅ MongoDB connected successfully
+2025-06-07 02:02:28 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-07 02:02:28 [INFO]: ✅ MongoDB connected successfully
+2025-06-07 02:02:46 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-07 02:02:46 [INFO]: ✅ MongoDB connected successfully
+2025-06-07 02:05:39 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-07 02:05:39 [INFO]: ✅ MongoDB connected successfully
+2025-06-07 02:05:45 [INFO]: 🚀 Server running at http://localhost:5000
+2025-06-07 02:05:45 [INFO]: ✅ MongoDB connected successfully

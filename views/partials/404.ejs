@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 - Page Not Found</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .cloud {
+      background: white;
+      border-radius: 9999px;
+      position: absolute;
+    }
+    .cloud::before,
+    .cloud::after {
+      content: '';
+      position: absolute;
+      background: white;
+      border-radius: 9999px;
+    }
+    .cloud::before {
+      width: 100px;
+      height: 100px;
+      top: -30px;
+      left: 40px;
+    }
+    .cloud::after {
+      width: 60px;
+      height: 60px;
+      top: -20px;
+      right: 40px;
+    }
+  </style>
+</head>
+<body class="bg-[#33cc99] text-white h-screen flex items-center justify-center relative overflow-hidden">
+
+  <!-- Clouds -->
+  <div class="cloud w-32 h-20 top-10 left-10"></div>
+  <div class="cloud w-36 h-24 top-32 right-10"></div>
+  <div class="cloud w-28 h-18 bottom-10 left-20"></div>
+  <div class="cloud w-40 h-24 bottom-16 right-24"></div>
+
+  <!-- Main Content -->
+  <div class="text-center z-10 px-4">
+    <h1 class="text-[100px] font-bold">404</h1>
+    <div class="relative w-full max-w-md mx-auto my-4">
+      <hr class="border-t-4 border-white w-full" />
+      <span class="absolute text-2xl bg-[#33cc99] px-4 left-1/2 -translate-x-1/2 -top-4 tracking-widest font-semibold whitespace-nowrap">
+        THE PAGE WAS NOT FOUND
+      </span>
+    </div>
+    <a href="/" class="bg-white text-[#33cc99] px-6 py-2 text-lg font-semibold rounded hover:opacity-90 transition">
+      BACK TO HOME
+    </a>
+  </div>
+
+</body>
+</html>

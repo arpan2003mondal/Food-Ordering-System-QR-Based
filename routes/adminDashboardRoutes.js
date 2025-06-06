@@ -1,8 +1,5 @@
 import express from "express";
-import {upload} from "../middleware/multer.js";
-
-const adminDashboardRouter = express.Router();
-
+import { upload } from "../middleware/multer.js";
 import {
   addNewFoodItem,
   dashboard,
@@ -12,25 +9,30 @@ import {
   renderEditFoodPage,
   searchFood,
   renderAddStaffPage,
-  registerStaff
+  registerStaff,
 } from "../controllers/adminDashBoardControllers.js";
 import { authenticateUser } from "../middleware/adminAuthMiddleware.js";
 
-adminDashboardRouter.get("/", authenticateUser, dashboard);
+const adminDashboardRouter = express.Router();
 
-adminDashboardRouter.get("/add-food",authenticateUser,renderAddFoodPage);
-adminDashboardRouter.post("/add-food",upload.single("image"), authenticateUser, addNewFoodItem);
+// ✅ Apply middleware to all admin dashboard routes
+adminDashboardRouter.use(authenticateUser);
 
-adminDashboardRouter.get("/update-food/:id",authenticateUser,renderEditFoodPage);
-adminDashboardRouter.post("/update-food/:id",  upload.single('image'),authenticateUser, updateFoodItem);
+adminDashboardRouter.get("/", dashboard);
 
-adminDashboardRouter.get("/delete-food/:id",authenticateUser, deleteFoodItem);
+adminDashboardRouter.get("/add-food", renderAddFoodPage);
+adminDashboardRouter.post("/add-food", upload.single("image"), addNewFoodItem);
 
-// search route 
-adminDashboardRouter.get("/search", authenticateUser, searchFood);
+adminDashboardRouter.get("/update-food/:id", renderEditFoodPage);
+adminDashboardRouter.post("/update-food/:id", upload.single("image"), updateFoodItem);
 
-adminDashboardRouter.get("/add-staff", authenticateUser, renderAddStaffPage);
+adminDashboardRouter.get("/delete-food/:id", deleteFoodItem);
 
+// Search route
+adminDashboardRouter.get("/search", searchFood);
+
+// Staff routes
+adminDashboardRouter.get("/add-staff", renderAddStaffPage);
 adminDashboardRouter.post("/register-staff", registerStaff);
 
 export default adminDashboardRouter;
