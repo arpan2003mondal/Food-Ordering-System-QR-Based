@@ -1,31 +1,19 @@
-<div class="sticky top-0 bg-yellow-300  shadow-md px-4 py-3 z-40 w-full max-w-md mx-auto">
-  <!-- <div class="flex items-center gap-2">
-      <form action="/api/customer/search" method="GET" class="flex gap-2"></form>
-        <input
-          type="text"
-          placeholder="Search for food..."
-          class="flex-grow p-2 border rounded-md text-sm focus:outline-none"
-        />
-        <button type="submit"  class="bg-green-600 text-white px-4 py-2  rounded-md text-sm shrink-0">
-          Search
-        </button>
-      </form>       
-  </div> -->
-  <form action="/api/customer/search" method="GET" class="flex gap-2">
-  <input
-    type="text"
-    name="q"
-    placeholder="Search for food..."
-    class="flex-grow p-2 border rounded-md text-sm focus:outline-none"
-    required
-  />
-  <button
-    type="submit"
-    class="bg-green-600 text-white px-4 py-2  rounded-md text-sm shrink-0"
-  >
-    Search
-  </button>
-</form>
-
-
+<div class="sticky top-0 bg-yellow-300 shadow-md px-4 py-3 z-40 w-full max-w-md mx-auto">
+  <form action="/customer/search" method="GET" class="flex w-full rounded-full border border-green-500 overflow-hidden">
+    <input
+      type="text"
+      name="q"
+      placeholder="Search for food..."
+      class="flex-grow p-2 text-sm focus:outline-none"
+      required
+    />
+    <button
+      type="submit"
+      class="bg-green-500 hover:bg-green-800 text-white px-4 flex items-center justify-center"
+    >
+      
+      <!-- If you use Font Awesome, replace above with: -->
+      <i class="fas fa-search"></i>
+    </button>
+  </form>
 </div>

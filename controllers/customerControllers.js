@@ -23,7 +23,7 @@ export const qrScanRoute = async (req, res) => {
     req.session.sessionKey = uuidv4(); // Unique identifier per customer session
 
     // Redirect to the category page
-    return res.redirect("/api/customer/category");
+    return res.redirect("/customer/category");
   } catch (error) {
     // Flash an error message
     req.flash("error", "Something went wrong loading the page. Please scan the QR code again.");
@@ -54,18 +54,25 @@ export const viewCategory = async (req, res) => {
   }
 };
 
+
 // Category Wise Menu : Show the food available under selected category
 export const viewMenu = async (req, res) => {
   const { categoryName } = req.params;
 
   try {
-    // Filter food items by category (case insensitive)
-    const foodItems = await Food.find({ category: { $regex: new RegExp(`^${categoryName}$`, 'i') } });
+    // Filter food items by category (case-insensitive match)
+    const foodItems = await Food.find({
+      category: { $regex: new RegExp(`^${categoryName}$`, "i") },
+    });
+
     res.render("customer/category-menu", {
       category: categoryName,
       foodItems,
+      messages: req.flash(),     // ✅ Include flash messages
+      req,                       // ✅ Pass req for redirectTo = req.originalUrl
     });
   } catch (error) {
+    // console.error("Error loading category menu:", error.message);
     req.flash("error", "Failed to load menu items for this category.");
     res.status(500).render("customer/all-menu", {
       category: categoryName,
@@ -74,6 +81,7 @@ export const viewMenu = async (req, res) => {
     });
   }
 };
+
 
 // All Menu Page : Shows the all dishes available
 export const getAllFoods = async (req, res) => {
@@ -86,7 +94,7 @@ export const getAllFoods = async (req, res) => {
     });
   } catch (error) {
     req.flash("error", "Failed to load menu.");
-    res.status(500).redirect("/api/customer/category");
+    res.status(500).redirect("/customer/category");
   }
 };
 
@@ -94,9 +102,19 @@ export const getAllFoods = async (req, res) => {
 export const searchFood = async (req, res) => {
   const { q, category, veg, sort } = req.query;
   const query = {};
-  if (q) query.name = { $regex: q, $options: "i" };
-  if (category) query.category = category;
-  if (veg === "true") query.isVegetarian = true;
+
+  if (q) {
+    query.name = { $regex: q, $options: "i" };
+  }
+  
+  if (category) {
+    // Case-insensitive match for category, like viewMenu
+    query.category = { $regex: new RegExp(`^${category}$`, "i") };
+  }
+
+  if (veg === "true") {
+    query.isVegetarian = true;
+  }
 
   let sortOption = {};
   if (sort === "price_asc") sortOption.price = 1;
@@ -106,42 +124,46 @@ export const searchFood = async (req, res) => {
     const results = await Food.find(query).sort(sortOption);
 
     if (results.length === 0) {
-     req.flash("error", "No food items found.");
+      req.flash("error", "No food items found.");
       return res.render("customer/search-results", {
         results,
         query: q,
         messages: req.flash(),
+        req,  // pass req to template, like in viewMenu
       });
     }
 
-    req.flash("success", `${results.length} item(s) found.`);
+    // req.flash("success", `${results.length} item(s) found.`);
     res.render("customer/search-results", {
       results,
       query: q,
       messages: req.flash(),
+      req,
     });
   } catch (err) {
+    // console.error("Error during food search:", err.message);
     req.flash("error", "Search failed. Try again.");
-    res.redirect("/api/customer/category");
+    res.redirect("/customer/category");
   }
 };
 
 
+
 // Add to cart
 export const addToCart = async (req, res) => {
-  const { itemId, quantity } = req.body;
+  const { itemId, quantity, redirectTo } = req.body;
   const { tableId, sessionKey } = req.session;
 
   if (!itemId || isNaN(quantity)) {
     req.flash("error", "Invalid request to add item.");
-    return res.redirect("/api/customer/all-menu");
+    return res.redirect(redirectTo || "/customer/all-menu");
   }
 
   try {
     const foodItem = await Food.findById(itemId);
     if (!foodItem) {
       req.flash("error", "Food item not found.");
-      return res.redirect("/api/customer/all-menu");
+      return res.redirect(redirectTo || "/customer/all-menu");
     }
 
     let cart = await Cart.findOne({ tableId, sessionKey, status: "active" }).populate("items.foodId");
@@ -164,24 +186,21 @@ export const addToCart = async (req, res) => {
       }
 
       cart.totalAmount = cart.items.reduce(
-        (sum, item) => {
-          const price = item.foodId?.price || 0;
-          return sum + price * item.quantity;
-        },
+        (sum, item) => (item.foodId?.price || 0) * item.quantity + sum,
         0
       );
     }
 
     await cart.save();
     req.flash("success", "Item added to cart!");
-    res.redirect("/api/customer/all-menu");
+    res.redirect(redirectTo || "/customer/all-menu");
 
   } catch (err) {
-    console.error("Cart error:", err);
     req.flash("error", "Error adding item to cart.");
-    res.redirect("/api/customer/category");
+    res.redirect(redirectTo || "/customer/category");
   }
 };
+
 
 
 // View cart items
@@ -211,7 +230,7 @@ export const viewCart = async (req, res) => {
     });
 
   } catch (error) {
-    console.error("Error loading cart:", error.message);
+    // console.error("Error loading cart:", error.message);
     req.flash("error", "Unable to load cart!");
     res.render("customer/cart", {
       cart: { items: [], totalAmount: 0 },
@@ -219,7 +238,38 @@ export const viewCart = async (req, res) => {
     });
   }
 };
-
+// update cart items
+export const updateCartItemQuantity = async (req, res) => {
+  const { itemId, action } = req.query;
+  const tableId = req.session.tableId;
+  try {
+    let cart = await Cart.findOne({ tableId, status: "active" }).populate(
+      "items.foodId"
+    );
+    const itemIndex = cart.items.findIndex(
+      (item) => item.foodId._id.toString() === itemId
+    );
+    if (itemIndex === -1)
+      return res
+        .status(404)
+        .json({ success: false, message: "Item not in cart!" });
+    if (action === "increase") cart.items[itemIndex].quantity++;
+    else if (action === "decrease" && cart.items[itemIndex].quantity > 1)
+      cart.items[itemIndex].quantity--;
+    else cart.items.splice(itemIndex, 1);
+    cart.totalAmount = calculateTotalAmount(cart.items);
+    await cart.save();
+    res.status(200).json({ success: true, message: "Cart updated!", cart });
+  } catch (error) {
+    res
+      .status(500)
+      .json({
+        success: false,
+        message: "Error updating cart!",
+        error: error.message,
+      });
+  }
+};
 
 export const placeOrder = async (req, res) => {
   const tableId = req.session.tableId;
@@ -234,7 +284,7 @@ export const placeOrder = async (req, res) => {
 
     if (!cart || cart.items.length === 0) {
       req.flash("error", "Cart is empty!");
-      return res.redirect("/api/customer/cart/view");
+      return res.redirect("/customer/cart/view");
     }
 
     const startOfDay = moment().startOf("day").toDate();
@@ -261,11 +311,11 @@ export const placeOrder = async (req, res) => {
     await cart.save();
 
     req.flash("success", `Order placed successfully! Your token number is ${token}.`);
-    res.redirect("/api/customer/order-confirmation");
+    res.redirect("/customer/order-confirmation");
   } catch (error) {
     console.error("Order error:", error.message);
     req.flash("error", "Error placing order.");
-    res.redirect("/api/customer/cart/view");
+    res.redirect("/customer/cart/view");
   }
 };
 
@@ -280,15 +330,15 @@ export const renderOrderConfirmation = async (req, res) => {
       .sort({ createdAt: -1 })
       .populate("items.foodId");
 
-    if (!allOrders || allOrders.length === 0) {
-      req.flash("error", "No orders found.");
-      return res.redirect("/api/customer/all-menu");
-    }
+    // if (!allOrders || allOrders.length === 0) {
+    //   req.flash("error", "No orders found.");
+    //   return res.redirect("/customer/all-menu");
+    // }
 
     res.render("customer/order-confirmation", { orders: allOrders });
   } catch (err) {
     req.flash("error", "Unable to load orders.");
-    res.redirect("/api/customer/all-menu");
+    res.redirect("/customer/all-menu");
   }
 };
 
@@ -451,6 +501,7 @@ export const renderOrderConfirmation = async (req, res) => {
 //   }
 // };
 
+
 // export const deleteFromCart = async (req, res) => {
 //   const { itemId } = req.query;
 //   const tableId = req.session.tableId;
@@ -482,34 +533,3 @@ export const renderOrderConfirmation = async (req, res) => {
 //   }
 // };
 
-// export const updateCartItemQuantity = async (req, res) => {
-//   const { itemId, action } = req.query;
-//   const tableId = req.session.tableId;
-//   try {
-//     let cart = await Cart.findOne({ tableId, status: "active" }).populate(
-//       "items.foodId"
-//     );
-//     const itemIndex = cart.items.findIndex(
-//       (item) => item.foodId._id.toString() === itemId
-//     );
-//     if (itemIndex === -1)
-//       return res
-//         .status(404)
-//         .json({ success: false, message: "Item not in cart!" });
-//     if (action === "increase") cart.items[itemIndex].quantity++;
-//     else if (action === "decrease" && cart.items[itemIndex].quantity > 1)
-//       cart.items[itemIndex].quantity--;
-//     else cart.items.splice(itemIndex, 1);
-//     cart.totalAmount = calculateTotalAmount(cart.items);
-//     await cart.save();
-//     res.status(200).json({ success: true, message: "Cart updated!", cart });
-//   } catch (error) {
-//     res
-//       .status(500)
-//       .json({
-//         success: false,
-//         message: "Error updating cart!",
-//         error: error.message,
-//       });
-//   }
-// };

@@ -9,6 +9,7 @@ import {
   viewMenu,
   getAllFoods,
   searchFood,
+  updateCartItemQuantity,
   renderOrderConfirmation
 } from "../controllers/customerControllers.js";
 
@@ -61,4 +62,4 @@ export default customerRouter;
 
 
 // update quantity route
-// customerRouter.put("/cart/update", authenticateCustomer, updateCartItemQuantity);
+customerRouter.put("/cart/update", authenticateCustomer, updateCartItemQuantity);

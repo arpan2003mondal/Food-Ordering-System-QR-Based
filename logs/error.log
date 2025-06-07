@@ -31,3 +31,307 @@
     at E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\connect-flash\lib\flash.js:21:5
     at Layer.handleRequest (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\router\lib\layer.js:152:17)
     at trimPrefix (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\router\index.js:342:13)
+2025-06-07 12:38:16 [ERROR]: Server Error: ReferenceError: E:\Projects Web\Food-Ordering-System-QR-Based\views\customer\category-menu.ejs:60
+    58|                 <input type="hidden" name="itemId" value="<%= item._id %>">
+    59|                 <input type="hidden" name="quantity" value="1">
+ >> 60|                 <input type="hidden" name="redirectTo" value="<%= request.originalUrl %>">
+    61|                 <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white py-1 rounded text-xs">
+    62|                   Add To Cart
+    63|                 </button>
+
+request is not defined
+    at eval (eval at compile (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:57:26)
+    at Array.forEach (<anonymous>)
+    at eval (eval at compile (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:30:18)
+    at category-menu (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:703:17)
+    at tryHandleCache (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:274:36)
+    at exports.renderFile [as engine] (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:491:10)
+    at View.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\view.js:139:8)
+    at tryRender (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:627:10)
+    at Function.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:574:3)
+    at ServerResponse.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\response.js:909:7)
+2025-06-07 12:40:03 [ERROR]: Server Error: ReferenceError: E:\Projects Web\Food-Ordering-System-QR-Based\views\customer\category-menu.ejs:60
+    58|                 <input type="hidden" name="itemId" value="<%= item._id %>">
+    59|                 <input type="hidden" name="quantity" value="1">
+ >> 60|                 <input type="hidden" name="redirectTo" value="<%= request.originalUrl %>">
+    61|                 <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white py-1 rounded text-xs">
+    62|                   Add To Cart
+    63|                 </button>
+
+request is not defined
+    at eval (eval at compile (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:57:26)
+    at Array.forEach (<anonymous>)
+    at eval (eval at compile (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:30:18)
+    at category-menu (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:703:17)
+    at tryHandleCache (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:274:36)
+    at exports.renderFile [as engine] (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:491:10)
+    at View.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\view.js:139:8)
+    at tryRender (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:627:10)
+    at Function.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:574:3)
+    at ServerResponse.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\response.js:909:7)
+2025-06-07 12:45:05 [ERROR]: Server Error: ReferenceError: E:\Projects Web\Food-Ordering-System-QR-Based\views\customer\category-menu.ejs:60
+    58|                 <input type="hidden" name="itemId" value="<%= item._id %>">
+    59|                 <input type="hidden" name="quantity" value="1">
+ >> 60|                 <input type="hidden" name="redirectTo" value="<%= request.originalUrl %>">
+    61|                 <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white py-1 rounded text-xs">
+    62|                   Add To Cart
+    63|                 </button>
+
+request is not defined
+    at eval (eval at compile (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:57:26)
+    at Array.forEach (<anonymous>)
+    at eval (eval at compile (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:30:18)
+    at category-menu (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:703:17)
+    at tryHandleCache (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:274:36)
+    at exports.renderFile [as engine] (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:491:10)
+    at View.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\view.js:139:8)
+    at tryRender (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:627:10)
+    at Function.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:574:3)
+    at ServerResponse.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\response.js:909:7)
+2025-06-07 12:46:01 [ERROR]: Server Error: ReferenceError: E:\Projects Web\Food-Ordering-System-QR-Based\views\customer\category-menu.ejs:60
+    58|                 <input type="hidden" name="itemId" value="<%= item._id %>">
+    59|                 <input type="hidden" name="quantity" value="1">
+ >> 60|                 <input type="hidden" name="redirectTo" value="<%= request.originalUrl %>">
+    61|                 <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white py-1 rounded text-xs">
+    62|                   Add To Cart
+    63|                 </button>
+
+request is not defined
+    at eval (eval at compile (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:57:26)
+    at Array.forEach (<anonymous>)
+    at eval (eval at compile (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:30:18)
+    at category-menu (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:703:17)
+    at tryHandleCache (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:274:36)
+    at exports.renderFile [as engine] (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:491:10)
+    at View.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\view.js:139:8)
+    at tryRender (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:627:10)
+    at Function.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:574:3)
+    at ServerResponse.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\response.js:909:7)
+2025-06-07 12:46:02 [ERROR]: Server Error: ReferenceError: E:\Projects Web\Food-Ordering-System-QR-Based\views\customer\category-menu.ejs:60
+    58|                 <input type="hidden" name="itemId" value="<%= item._id %>">
+    59|                 <input type="hidden" name="quantity" value="1">
+ >> 60|                 <input type="hidden" name="redirectTo" value="<%= request.originalUrl %>">
+    61|                 <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white py-1 rounded text-xs">
+    62|                   Add To Cart
+    63|                 </button>
+
+request is not defined
+    at eval (eval at compile (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:57:26)
+    at Array.forEach (<anonymous>)
+    at eval (eval at compile (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:30:18)
+    at category-menu (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:703:17)
+    at tryHandleCache (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:274:36)
+    at exports.renderFile [as engine] (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:491:10)
+    at View.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\view.js:139:8)
+    at tryRender (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:627:10)
+    at Function.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:574:3)
+    at ServerResponse.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\response.js:909:7)
+2025-06-07 12:46:02 [ERROR]: Server Error: ReferenceError: E:\Projects Web\Food-Ordering-System-QR-Based\views\customer\category-menu.ejs:60
+    58|                 <input type="hidden" name="itemId" value="<%= item._id %>">
+    59|                 <input type="hidden" name="quantity" value="1">
+ >> 60|                 <input type="hidden" name="redirectTo" value="<%= request.originalUrl %>">
+    61|                 <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white py-1 rounded text-xs">
+    62|                   Add To Cart
+    63|                 </button>
+
+request is not defined
+    at eval (eval at compile (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:57:26)
+    at Array.forEach (<anonymous>)
+    at eval (eval at compile (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:30:18)
+    at category-menu (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:703:17)
+    at tryHandleCache (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:274:36)
+    at exports.renderFile [as engine] (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:491:10)
+    at View.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\view.js:139:8)
+    at tryRender (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:627:10)
+    at Function.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:574:3)
+    at ServerResponse.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\response.js:909:7)
+2025-06-07 12:48:23 [ERROR]: Server Error: ReferenceError: E:\Projects Web\Food-Ordering-System-QR-Based\views\customer\category-menu.ejs:60
+    58|                 <input type="hidden" name="itemId" value="<%= item._id %>">
+    59|                 <input type="hidden" name="quantity" value="1">
+ >> 60|                 <!-- <input type="hidden" name="redirectTo" value="<%= request.originalUrl %>"> -->
+    61|                 <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white py-1 rounded text-xs">
+    62|                   Add To Cart
+    63|                 </button>
+
+request is not defined
+    at eval (eval at compile (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:57:26)
+    at Array.forEach (<anonymous>)
+    at eval (eval at compile (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:30:18)
+    at category-menu (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:703:17)
+    at tryHandleCache (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:274:36)
+    at exports.renderFile [as engine] (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:491:10)
+    at View.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\view.js:139:8)
+    at tryRender (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:627:10)
+    at Function.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:574:3)
+    at ServerResponse.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\response.js:909:7)
+2025-06-07 12:49:00 [ERROR]: Server Error: ReferenceError: E:\Projects Web\Food-Ordering-System-QR-Based\views\customer\category-menu.ejs:60
+    58|                 <input type="hidden" name="itemId" value="<%= item._id %>">
+    59|                 <input type="hidden" name="quantity" value="1">
+ >> 60|                 <!-- <input type="hidden" name="redirectTo" value="<%= request.originalUrl %>"> -->
+    61|                 <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white py-1 rounded text-xs">
+    62|                   Add To Cart
+    63|                 </button>
+
+request is not defined
+    at eval (eval at compile (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:57:26)
+    at Array.forEach (<anonymous>)
+    at eval (eval at compile (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:30:18)
+    at category-menu (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:703:17)
+    at tryHandleCache (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:274:36)
+    at exports.renderFile [as engine] (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:491:10)
+    at View.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\view.js:139:8)
+    at tryRender (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:627:10)
+    at Function.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:574:3)
+    at ServerResponse.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\response.js:909:7)
+2025-06-07 12:50:06 [ERROR]: Server Error: ReferenceError: E:\Projects Web\Food-Ordering-System-QR-Based\views\customer\category-menu.ejs:68
+    66|               <input type="hidden" name="itemId" value="<%= item._id %>">
+    67|               <input type="hidden" name="quantity" value="1">
+ >> 68|               <input type="hidden" name="redirectTo" value="<%= request.originalUrl %>">
+    69|               <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white py-1 rounded text-xs">
+    70|               Add To Cart
+    71|               </button>
+
+request is not defined
+    at eval (eval at compile (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:60:26)
+    at Array.forEach (<anonymous>)
+    at eval (eval at compile (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:30:18)
+    at category-menu (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:703:17)
+    at tryHandleCache (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:274:36)
+    at exports.renderFile [as engine] (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:491:10)
+    at View.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\view.js:139:8)
+    at tryRender (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:627:10)
+    at Function.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:574:3)
+    at ServerResponse.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\response.js:909:7)
+2025-06-07 12:50:11 [ERROR]: Server Error: ReferenceError: E:\Projects Web\Food-Ordering-System-QR-Based\views\customer\category-menu.ejs:68
+    66|               <input type="hidden" name="itemId" value="<%= item._id %>">
+    67|               <input type="hidden" name="quantity" value="1">
+ >> 68|               <input type="hidden" name="redirectTo" value="<%= request.originalUrl %>">
+    69|               <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white py-1 rounded text-xs">
+    70|               Add To Cart
+    71|               </button>
+
+request is not defined
+    at eval (eval at compile (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:60:26)
+    at Array.forEach (<anonymous>)
+    at eval (eval at compile (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:30:18)
+    at category-menu (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:703:17)
+    at tryHandleCache (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:274:36)
+    at exports.renderFile [as engine] (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:491:10)
+    at View.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\view.js:139:8)
+    at tryRender (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:627:10)
+    at Function.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:574:3)
+    at ServerResponse.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\response.js:909:7)
+2025-06-07 12:53:26 [ERROR]: Server Error: ReferenceError: E:\Projects Web\Food-Ordering-System-QR-Based\views\customer\category-menu.ejs:68
+    66|               <input type="hidden" name="itemId" value="<%= item._id %>">
+    67|               <input type="hidden" name="quantity" value="1">
+ >> 68|               <input type="hidden" name="redirectTo" value="<%= request.originalUrl %>">
+    69|               <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white py-1 rounded text-xs">
+    70|               Add To Cart
+    71|               </button>
+
+request is not defined
+    at eval (eval at compile (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:60:26)
+    at Array.forEach (<anonymous>)
+    at eval (eval at compile (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:30:18)
+    at category-menu (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:703:17)
+    at tryHandleCache (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:274:36)
+    at exports.renderFile [as engine] (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:491:10)
+    at View.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\view.js:139:8)
+    at tryRender (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:627:10)
+    at Function.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:574:3)
+    at ServerResponse.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\response.js:909:7)
+2025-06-07 15:02:59 [ERROR]: Server Error: ReferenceError: E:\Projects Web\Food-Ordering-System-QR-Based\views\customer\cart.ejs:80
+    78|                     <li>Scan the QR code available on your table.</li>
+    79|                     <li>Enter the total amount: <strong>₹ <%= cart.totalAmount.toFixed(2) %></strong>.</li>
+ >> 80|                     <li>In the UPI app, under <strong>Payment Notes</strong>, write: <strong>Table <%= tableId %></strong>.</li>
+    81|                     <li>Once done, click <strong>Checkout</strong> to place your order.</li>
+    82|                   </ul>
+    83|             </div>
+
+tableId is not defined
+    at eval (eval at compile (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:59:26)
+    at cart (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:703:17)
+    at tryHandleCache (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:274:36)
+    at exports.renderFile [as engine] (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:491:10)
+    at View.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\view.js:139:8)
+    at tryRender (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:627:10)
+    at Function.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:574:3)
+    at ServerResponse.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\response.js:909:7)
+    at viewCart (file:///E:/Projects%20Web/Food-Ordering-System-QR-Based/controllers/customerControllers.js:227:9)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-06-07 15:07:02 [ERROR]: Server Error: ReferenceError: E:\Projects Web\Food-Ordering-System-QR-Based\views\customer\cart.ejs:80
+    78|                     <li>Scan the QR code available on your table.</li>
+    79|                     <li>Enter the total amount: <strong>₹ <%= cart.totalAmount.toFixed(2) %></strong>.</li>
+ >> 80|                     <li>In the UPI app, under <strong>Payment Notes</strong>, write: <strong>Table <%= item.tableId %></strong>.</li>
+    81|                     <li>Once done, click <strong>Checkout</strong> to place your order.</li>
+    82|                   </ul>
+    83|             </div>
+
+item is not defined
+    at eval (eval at compile (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:59:26)
+    at cart (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:703:17)
+    at tryHandleCache (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:274:36)
+    at exports.renderFile [as engine] (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:491:10)
+    at View.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\view.js:139:8)
+    at tryRender (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:627:10)
+    at Function.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:574:3)
+    at ServerResponse.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\response.js:909:7)
+    at viewCart (file:///E:/Projects%20Web/Food-Ordering-System-QR-Based/controllers/customerControllers.js:227:9)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-06-07 15:08:38 [ERROR]: Server Error: ReferenceError: E:\Projects Web\Food-Ordering-System-QR-Based\views\customer\cart.ejs:80
+    78|                     <li>Scan the QR code available on your table.</li>
+    79|                     <li>Enter the total amount: <strong>₹ <%= cart.totalAmount.toFixed(2) %></strong>.</li>
+ >> 80|                     <li>In the UPI app, under <strong>Payment Notes</strong>, write: <strong>Table <%= req.session.tableId %></strong>.</li>
+    81|                     <li>Once done, click <strong>Checkout</strong> to place your order.</li>
+    82|                   </ul>
+    83|             </div>
+
+req is not defined
+    at eval (eval at compile (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:59:26)
+    at cart (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:703:17)
+    at tryHandleCache (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:274:36)
+    at exports.renderFile [as engine] (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:491:10)
+    at View.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\view.js:139:8)
+    at tryRender (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:627:10)
+    at Function.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:574:3)
+    at ServerResponse.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\response.js:909:7)
+    at viewCart (file:///E:/Projects%20Web/Food-Ordering-System-QR-Based/controllers/customerControllers.js:227:9)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-06-07 15:08:52 [ERROR]: Server Error: ReferenceError: E:\Projects Web\Food-Ordering-System-QR-Based\views\customer\cart.ejs:80
+    78|                     <li>Scan the QR code available on your table.</li>
+    79|                     <li>Enter the total amount: <strong>₹ <%= cart.totalAmount.toFixed(2) %></strong>.</li>
+ >> 80|                     <!-- <li>In the UPI app, under <strong>Payment Notes</strong>, write: <strong>Table <%= req.session.tableId %></strong>.</li> -->
+    81|                     <li>Once done, click <strong>Checkout</strong> to place your order.</li>
+    82|                   </ul>
+    83|             </div>
+
+req is not defined
+    at eval (eval at compile (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:59:26)
+    at cart (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:703:17)
+    at tryHandleCache (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:274:36)
+    at exports.renderFile [as engine] (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:491:10)
+    at View.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\view.js:139:8)
+    at tryRender (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:627:10)
+    at Function.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:574:3)
+    at ServerResponse.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\response.js:909:7)
+    at viewCart (file:///E:/Projects%20Web/Food-Ordering-System-QR-Based/controllers/customerControllers.js:227:9)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-06-07 15:08:53 [ERROR]: Server Error: ReferenceError: E:\Projects Web\Food-Ordering-System-QR-Based\views\customer\cart.ejs:80
+    78|                     <li>Scan the QR code available on your table.</li>
+    79|                     <li>Enter the total amount: <strong>₹ <%= cart.totalAmount.toFixed(2) %></strong>.</li>
+ >> 80|                     <!-- <li>In the UPI app, under <strong>Payment Notes</strong>, write: <strong>Table <%= req.session.tableId %></strong>.</li> -->
+    81|                     <li>Once done, click <strong>Checkout</strong> to place your order.</li>
+    82|                   </ul>
+    83|             </div>
+
+req is not defined
+    at eval (eval at compile (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:59:26)
+    at cart (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:703:17)
+    at tryHandleCache (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:274:36)
+    at exports.renderFile [as engine] (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:491:10)
+    at View.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\view.js:139:8)
+    at tryRender (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:627:10)
+    at Function.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:574:3)
+    at ServerResponse.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\response.js:909:7)
+    at viewCart (file:///E:/Projects%20Web/Food-Ordering-System-QR-Based/controllers/customerControllers.js:227:9)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)

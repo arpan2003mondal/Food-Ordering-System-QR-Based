@@ -43,14 +43,14 @@
             </div>
 
             <!-- Add to Cart Button -->
-            <form action="/api/customer/cart/add" method="POST" class="w-full">
-                <input type="hidden" name="itemId" value="<%= item._id %>">
-                <input type="hidden" name="quantity" value="1">
-                <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white py-1 rounded text-xs">
-                  Add To Cart
-                </button>
+             <form action="/customer/cart/add" method="POST" class="w-full">
+              <input type="hidden" name="itemId" value="<%= item._id %>">
+              <input type="hidden" name="quantity" value="1">
+              <input type="hidden" name="redirectTo" value="<%= req.originalUrl %>">
+              <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white py-1 rounded text-xs">
+              Add To Cart
+              </button>
             </form>
-
           </div>
         <% }) %>
       </div>

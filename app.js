@@ -73,7 +73,7 @@ app.use((req, res, next) => {
 app.use("/api/admin", adminRouter);
 app.use("/api/admin/dashboard", adminDashboardRouter);
 app.use("/staff", staffRouter);
-app.use("/api/customer", customerRouter);
+app.use("/customer", customerRouter);
 
 // Public pages
 app.get("/", (req, res) => {

@@ -47,26 +47,44 @@
           </div>
        <% }) %>
 
-                    <!-- Fixed Total and Checkout Section -->
-            <div class="fixed bottom-20 left-0 w-full bg-white rounded-2xl shadow-md px-4 py-3">
+            <!-- Fixed Total and Checkout Section -->
+            <!-- <div class="fixed bottom-20 left-0 w-full bg-white rounded-2xl shadow-md px-4 py-3">
                 <div class="flex justify-between font-bold text-lg mb-3">
                     <span>Total :</span>
                     <span>₹ <%= cart.totalAmount.toFixed(2) %></span>
                 </div>
-<!-- 
-                <form action="/api/customer/checkout" method="POST" class="flex justify-center">
-                    <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-full font-semibold w-full max-w-xs">
-                    CHECK OUT
-                    </button>
-                </form> -->
 
-            <form action="/api/customer/placeOrder" method="POST" class="flex justify-center">
+            <form action="/customer/placeOrder" method="POST" class="flex justify-center">
                 <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-full font-semibold w-full max-w-xs">
                   CHECK OUT
                 </button>
             </form>
 
 
+
+            </div> -->
+
+            <!-- Fixed Total and Checkout Section -->
+            <div class="fixed bottom-20 left-0 w-full bg-white rounded-2xl shadow-md px-4 py-3">
+              
+              <div class="flex justify-between font-bold text-lg mb-3">
+                <span>Total :</span>
+                <span>₹ <%= cart.totalAmount.toFixed(2) %></span>
+              </div>
+
+              <!-- Payment Notice -->
+              <p class="text-sm text-yellow-600 bg-yellow-100 p-3 rounded-md mb-4 font-medium text-center">
+                Please make the payment using the UPI QR code available on your table with 
+                <span class="text-red-600 font-semibold underline">Table No</span> after checkout. 
+                Orders without payment confirmation will not be accepted.
+              </p>
+
+
+              <form action="/customer/placeOrder" method="POST" class="flex justify-center">
+                <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-full font-semibold w-full max-w-xs">
+                  CHECK OUT
+                </button>
+              </form>
 
             </div>
 
@@ -78,7 +96,7 @@
 
     <script>
       function updateQty(itemId, action) {
-        fetch(`/api/customer/cart/update?itemId=${itemId}&action=${action}`, {
+        fetch(`/customer/cart/update?itemId=${itemId}&action=${action}`, {
           method: 'PUT'
         })
         .then(res => res.json())
