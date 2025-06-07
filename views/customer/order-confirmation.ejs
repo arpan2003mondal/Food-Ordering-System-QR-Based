@@ -11,9 +11,9 @@
   </div>
 
   <!-- Flash Messages -->
-  <!-- <div class="fixed top-0 left-0 w-full z-50">
+  <div class="fixed top-0 left-0 w-full z-50">
     <%- include('../partials/alert') %>
-  </div> -->
+  </div>
 
   <!-- Orders -->
   <div class="max-w-md mx-auto px-4 py-6 mb-28 space-y-6">
@@ -49,6 +49,15 @@
                 <div class="ml-3 flex-1">
                   <div class="flex justify-between items-center">
                     <p class="font-medium text-sm"><%= item.foodId.name %></p>
+                        <!-- Veg/Non-Veg Indicator -->
+                        <div class="flex items-center gap-1 mb-1">
+                          <span class="w-2 h-2 rounded-full inline-block 
+                            <%= item.foodId?.isVegetarian ? 'bg-green-600' : 'bg-red-600' %>"></span>
+                          <span class="text-xs font-semibold 
+                            <%= item.foodId?.isVegetarian ? 'text-green-700' : 'text-red-700' %>">
+                            <%= item.foodId?.isVegetarian ? 'Veg' : 'Non-Veg' %>
+                          </span>
+                        </div>
                     <p class="font-medium text-sm">Qty: <%= item.quantity %></p>
                   </div>
                   <p class="text-xs text-gray-600">₹ <%= item.foodId.price.toFixed(2) %></p>

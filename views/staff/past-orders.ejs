@@ -43,9 +43,19 @@
             </div>
 
             <!-- Ordered Items -->
-            <ul class="text-sm text-gray-800 mb-4 list-disc pl-4 space-y-1 font-medium">
+              <ul class="text-sm text-gray-800 mb-4 list-disc pl-4 space-y-1 font-medium">
               <% order.items.forEach(i => { %>
-                <li><strong><%= i.foodId?.name %></strong> × <%= i.quantity %></li>
+                <li class="flex items-center gap-2">
+                  <strong><%= i.foodId?.name %></strong> × <%= i.quantity %>
+                  <span class="flex items-center gap-1 ml-2">
+                    <span class="w-2 h-2 rounded-full inline-block 
+                      <%= i.foodId?.isVegetarian ? 'bg-green-600' : 'bg-red-600' %>"></span>
+                    <span class="text-xs font-semibold 
+                      <%= i.foodId?.isVegetarian? 'text-green-700' : 'text-red-700' %>">
+                      <%= i.foodId?.isVegetarian ? 'Veg' : 'Non-Veg' %>
+                    </span>
+                  </span>
+                </li>
               <% }) %>
             </ul>
 
