@@ -231,37 +231,103 @@ export const viewCart = async (req, res) => {
   }
 };
 // update cart items
+// Fixed updateCartItemQuantity function - matches viewCart logic
 export const updateCartItemQuantity = async (req, res) => {
   const { itemId, action } = req.query;
-  const tableId = req.session.tableId;
+  const { tableId, sessionKey } = req.session; // ✅ Use both like viewCart
+
   try {
-    let cart = await Cart.findOne({ tableId, status: "active" }).populate(
-      "items.foodId"
-    );
+    // ✅ Same query pattern as viewCart
+    let cart = await Cart.findOne({ 
+      tableId, 
+      sessionKey,  // This was missing!
+      status: "active" 
+    }).populate("items.foodId");
+
+    if (!cart) {
+      return res.status(404).json({ 
+        success: false, 
+        message: "Cart not found!" 
+      });
+    }
+
     const itemIndex = cart.items.findIndex(
       (item) => item.foodId._id.toString() === itemId
     );
-    if (itemIndex === -1)
-      return res
-        .status(404)
-        .json({ success: false, message: "Item not in cart!" });
-    if (action === "increase") cart.items[itemIndex].quantity++;
-    else if (action === "decrease" && cart.items[itemIndex].quantity > 1)
-      cart.items[itemIndex].quantity--;
-    else cart.items.splice(itemIndex, 1);
-    cart.totalAmount = calculateTotalAmount(cart.items);
-    await cart.save();
-    res.status(200).json({ success: true, message: "Cart updated!", cart });
-  } catch (error) {
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Error updating cart!",
-        error: error.message,
+
+    if (itemIndex === -1) {
+      return res.status(404).json({ 
+        success: false, 
+        message: "Item not in cart!" 
       });
+    }
+
+    // Update quantity based on action
+    if (action === "increase") {
+      cart.items[itemIndex].quantity++;
+    } else if (action === "decrease" && cart.items[itemIndex].quantity > 1) {
+      cart.items[itemIndex].quantity--;
+    } else if (action === "decrease") {
+      // Remove item if quantity becomes 0
+      cart.items.splice(itemIndex, 1);
+    }
+
+    // ✅ Use same calculation as viewCart
+    cart.totalAmount = cart.items.reduce(
+      (sum, item) => sum + (item.foodId?.price || 0) * item.quantity,
+      0
+    );
+
+    await cart.save();
+
+    res.status(200).json({ 
+      success: true, 
+      message: "Cart updated!", 
+      cart
+    });
+
+  } catch (error) {
+    console.error("Error updating cart:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error updating cart!",
+      error: error.message,
+    });
   }
 };
+
+// export const updateCartItemQuantity = async (req, res) => {
+//   const { itemId, action } = req.query;
+//   const tableId = req.session.tableId;
+//   try {
+//     let cart = await Cart.findOne({ tableId, status: "active" }).populate(
+//       "items.foodId"
+//     );
+//     const itemIndex = cart.items.findIndex(
+//       (item) => item.foodId._id.toString() === itemId
+//     );
+//     if (itemIndex === -1)
+//       return res
+//         .status(404)
+//         .json({ success: false, message: "Item not in cart!" });
+//     if (action === "increase") cart.items[itemIndex].quantity++;
+//     else if (action === "decrease" && cart.items[itemIndex].quantity > 1)
+//       cart.items[itemIndex].quantity--;
+//     else cart.items.splice(itemIndex, 1);
+//     cart.totalAmount = calculateTotalAmount(cart.items);
+//     await cart.save();
+//     res.status(200).json({ success: true, message: "Cart updated!", cart });
+//   } catch (error) {
+//     res
+//       .status(500)
+//       .json({
+//         success: false,
+//         message: "Error updating cart!",
+//         error: error.message,
+//       });
+//   }
+// };
+
 
 export const placeOrder = async (req, res) => {
   const tableId = req.session.tableId;
@@ -461,37 +527,6 @@ export const renderOrderConfirmation = async (req, res) => {
 //   }
 // };
 
-// export const updateCartItemQuantity = async (req, res) => {
-//   const { itemId, action } = req.query;
-//   const tableId = req.session.tableId;
-//   try {
-//     let cart = await Cart.findOne({ tableId, status: "active" }).populate(
-//       "items.foodId"
-//     );
-//     const itemIndex = cart.items.findIndex(
-//       (item) => item.foodId._id.toString() === itemId
-//     );
-//     if (itemIndex === -1)
-//       return res
-//         .status(404)
-//         .json({ success: false, message: "Item not in cart!" });
-//     if (action === "increase") cart.items[itemIndex].quantity++;
-//     else if (action === "decrease" && cart.items[itemIndex].quantity > 1)
-//       cart.items[itemIndex].quantity--;
-//     else cart.items.splice(itemIndex, 1);
-//     cart.totalAmount = calculateTotalAmount(cart.items);
-//     await cart.save();
-//     res.status(200).json({ success: true, message: "Cart updated!", cart });
-//   } catch (error) {
-//     res
-//       .status(500)
-//       .json({
-//         success: false,
-//         message: "Error updating cart!",
-//         error: error.message,
-//       });
-//   }
-// };
 
 
 // export const deleteFromCart = async (req, res) => {

@@ -39,8 +39,11 @@ customerRouter.get("/cart/view", authenticateCustomer, viewCart);
 // Place Order Route
 customerRouter.post("/placeOrder", authenticateCustomer, placeOrder);
 
-// show my orders
+// update quantity route
+customerRouter.put("/cart/update", authenticateCustomer, updateCartItemQuantity);
 
+
+// show my orders
 customerRouter.get("/order-confirmation", authenticateCustomer, renderOrderConfirmation);
 
 export default customerRouter;
@@ -60,6 +63,3 @@ export default customerRouter;
 // Delete from Cart Route
 // customerRouter.delete("/cart/delete", authenticateCustomer, deleteFromCart);
 
-
-// update quantity route
-customerRouter.put("/cart/update", authenticateCustomer, updateCartItemQuantity);
