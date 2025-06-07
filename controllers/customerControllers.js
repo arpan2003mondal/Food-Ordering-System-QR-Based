@@ -5,14 +5,6 @@ import { v4 as uuidv4 } from 'uuid';
 import LiveOrder from "../model/liveOrder.js";
 
 
-// Helper: Calculate total amount
-const calculateTotalAmount = (items) => {
-  return items.reduce(
-    (total, item) => total + (item.foodId.price || 0) * item.quantity,
-    0
-  );
-};
-
 // Qr Scanning : scans qr and session created
 export const qrScanRoute = async (req, res) => {
   const { tableId } = req.params;

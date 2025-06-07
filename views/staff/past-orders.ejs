@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./partials/staff-header', { title: 'Past Orders' }) %>
+
+<body class="bg-gradient-to-b from-gray-100 via-gray-50 to-white min-h-screen">
+
+  <!-- Navbar -->
+  <%- include('./partials/staff-nav') %>
+
+  <!-- Flash Alerts -->
+  <div class="fixed top-0 left-0 w-full z-50">
+    <%- include('../partials/alert') %>
+  </div>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-10 space-y-8">
+    
+    <!-- Sticky Heading -->
+    <div class="sticky top-16 bg-gray-100 z-40 py-4 shadow-sm text-center">
+      <h2 class="text-2xl sm:text-3xl font-bold text-gray-800">📦 Past Orders</h2>
+      <p class="text-gray-600 mt-1 text-sm sm:text-base">View orders that are completed or cancelled</p>
+    </div>
+
+    <% if (orders.length === 0) { %>
+      <div class="text-center py-16">
+        <p class="text-gray-500 text-xl font-medium">📭 No past orders for today.</p>
+      </div>
+    <% } else { %>
+      <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
+        <% orders.forEach(order => { %>
+          <div class="bg-white border border-gray-200 rounded-2xl shadow p-6 flex flex-col justify-between">
+
+            <!-- Info -->
+            <div class="flex justify-between items-start mb-4">
+              <div class="flex flex-wrap gap-3 text-sm font-medium text-gray-700">
+                <span class="text-violet-600">🧾 Token: <%= order.token %></span>
+                <span class="text-green-600">Table: <%= order.tableId %></span>
+                <span class="text-gray-500">🕒 <%= moment(order.createdAt).format("hh:mm A") %></span>
+              </div>
+              <span class="text-xs px-3 py-1 rounded-full <%= order.status === 'completed' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600' %> capitalize font-semibold">
+                <%= order.status %>
+              </span>
+            </div>
+
+            <!-- Ordered Items -->
+            <ul class="text-sm text-gray-800 mb-4 list-disc pl-4 space-y-1 font-medium">
+              <% order.items.forEach(i => { %>
+                <li><strong><%= i.foodId?.name %></strong> × <%= i.quantity %></li>
+              <% }) %>
+            </ul>
+
+            <!-- Total -->
+            <div class="text-right text-green-700 font-bold text-lg mb-2">
+              Total: ₹<%= order.totalAmount %>
+            </div>
+
+            <!-- Confirm Again Button for Cancelled Orders -->
+        <% if (order.status === "cancelled") { %>
+          <form action="/staff/orders/<%= order._id %>/reconfirm" method="POST">
+            <button class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg text-sm font-semibold">
+              Confirm Again
+            </button>
+          </form>
+        <% } %>
+
+
+
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+
+  </main>
+
+  <!-- Footer -->
+  <%- include('./partials/staff-footer') %>
+</body>
+</html>

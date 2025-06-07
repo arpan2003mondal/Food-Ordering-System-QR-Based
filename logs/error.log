@@ -335,3 +335,32 @@ req is not defined
     at ServerResponse.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\response.js:909:7)
     at viewCart (file:///E:/Projects%20Web/Food-Ordering-System-QR-Based/controllers/customerControllers.js:227:9)
     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-06-07 20:10:11 [ERROR]: Session destruction failed during logout req.flash() requires sessions
+2025-06-07 20:29:18 [ERROR]: Session destruction failed during logout req.flash() requires sessions
+2025-06-07 20:51:20 [ERROR]: Server Error: ReferenceError: E:\Projects Web\Food-Ordering-System-QR-Based\views\staff\dashboard.ejs:10
+    8| 
+    9|   <!-- Navigation Bar -->
+ >> 10|   <%- include('./partials/staff-nav') %>
+    11| 
+    12|   <!-- Flash Messages -->
+    13|   <div class="fixed top-0 left-0 w-full z-50">
+
+E:\Projects Web\Food-Ordering-System-QR-Based\views\staff\partials\staff-nav.ejs:22
+    20|     <div class="flex flex-col items-center sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
+    21|       <p class="text-sm font-medium text-gray-700">
+ >> 22|         👤 <%= staff.name %>
+    23|       </p>
+    24|       <form action="/staff/logout" method="POST">
+    25|         <button
+
+staff is not defined
+    at eval (eval at compile (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:12:26)
+    at staff-nav (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:703:17)
+    at include (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:701:39)
+    at eval (eval at compile (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:15:17)
+    at dashboard (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:703:17)
+    at tryHandleCache (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:274:36)
+    at exports.renderFile [as engine] (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\ejs\lib\ejs.js:491:10)
+    at View.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\view.js:139:8)
+    at tryRender (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:627:10)
+    at Function.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:574:3)

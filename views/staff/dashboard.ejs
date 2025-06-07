@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <%- include('./partials/staff-header', { title: 'Staff Dashboard' }) %>
-</head>
-<body class="bg-gradient-to-b from-gray-100 via-gray-50 to-white min-h-screen pt-24">
+<%- include('./partials/staff-header', { title: 'Staff Dashboard' }) %>
+
+<body class="bg-gradient-to-b from-gray-100 via-gray-50 to-white min-h-screen">
 
   <!-- Navigation Bar -->
   <%- include('./partials/staff-nav') %>
@@ -13,19 +12,28 @@
     <%- include('../partials/alert') %>
   </div>
 
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <!-- Main Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-10 space-y-8">
+    <!-- Page Title -->
+    <!-- Sticky Page Title -->
+    <div class="sticky top-16 bg-gray-100 z-40 py-4 shadow-sm text-center">
+      <h2 class="text-2xl sm:text-3xl font-bold text-blue-700">📋 Live Orders</h2>
+      <!-- <p class="text-gray-600 mt-1 text-sm sm:text-base">Manage and update today's active orders</p> -->
+    </div>
+
+
     <% if (orders.length === 0) { %>
-      <div class="text-center py-12">
-        <p class="text-gray-500 text-xl font-medium">📭 No orders found for today.</p>
+      <div class="text-center py-16">
+        <p class="text-gray-500 text-xl font-medium">📭 No pending orders found for today.</p>
       </div>
     <% } else { %>
-      <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
         <% orders.forEach(order => { %>
           <div class="bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-lg transition p-6 flex flex-col justify-between">
-            
-            <!-- Header Info -->
+
+            <!-- Order Header -->
             <div class="flex justify-between items-start mb-4">
-              <div class="flex flex-wrap gap-4 text-sm font-medium text-gray-700">
+              <div class="flex flex-wrap gap-3 text-sm font-medium text-gray-700">
                 <span class="text-violet-600">🧾 Token: <%= order.token %></span>
                 <span class="text-green-600">Table: <%= order.tableId %></span>
                 <span class="text-gray-500">🕒 <%= moment(order.createdAt).format("hh:mm A") %></span>
@@ -35,7 +43,7 @@
               </span>
             </div>
 
-            <!-- Ordered Items List -->
+            <!-- Ordered Items -->
             <ul class="text-sm text-gray-800 mb-4 list-disc pl-4 space-y-1 font-medium">
               <% order.items.forEach(i => { %>
                 <li><strong><%= i.foodId?.name %></strong> × <%= i.quantity %></li>
@@ -50,36 +58,32 @@
             <!-- Action Buttons -->
             <div class="flex flex-wrap gap-3 justify-center mt-2">
               <% if (order.status === "pending") { %>
-                <!-- Accept -->
                 <form action="/staff/orders/<%= order._id %>/status" method="POST">
                   <input type="hidden" name="status" value="accepted" />
-                  <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm font-semibold">
+                  <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm font-semibold">
                     Mark as Accepted
                   </button>
                 </form>
               <% } else if (order.status === "accepted") { %>
-                <!-- Ready -->
                 <form action="/staff/orders/<%= order._id %>/status" method="POST">
                   <input type="hidden" name="status" value="ready" />
-                  <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold">
+                  <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold">
                     Mark as Ready
                   </button>
                 </form>
               <% } else if (order.status === "ready") { %>
-                <!-- Completed -->
                 <form action="/staff/orders/<%= order._id %>/status" method="POST">
                   <input type="hidden" name="status" value="completed" />
-                  <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-semibold">
+                  <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-semibold">
                     Mark as Served
                   </button>
                 </form>
               <% } %>
 
               <% if (order.status !== "cancelled" && order.status !== "completed") { %>
-                <!-- Cancel -->
                 <form action="/staff/orders/<%= order._id %>/status" method="POST">
                   <input type="hidden" name="status" value="cancelled" />
-                  <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold">
+                  <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold">
                     Cancel Order
                   </button>
                 </form>
@@ -90,6 +94,9 @@
         <% }) %>
       </div>
     <% } %>
-  </div>
+  </main>
+
+  <!-- Footer -->
+  <%- include('./partials/staff-footer') %>
 </body>
 </html>
