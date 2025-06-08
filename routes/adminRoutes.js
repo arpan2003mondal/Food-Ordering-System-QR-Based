@@ -2,7 +2,8 @@ import express from "express";
 import {
   login,
   logout,
-  register,
+  renderAdminRegister,
+  adminRegister,
   resetPassword,
   sendResetOtp,
 } from "../controllers/adminControllers.js";
@@ -11,7 +12,11 @@ import { authenticateAdmin } from "../middleware/adminAuthMiddleware.js";
 
 const adminRouter = express.Router();
 
-adminRouter.post("/register", register);
+// GET - Render admin registration page
+adminRouter.get('/register', renderAdminRegister);
+
+// POST - Handle admin registration
+adminRouter.post('/register', adminRegister);
 
 adminRouter.get("/login" ,(req , res)=>{
   res.render('admin/login');

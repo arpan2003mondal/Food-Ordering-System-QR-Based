@@ -1,31 +1,88 @@
 import adminModel from "../model/adminModel.js";
 import transporter from "../config/nodeMailer.js";
 import { comparePassword, hashPassword } from "../utils/hashPassword.js";
-import { generateToken } from "../utils/generateToken.js";
 import { passwordRest, wellcomeMail } from "../utils/sendMails.js";
 import logger from "../utils/logger.js";
 
 
+// Render admin registration page
+export const renderAdminRegister = (req, res) => {
+  try {
+    res.render('admin/register', { 
+      title: 'Admin Registration',
+      error: req.flash('error'),
+      success: req.flash('success')
+    });
+  } catch (error) {
+    logger.error('Failed to render admin registration page', { 
+      error: error.message 
+    });
+    res.status(500).send('Server Error');
+  }
+};
 
-export const register = async (req, res) => {
-  const { name, email, password } = req.body;
 
-  if (!name || !email || !password ) {
-    return res.status(400).json({ success: false, message: "Missing Details" });
+// register admin
+export const adminRegister = async (req, res) => {
+  const { name, email, password, secretKey } = req.body;
+
+  // Validate required fields
+  if (!name || !email || !password || !secretKey) {
+    logger.warn('Admin registration attempt with missing fields', { 
+      email, 
+      missingFields: { 
+        name: !name, 
+        email: !email, 
+        password: !password, 
+        secretKey: !secretKey 
+      } 
+    });
+    return res.status(400).json({ 
+      success: false, 
+      message: "All fields including secret key are required" 
+    });
+  }
+
+  // Validate secret key
+  const adminSecretKey = process.env.ADMIN_SECRET_KEY;
+  if (!adminSecretKey) {
+    logger.error('ADMIN_SECRET_KEY not configured in environment variables');
+    return res.status(500).json({ 
+      success: false, 
+      message: "Server configuration error" 
+    });
+  }
+
+  if (secretKey !== adminSecretKey) {
+    logger.warn('Admin registration attempt with invalid secret key', { 
+      email, 
+      providedKey: secretKey.substring(0, 3) + '***' // Log partial key for security
+    });
+    return res.status(403).json({ 
+      success: false, 
+      message: "Invalid secret key. Access denied." 
+    });
   }
 
   try {
+    // Check if admin already exists
     const existingAdmin = await adminModel.findOne({ role: "admin" });
 
     if (existingAdmin) {
+      logger.warn('Admin registration attempt when admin already exists', { 
+        existingAdminEmail: existingAdmin.email,
+        attemptedEmail: email 
+      });
       return res.status(400).json({
         success: false,
         message: "Admin already registered. Only one admin allowed!",
       });
     }
 
+    // Hash password
     const hashedPassword = await hashPassword(password);
 
+    // Create new admin
     const newAdmin = await adminModel.create({
       name,
       email,
@@ -33,27 +90,50 @@ export const register = async (req, res) => {
       role: "admin",
     });
 
-    const token = generateToken(newAdmin._id);
+    logger.info('New admin registered successfully', { 
+      adminId: newAdmin._id,
+      email: newAdmin.email,
+      name: newAdmin.name 
+    });
+    // Send welcome email
+    try {
+      const mail = wellcomeMail(name, email);
+      await transporter.sendMail(mail);
+      logger.info('Welcome email sent to new admin', { email });
+    } catch (emailError) {
+      logger.error('Failed to send welcome email to new admin', { 
+        email, 
+        error: emailError.message 
+      });
+      // Don't fail registration if email fails
+    }
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production" ? true : false,
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+    logger.info('Admin registration completed successfully', { 
+      adminId: newAdmin._id,
+      email 
     });
 
-    const mail = wellcomeMail(name, email);
-    await transporter.sendMail(mail);
+    res.status(201).json({ 
+      success: true, 
+      message: "Admin registered successfully!" 
+    });
 
-    console.log("Registered successfully!");
-
-    res
-      .status(201)
-      .json({ success: true, message: "Registered successfully!" });
   } catch (error) {
-    return res.status(500).json({ success: false, message: error.message });
+    logger.error('Admin registration failed', { 
+      email, 
+      error: error.message, 
+      stack: error.stack 
+    });
+    
+    return res.status(500).json({ 
+      success: false, 
+      message: "Registration failed. Please try again." 
+    });
   }
 };
+
+
+
 
 
 // session based admin login
