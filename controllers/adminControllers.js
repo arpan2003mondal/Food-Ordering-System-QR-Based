@@ -3,6 +3,7 @@ import transporter from "../config/nodeMailer.js";
 import { comparePassword, hashPassword } from "../utils/hashPassword.js";
 import { generateToken } from "../utils/generateToken.js";
 import { passwordRest, wellcomeMail } from "../utils/sendMails.js";
+import logger from "../utils/logger.js";
 
 export const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -52,46 +53,8 @@ export const register = async (req, res) => {
   }
 };
 
-// export const login = async (req, res) => {
-//   const { email, password } = req.body;
 
-//   if (!email || !password) {
-//     return res.status(400).json({ success: false, message: "Mising details" });
-//   }
-
-//   try {
-//     const user = await adminModel.findOne({ email });
-
-//     if (!user) {
-//       return res
-//         .status(401)
-//         .json({ success: false, message: "invalid credentials" });
-//     }
-
-//     const passMatch = await comparePassword(password, user.password);
-
-//     if (!passMatch) {
-//       return res
-//         .status(401)
-//         .json({ success: false, message: "invalid credentials" });
-//     }
-//     const token = generateToken(user._id);
-
-//     res.cookie("token", token, {
-//       httpOnly: true,
-//       secure: process.env.NODE_ENV === "production" ? true : false,
-//       sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
-//       maxAge: 7 * 24 * 60 * 60 * 1000,
-//     });
-
-//     console.log("Logged in successfully!");
-
-//     return res.status(200).redirect('/api/admin/dashboard');
-//   } catch (error) {
-//     return res.status(500).json({ success: false, message: error.message });
-//   }
-// };
-
+// session based admin login
 export const login = async (req, res) => {
   const { email, password } = req.body;
 
@@ -115,63 +78,53 @@ export const login = async (req, res) => {
       return res.redirect("/api/admin/login");
     }
 
-    const token = generateToken(user._id);
-
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-    });
+    // ✅ Session-based login
+    req.session.user = {
+      id: user._id,
+      role: "admin",
+      email: user.email,
+    };
 
     req.flash("success", "Logged in successfully!");
     return res.redirect("/api/admin/dashboard");
 
   } catch (error) {
+    logger.error("Admin login error", {
+      message: error.message,
+      stack: error.stack,
+      route: req.originalUrl,
+    });
     req.flash("error", "Server error: " + error.message);
     return res.redirect("/api/admin/login");
   }
 };
 
 
-// export const logout = async (req, res) => {
-//   try {
-//     res.clearCookie("token", "", {
-//       httpOnly: true,
-//       secure: process.env.NODE_ENV === "production" ? true : false,
-//       sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
-//       expires: new Date(0),
-//     });
-
-//     console.log("Logged out successfully!");
-//     return res.status(200).json({
-//       success: true,
-//       message: "Logged out successfully!",
-//     });
-//   } catch (error) {
-//     console.error("Logout error:", error.message);
-//     return res.status(500).json({
-//       success: false,
-//       message: "Something went wrong during logout.",
-//     });
-//   }
-// };
-
-export const logout = async (req, res) => {
+// logout admin : session based
+export const logout = (req, res) => {
   try {
-    res.clearCookie("token", "", {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production" ? true : false,
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
-      expires: new Date(0),
-    });
+    req.session.destroy((err) => {
+      if (err) {
+        logger.error("Admin session destruction failed during logout:", err);
+        req.flash("error", "Logout failed. Please try again.");
+        return res.redirect("/api/admin/dashboard");
+      }
 
-    req.flash("success", "Logged out successfully!");
-    return res.redirect("/api/admin/login");
+      res.clearCookie("connect.sid", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      });
+
+      return res.redirect("/api/admin/login");
+    });
   } catch (error) {
-    console.error("Logout error:", error.message);
+    logger.error("Admin logout error caught in try-catch:", {
+      message: error.message,
+      stack: error.stack,
+    });
     req.flash("error", "Something went wrong during logout.");
-    return res.redirect("/api/admin/login");
+    return res.redirect("/api/admin/dashboard");
   }
 };
 

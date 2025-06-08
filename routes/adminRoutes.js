@@ -7,7 +7,7 @@ import {
   sendResetOtp,
 } from "../controllers/adminControllers.js";
 
-import { authenticateUser } from "../middleware/adminAuthMiddleware.js";
+import { authenticateAdmin } from "../middleware/adminAuthMiddleware.js";
 
 const adminRouter = express.Router();
 
@@ -18,7 +18,8 @@ adminRouter.get("/login" ,(req , res)=>{
 });
 
 adminRouter.post("/login", login);
-adminRouter.post("/logout", authenticateUser, logout);
+
+adminRouter.post("/logout", authenticateAdmin, logout);
 
 adminRouter.get('/forgot-password', (req, res) => {
   res.render('admin/send-otp');

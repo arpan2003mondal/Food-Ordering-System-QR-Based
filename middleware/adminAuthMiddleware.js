@@ -1,33 +1,29 @@
-import jwt from "jsonwebtoken";
 import adminModel from "../model/adminModel.js";
+import logger from "../utils/logger.js";
 
-export const authenticateUser = async (req, res, next) => {
-  const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
-
-  if (!token) {
-    return res
-      .status(401)
-      .json({ success: false, message: "Authorization denied" });
+export const authenticateAdmin = async (req, res, next) => {
+  if (!req.session || !req.session.user) {
+    req.flash("error", "Please login to access this resource");
+    return res.redirect("/api/admin/login");
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    const admin = await adminModel.findById(decoded.id).select("-password");
+    const admin = await adminModel.findById(req.session.user.id).select("-password");
 
     if (!admin) {
-      return res
-        .status(401)
-        .json({ success: false, message: "Admin not found" });
+      req.flash("error", "User not found. Please login again.");
+      return res.redirect("/api/admin/login");
     }
 
     req.admin = admin;
-    
     next();
   } catch (error) {
-    console.error("Token Verification Error:", error.message);
-    return res
-      .status(401)
-      .json({ success: false, message: "Invalid token" });
+    logger.error("Admin authentication error", {
+      message: error.message,
+      stack: error.stack,
+      userId: req.session.user?.id,
+    });
+    req.flash("error", "Authentication failed. Please login.");
+    return res.redirect("/api/admin/login");
   }
 };

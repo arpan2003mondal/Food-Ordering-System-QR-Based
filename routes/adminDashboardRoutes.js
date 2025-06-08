@@ -16,12 +16,12 @@ import {
   renderEditStaffPage,
   updateStaff,
 } from "../controllers/adminDashBoardControllers.js";
-import { authenticateUser } from "../middleware/adminAuthMiddleware.js";
+import { authenticateAdmin } from "../middleware/adminAuthMiddleware.js";
 
 const adminDashboardRouter = express.Router();
 
 // ✅ Apply middleware to all admin dashboard routes
-adminDashboardRouter.use(authenticateUser);
+adminDashboardRouter.use(authenticateAdmin);
 
 adminDashboardRouter.get("/", dashboard);
 

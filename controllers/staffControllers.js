@@ -231,7 +231,6 @@ export const reconfirmCancelledOrder = async (req, res) => {
 
 
 // staff logout : code
-
 export const logout = (req, res) => {
   try {
     req.session.destroy((err) => {

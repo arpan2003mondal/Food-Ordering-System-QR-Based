@@ -143,3 +143,4 @@ filterType is not defined
     at View.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\view.js:139:8)
     at tryRender (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:627:10)
     at Function.render (E:\Projects Web\Food-Ordering-System-QR-Based\node_modules\express\lib\application.js:574:3)
+2025-06-08 10:35:49 [ERROR]: Admin session destruction failed during logout: req.flash() requires sessions
