@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <%- include('../partials/admin-header', { title: "Sales Report" }) %>
+    <%- include('./partials/admin-header', { title: "Sales Report" }) %>
     <style>
         /* Body and layout fixes */
         body {
@@ -54,7 +54,7 @@
     </style>
 </head>
 <<body>>
-    <%- include('../partials/admin-nav') %>
+    <%- include('./partials/admin-nav') %>
 
     <main style="max-width: 1200px; margin: 1rem auto;" class="container-padding">
         <!-- Header Section -->
@@ -64,7 +64,7 @@
 
         <!-- Filter Form -->
         <section class="glass-effect fade-in" style="padding: 1.25rem; border-radius: 12px; margin-bottom: 1.5rem; border: 1px solid rgba(255,255,255,0.2);">
-            <form action="/api/admin/dashboard/sales-report" method="POST" class="compact-form">
+            <form action="/admin/dashboard/sales-report" method="POST" class="compact-form">
                 <label for="filter" style="font-weight: 500; color: #374151;">Filter:</label>
                 <select name="filter" id="filter" class="select-input">
                     <option value="today" <%= filterType === 'today' ? 'selected' : '' %>>📅 Today's Sales</option>
@@ -122,7 +122,7 @@
         <% } %>
     </main>
 
-    <%- include('../partials/admin-footer') %>
+    <%- include('./partials/admin-footer') %>
 
     <script>
         // Lightweight JavaScript for enhanced UX

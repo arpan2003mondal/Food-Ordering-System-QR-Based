@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <%- include('../partials/admin-header', { title: 'View Staff' }) %>
+    <%- include('./partials/admin-header', { title: 'View Staff' }) %>
   </head>
   <body class="bg-gray-100 p-10 pt-24">
-    <%- include('../partials/admin-nav') %>
+    <%- include('./partials/admin-nav') %>
 
       <!-- Flash Messages -->
         <div class="fixed top-0 left-0 w-full z-50">
@@ -30,7 +30,7 @@
                 <td class="text-center px-6 py-4 text-gray-800"><%= staff.username %></td>
                 <td class="text-center px-6 py-4 text-gray-800">₹<%= staff.salary %></td>
                 <td class="text-center px-6 py-4">
-                <a href="/api/admin/dashboard/edit-staff/<%= staff._id %>" class="text-blue-600 hover:underline">Edit</a>
+                <a href="/admin/dashboard/edit-staff/<%= staff._id %>" class="text-blue-600 hover:underline">Edit</a>
                 </td>
             </tr>
             <% }) %>
@@ -38,5 +38,5 @@
     </table>
 
     </div>
-  </body>
-</html>
+    
+<%- include('./partials/admin-footer') %>

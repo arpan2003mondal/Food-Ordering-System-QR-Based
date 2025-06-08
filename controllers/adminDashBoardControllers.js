@@ -13,6 +13,7 @@ import Order from "../model/orderModel.js";
 
 
 
+// render admin dashboard
 
 export const dashboard = async (req, res) => {
   try {
@@ -26,18 +27,18 @@ export const dashboard = async (req, res) => {
     });
   } catch (error) {
         req.flash("error", "Error loading dashboard. Please try again.");
-    res.redirect("/api/admin/login");
+    res.redirect("/admin/login");
   }
 };
 
-
+// render add food page
 export const renderAddFoodPage = (req, res) => {
   try {
     res.status(200).render("admin/add-food");
   } catch (error) {
     
     req.flash("error", "Error loading Add Food page.");
-    res.redirect("/api/admin/dashboard");
+    res.redirect("/admin/dashboard");
   }
 };
 
@@ -59,7 +60,7 @@ export const addNewFoodItem = async (req, res) => {
     // Validate required fields
     if (!name || !description || !category || !price || !file) {
       req.flash("error", "All required fields must be provided.");
-      return res.redirect("/api/admin/dashboard");
+      return res.redirect("/admin/dashboard");
     }
 
     const imageUrl = `/uploads/${file.filename}`;
@@ -76,11 +77,11 @@ export const addNewFoodItem = async (req, res) => {
     });
 
     req.flash("success", "Food item added successfully!");
-    return res.redirect("/api/admin/dashboard");
+    return res.redirect("/admin/dashboard");
 
   } catch (error) {
     req.flash("error", "Error adding food item. Please try again.");
-    return res.redirect("/api/admin/dashboard");
+    return res.redirect("/admin/dashboard");
   }
 };
 
@@ -95,7 +96,7 @@ export const renderEditFoodPage = async (req, res) => {
     
     if (!foodItem) {
       req.flash("error", "Food item not found.");
-      return res.redirect("/api/admin/dashboard");
+      return res.redirect("/admin/dashboard");
     }
 
     res.status(200).render("admin/edit-food", {
@@ -104,10 +105,11 @@ export const renderEditFoodPage = async (req, res) => {
     });
   } catch (error) {
     req.flash("error", "Error loading edit food page.");
-    res.redirect("/api/admin/dashboard");
+    res.redirect("/admin/dashboard");
   }
 };
  
+// update food description
 
 export const updateFoodItem = async (req, res) => {
   const { id } = req.params;
@@ -129,19 +131,20 @@ export const updateFoodItem = async (req, res) => {
 
     if (!updatedFood) {
       req.flash("error", "Food item not found.");
-      return res.redirect("/api/admin/dashboard");
+      return res.redirect("/admin/dashboard");
     }
 
     req.flash("success", "Food item updated successfully!");
-    return res.redirect("/api/admin/dashboard");
+    return res.redirect("/admin/dashboard");
 
   } catch (error) {
     req.flash("error", "Error updating food item.");
-    return res.redirect("/api/admin/dashboard");
+    return res.redirect("/admin/dashboard");
   }
 };
 
 
+// delete food item
 
 export const deleteFoodItem = async (req, res) => {
   const { id } = req.params;
@@ -151,7 +154,7 @@ export const deleteFoodItem = async (req, res) => {
 
     if (!deletedFood) {
       req.flash("error", "Food item not found!");
-      return res.redirect("/api/admin/dashboard");
+      return res.redirect("/admin/dashboard");
     }
 
     // Delete the image file if it exists
@@ -160,7 +163,7 @@ export const deleteFoodItem = async (req, res) => {
       fs.unlink(imagePath, (err) => {
         if (err) {
            req.flash("error", "Error deleting food item: " + error.message);
-           return res.redirect("/api/admin/dashboard");
+           return res.redirect("/admin/dashboard");
         } 
         // else {
         //   console.log("Image deleted:", deletedFood.imageUrl);
@@ -169,18 +172,17 @@ export const deleteFoodItem = async (req, res) => {
     }
 
     req.flash("success", "Food item deleted successfully!");
-    return res.redirect("/api/admin/dashboard");
+    return res.redirect("/admin/dashboard");
   } catch (error) {
     req.flash("error", "Error deleting food item: " + error.message);
-    return res.redirect("/api/admin/dashboard");
+    return res.redirect("/admin/dashboard");
   }
 };
 
 
 
 
-
-
+// search food items
 export const searchFood = async (req, res) => {
   const { q, category, veg, sort } = req.query;
   const query = {};
@@ -197,7 +199,7 @@ export const searchFood = async (req, res) => {
 
     if (results.length === 0) {
       req.flash("error", "No food items found.");
-      return res.redirect("/api/admin/dashboard");
+      return res.redirect("/admin/dashboard");
     }
 
     req.flash("success", `${results.length} item(s) found.`);
@@ -208,7 +210,7 @@ export const searchFood = async (req, res) => {
     });
   } catch (err) {
     req.flash("error", "Search failed. Try again.");
-    res.redirect("/api/admin/dashboard");
+    res.redirect("/admin/dashboard");
   }
 };
 
@@ -220,7 +222,7 @@ export const renderAddStaffPage = (req, res) => {
   } catch (error) {
     
     req.flash("error", "Error loading Add Staff page.");
-    res.redirect("/api/admin/dashboard");
+    res.redirect("/admin/dashboard");
   }
 };
 
@@ -230,17 +232,17 @@ export const registerStaff = async (req, res) => {
 
   if (!name || !username || !password || !salary) {
     req.flash("error", "All fields are required");
-    return res.redirect("/api/admin/dashboard/register-staff");
+    return res.redirect("/admin/dashboard/register-staff");
   }
 
   try {
     const existingStaff = await staffModel.findOne({ username });
     if (existingStaff) {
       req.flash("error", "Username already exists");
-      return res.redirect("/api/admin/dashboard/register-staff");
+      return res.redirect("/admin/dashboard/register-staff");
     }
 
-    const hashed = await hashPassword(password); // Optional if using plaintext for development
+    const hashed = await hashPassword(password); 
 
     await staffModel.create({
       name,
@@ -251,11 +253,11 @@ export const registerStaff = async (req, res) => {
     });
 
     req.flash("success", "Staff registered successfully");
-    return res.redirect("/api/admin/dashboard/view-staff");
+    return res.redirect("/admin/dashboard/view-staff");
   } catch (error) {
     console.error("Error registering staff:", error);
     req.flash("error", "Something went wrong");
-    return res.redirect("/api/admin/dashboard/register-staff");
+    return res.redirect("/admin/dashboard/register-staff");
   }
 };
 
@@ -267,7 +269,7 @@ export const viewAllStaff = async (req, res) => {
   } catch (error) {
     console.error("Error fetching staff:", error);
     req.flash("error", "Could not fetch staff");
-    res.redirect("/api/admin/dashboard");
+    res.redirect("/admin/dashboard");
   }
 };
 
@@ -278,14 +280,14 @@ export const renderEditStaffPage = async (req, res) => {
     const staff = await staffModel.findById(req.params.id);
     if (!staff) {
       req.flash("error", "Staff not found");
-      return res.redirect("/api/admin/dashboard/view-staff");
+      return res.redirect("/admin/dashboard/view-staff");
     }
 
     res.render("admin/edit-staff", { staff });
   } catch (error) {
     console.error("Error fetching staff:", error);
     req.flash("error", "Error loading staff");
-    res.redirect("/api/admin/dashboard/view-staff");
+    res.redirect("/admin/dashboard/view-staff");
   }
 };
 
@@ -304,14 +306,15 @@ export const updateStaff = async (req, res) => {
 
     req.flash("success", "Staff updated successfully");
 
-    res.redirect("/api/admin/dashboard/view-staff");
+    res.redirect("/admin/dashboard/view-staff");
   } catch (error) {
     console.error("Error updating staff:", error);
     req.flash("error", "Update failed");
-    res.redirect("/api/admin/dashboard/view-staff");
+    res.redirect("/admin/dashboard/view-staff");
   }
 };
 
+// sales report generation
 
 export const showSalesReport = (req, res) => {
    try {
@@ -319,9 +322,11 @@ export const showSalesReport = (req, res) => {
   } catch (error) {
     
     req.flash("error", "Error loading sales page.");
-    res.redirect("/api/admin/dashboard");
+    res.redirect("/admin/dashboard");
   }
 };
+
+// showung sales data
 
 export const fetchSalesData = async (req, res) => {
   const { filter } = req.body;

@@ -1,9 +1,9 @@
 <nav class="fixed top-0 left-0 w-full z-40 bg-gray-100 shadow px-6 py-4 flex justify-between items-center">
   <div class="flex space-x-2">
-    <a href="/api/admin/dashboard" class="px-5 py-2 rounded-md bg-white-500 text-black font-medium shadow">Home</a>
+    <a href="/admin/dashboard" class="px-5 py-2 rounded-md bg-white-500 text-black font-medium shadow">Home</a>
     
-    <a href="/api/admin/dashboard/sales-report" class="px-5 py-2 rounded-md bg-white text-black font-medium shadow">Sales Report</a>
-    <a href="/api/admin/dashboard/add-food" class="px-5 py-2 rounded-md bg-white text-black font-medium shadow">Add New Item</a>
+    <a href="/admin/dashboard/sales-report" class="px-5 py-2 rounded-md bg-white text-black font-medium shadow">Sales Report</a>
+    <a href="/admin/dashboard/add-food" class="px-5 py-2 rounded-md bg-white text-black font-medium shadow">Add New Item</a>
     
     <div class="relative group inline-block">
   <button class="px-5 py-2 rounded-md bg-white text-black font-medium shadow hover:bg-gray-100 focus:outline-none">
@@ -14,8 +14,8 @@
   </button>
 
   <div class="absolute hidden group-hover:block bg-white shadow-md mt-2 rounded-md z-10 w-40">
-    <a href="/api/admin/dashboard/add-staff" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Add Staff</a>
-    <a href="/api/admin/dashboard/view-staff" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View Staffs</a>
+    <a href="/admin/dashboard/add-staff" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Add Staff</a>
+    <a href="/admin/dashboard/view-staff" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View Staffs</a>
   </div>
 </div>
 
@@ -27,7 +27,7 @@
 
  <div class="flex items-center space-x-4">
   <!-- Search Form -->
-  <form action="/api/admin/dashboard/search" method="GET" class="flex items-center space-x-2">
+  <form action="/admin/dashboard/search" method="GET" class="flex items-center space-x-2">
     <input
       type="text"
       name="q"
@@ -44,7 +44,7 @@
   </form>
 
   <!-- Logout Form -->
-  <form action="/api/admin/logout" method="POST">
+  <form action="/admin/logout" method="POST">
     <button
       type="submit"
       class="px-5 py-2 bg-red-500 text-white rounded-full font-medium hover:bg-red-600 transition shadow"

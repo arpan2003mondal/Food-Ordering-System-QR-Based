@@ -228,6 +228,27 @@ export const reconfirmCancelledOrder = async (req, res) => {
   }
 };
 
+// Clear all past orders
+export const clearAllPastOrders = async (req, res) => {
+  try {
+    // Delete all orders with status 'completed' or 'cancelled'
+    const result = await LiveOrder.deleteMany({
+      status: { $in: ["completed", "cancelled","pending"] }
+    });
+
+    if (result.deletedCount > 0) {
+      req.flash("success", `Successfully cleared ${result.deletedCount} past orders`);
+    } else {
+      req.flash("info", "No past orders found to clear");
+    }
+
+    res.redirect("/staff/past-orders");
+  } catch (error) {
+    console.error("Clear All Past Orders Error:", error);
+    req.flash("error", "Failed to clear past orders");
+    res.redirect("/staff/past-orders");
+  }
+};
 
 
 // staff logout : code

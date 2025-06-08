@@ -13,6 +13,7 @@ import staffRouter from "./routes/staffRoutes.js";
 import customerRouter from "./routes/customerRoutes.js";
 import sessionTTL from "./middleware/sessionMiddleware.js"; 
 import logger from "./utils/logger.js";
+import methodOverride from 'method-override';
 
 const app = express();
 const port = process.env.PORT;
@@ -68,10 +69,11 @@ app.use((req, res, next) => {
   res.locals.messages = req.flash();
   next();
 });
+app.use(methodOverride('_method'));
 
 // Routes
-app.use("/api/admin", adminRouter);
-app.use("/api/admin/dashboard", adminDashboardRouter);
+app.use("/admin", adminRouter);
+app.use("/admin/dashboard", adminDashboardRouter);
 app.use("/staff", staffRouter);
 app.use("/customer", customerRouter);
 

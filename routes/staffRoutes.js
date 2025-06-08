@@ -6,6 +6,7 @@ import {
   logout,
   updateOrderStatus,
   reconfirmCancelledOrder,
+  clearAllPastOrders,
 } from "../controllers/staffControllers.js";
 import { authenticateStaff } from "../middleware/staffAuthMiddleware.js";
 
@@ -29,6 +30,9 @@ staffRouter.post("/orders/:id/status", authenticateStaff, updateOrderStatus);
 
 // reconfirm cancelled order
 staffRouter.post("/orders/:id/reconfirm", authenticateStaff, reconfirmCancelledOrder);
+
+// Clear all past orders
+staffRouter.delete("/past-orders/clear-all", authenticateStaff, clearAllPastOrders);
 
 
 export default staffRouter;

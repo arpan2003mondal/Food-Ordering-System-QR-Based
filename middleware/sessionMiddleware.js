@@ -9,7 +9,7 @@ function sessionTTL(req, res, next) {
     maxAge = 3 * 60 * 60 * 1000; // 3 hours
   } else if (url.startsWith("/staff")) {
     maxAge = 12 * 60 * 60 * 1000; // 12 hours
-  } else if (url.startsWith("/api/admin")) {
+  } else if (url.startsWith("/admin")) {
     maxAge = 1 * 60 * 60 * 1000; // 1 hour
   }
 

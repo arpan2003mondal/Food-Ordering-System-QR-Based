@@ -4,7 +4,7 @@ import logger from "../utils/logger.js";
 export const authenticateAdmin = async (req, res, next) => {
   if (!req.session || !req.session.user) {
     req.flash("error", "Please login to access this resource");
-    return res.redirect("/api/admin/login");
+    return res.redirect("/admin/login");
   }
 
   try {
@@ -12,7 +12,7 @@ export const authenticateAdmin = async (req, res, next) => {
 
     if (!admin) {
       req.flash("error", "User not found. Please login again.");
-      return res.redirect("/api/admin/login");
+      return res.redirect("/admin/login");
     }
 
     req.admin = admin;
@@ -24,6 +24,6 @@ export const authenticateAdmin = async (req, res, next) => {
       userId: req.session.user?.id,
     });
     req.flash("error", "Authentication failed. Please login.");
-    return res.redirect("/api/admin/login");
+    return res.redirect("/admin/login");
   }
 };
