@@ -74,6 +74,7 @@ export const addNewFoodItem = async (req, res) => {
       imageUrl,
       ingredients: ingredients || "No Ingredients Details Available",
       isVegetarian: isVegetarian === "on",
+      isAvailable : true,
     });
 
     req.flash("success", "Food item added successfully!");
@@ -84,8 +85,6 @@ export const addNewFoodItem = async (req, res) => {
     return res.redirect("/admin/dashboard");
   }
 };
-
-
 
 // Update Food Item
 export const renderEditFoodPage = async (req, res) => {
@@ -116,7 +115,7 @@ export const updateFoodItem = async (req, res) => {
   const updateData = req.body;
 
   updateData.isVegetarian = req.body.isVegetarian === "on";
-  updateData.isAvailable = true;
+  updateData.isAvailable = req.body.isVegetarian === "on";
   updateData.price = parseFloat(req.body.price);
   updateData.discount = parseFloat(req.body.discount) || 0;
 
