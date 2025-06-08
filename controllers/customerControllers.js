@@ -27,7 +27,7 @@ export const qrScanRoute = async (req, res) => {
 export const viewCategory = async (req, res) => {
   try {
     // Fetch all food items and sort by name
-    const foodItems = await Food.find().sort({ name: 1 });
+    const foodItems = await Food.find({ isAvailable: true }).sort({ name: 1 });
 
     // Extract unique categories
     const categories = [...new Set(foodItems.map(item => item.category))];
@@ -48,14 +48,42 @@ export const viewCategory = async (req, res) => {
 
 
 // Category Wise Menu : Show the food available under selected category
+// export const viewMenu = async (req, res) => {
+//   const { categoryName } = req.params;
+
+//   try {
+//     // Filter food items by category (case-insensitive match)
+//     const foodItems = await Food.find({
+//       category: { $regex: new RegExp(`^${categoryName}$`, "i") },
+//     });
+
+//     res.render("customer/category-menu", {
+//       category: categoryName,
+//       foodItems,
+//       messages: req.flash(),     // ✅ Include flash messages
+//       req,                       // ✅ Pass req for redirectTo = req.originalUrl
+//     });
+//   } catch (error) {
+//     // console.error("Error loading category menu:", error.message);
+//     req.flash("error", "Failed to load menu items for this category.");
+//     res.status(500).render("customer/all-menu", {
+//       category: categoryName,
+//       foodItems: [],
+//       messages: req.flash(),
+//     });
+//   }
+// };
+
+// Category Wise Menu : Show the food available under selected category
 export const viewMenu = async (req, res) => {
   const { categoryName } = req.params;
 
   try {
-    // Filter food items by category (case-insensitive match)
+    // Filter food items by category (case-insensitive match) and only show available items
     const foodItems = await Food.find({
       category: { $regex: new RegExp(`^${categoryName}$`, "i") },
-    });
+      isAvailable: true  // ✅ Only show available items
+    }).sort({ name: 1 }); // ✅ Sort alphabetically
 
     res.render("customer/category-menu", {
       category: categoryName,
@@ -64,22 +92,23 @@ export const viewMenu = async (req, res) => {
       req,                       // ✅ Pass req for redirectTo = req.originalUrl
     });
   } catch (error) {
-    // console.error("Error loading category menu:", error.message);
+    console.error("Error loading category menu:", error.message);
     req.flash("error", "Failed to load menu items for this category.");
-    res.status(500).render("customer/all-menu", {
+    res.status(500).render("customer/category-menu", {
       category: categoryName,
       foodItems: [],
       messages: req.flash(),
+      req,
     });
   }
 };
 
-
 // All Menu Page : Shows the all dishes available
 export const getAllFoods = async (req, res) => {
   try {
-    // Fetch and sort food items alphabetically
-    const foodItems = await Food.find().sort({ name: 1 });
+   // Fetch only available food items and sort alphabetically
+    const foodItems = await Food.find({ isAvailable: true }).sort({ name: 1 });
+
 
     res.render("customer/all-menu", {
       foodItems,
@@ -90,7 +119,7 @@ export const getAllFoods = async (req, res) => {
   }
 };
 
-// search food items by item name
+// // search food items by item name
 export const searchFood = async (req, res) => {
   const { q, category, veg, sort } = req.query;
   const query = {};

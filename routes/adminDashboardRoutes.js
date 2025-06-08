@@ -3,7 +3,6 @@ import { upload } from "../middleware/multer.js";
 import {
   addNewFoodItem,
   dashboard,
-  deleteFoodItem,
   updateFoodItem,
   renderAddFoodPage,
   renderEditFoodPage,
@@ -31,7 +30,7 @@ adminDashboardRouter.post("/add-food", upload.single("image"), addNewFoodItem);
 adminDashboardRouter.get("/update-food/:id", renderEditFoodPage);
 adminDashboardRouter.post("/update-food/:id", upload.single("image"), updateFoodItem);
 
-adminDashboardRouter.get("/delete-food/:id", deleteFoodItem);
+// adminDashboardRouter.get("/delete-food/:id", deleteFoodItem);
 
 // Search route
 adminDashboardRouter.get("/search", searchFood);

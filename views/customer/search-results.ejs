@@ -1,63 +1,241 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <%- include('./partials/customer-header', { title: 'Menu' }) %>
-  </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 min-h-screen">
 
-  <body class="bg-gray-100 min-h-screen">
-
-    <!-- Navigation Bar -->
-    <%- include('./partials/customer-nav') %>
-
-    <!-- Flash Messages -->
-    <div class="fixed top-0 left-0 w-full z-50">
-      <%- include('../partials/alert') %>
+    <!-- Search Header -->
+    <div class="max-w-sm mx-auto px-4 pt-6 pb-4">
+      <div class="bg-white rounded-2xl shadow-sm p-4">
+        <div class="flex justify-center items-center gap-3">
+          <div class="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
+            <i class="fas fa-search text-white text-sm"></i>
+          </div>
+          <h1 class="text-xl font-bold text-gray-800">Search Results</h1>
+        </div>
+        <% if (query) { %>
+          <p class="text-center text-gray-600 text-sm mt-2">Results for "<%= query %>"</p>
+        <% } %>
+        <% if (results.length > 0) { %>
+          <p class="text-center text-green-600 text-xs mt-1 font-medium"><%= results.length %> item(s) found</p>
+        <% } %>
+      </div>
     </div>
 
-  <div class="category m-2 p-4 mb-20">
-    <h2 class="text-2xl font-bold mb-4">Search Results for "<%= query %>"</h2>
-      <div class="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-4">
-        <% results.forEach(item => { %>
-          <div class="bg-white rounded-xl shadow p-3 flex flex-col justify-between items-start">
-            <img src="<%= item.imageUrl %>" alt="Food Image" class="rounded-xl w-full h-32 object-cover mb-3" />
+    <!-- Search Filters (Optional - can be expanded) -->
+    <div class="px-4 mb-4">
+      <div class="bg-white rounded-xl shadow-sm p-3">
+        <div class="flex flex-wrap gap-2 items-center justify-center">
+          <a href="?<%= new URLSearchParams({...req.query, veg: 'true'}).toString() %>" 
+             class="px-3 py-1.5 rounded-full text-xs font-medium transition-colors <%= req.query.veg === 'true' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' %>">
+            <span class="w-2 h-2 bg-green-600 rounded-full inline-block mr-1"></span>
+            Veg Only
+          </a>
+          <a href="?<%= new URLSearchParams({...req.query, sort: 'price_asc'}).toString() %>" 
+             class="px-3 py-1.5 rounded-full text-xs font-medium transition-colors <%= req.query.sort === 'price_asc' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' %>">
+            <i class="fas fa-arrow-up mr-1"></i>
+            Price Low-High
+          </a>
+          <a href="?<%= new URLSearchParams({...req.query, sort: 'price_desc'}).toString() %>" 
+             class="px-3 py-1.5 rounded-full text-xs font-medium transition-colors <%= req.query.sort === 'price_desc' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' %>">
+            <i class="fas fa-arrow-down mr-1"></i>
+            Price High-Low
+          </a>
+          <% if (Object.keys(req.query).length > 1 || (Object.keys(req.query).length === 1 && !req.query.q)) { %>
+            <a href="?q=<%= req.query.q || '' %>" 
+               class="px-3 py-1.5 rounded-full text-xs font-medium bg-red-100 text-red-700 hover:bg-red-200 transition-colors">
+              <i class="fas fa-times mr-1"></i>
+              Clear Filters
+            </a>
+          <% } %>
+        </div>
+      </div>
+    </div>
 
-            <div class="flex-grow">
-              <h2 class="text-sm font-semibold mb-1"><%= item.name %></h2>
-              <div class="flex-grow">
-                <div class="flex items-start justify-start gap-2 mb-1">
-                      <% if (item.isVegetarian) { %>
-                        <div class="flex items-center gap-1">
-                          <span class="w-2 h-2 bg-green-600 rounded-full inline-block"></span>
-                          <span class="text-green-700 text-xs font-semibold">Veg</span>
-                        </div>
-                      <% } else { %>
-                        <div class="flex items-center gap-1">
-                          <span class="w-2 h-2 bg-red-600 rounded-full inline-block"></span>
-                          <span class="text-red-700 text-xs font-semibold">Non-Veg</span>
-                        </div>
-                      <% } %>            
+    <!-- Food Items Results -->
+    <div class="px-4 pb-24">
+      <div class="grid grid-cols-2 gap-3 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
+        <% if (results.length === 0) { %>
+          <div class="col-span-full text-center py-16">
+            <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <i class="fas fa-search text-2xl text-gray-400"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-600 mb-2">No Results Found</h3>
+            <p class="text-gray-500 text-sm mb-4">
+              <% if (query) { %>
+                No items found for "<%= query %>"
+              <% } else { %>
+                No items match your search criteria
+              <% } %>
+            </p>
+            <a href="/customer/category" 
+               class="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+              <i class="fas fa-arrow-left"></i>
+              Browse Categories
+            </a>
+          </div>
+        <% } %>
+       
+        <% results.forEach(item => { %>
+          <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+            <!-- Image Container -->
+            <div class="relative">
+              <img src="<%= item.imageUrl %>" alt="<%= item.name %>" 
+                   class="w-full h-32 sm:h-36 object-cover" />
+              
+              <!-- Veg/Non-Veg Badge -->
+              <div class="absolute top-2 left-2">
+                <div class="flex items-center gap-1 bg-white/90 backdrop-blur-sm rounded-full px-2 py-1">
+                  <span class="w-2 h-2 rounded-full <%= item.isVegetarian ? 'bg-green-600' : 'bg-red-600' %>"></span>
+                  <span class="text-xs font-medium <%= item.isVegetarian ? 'text-green-700' : 'text-red-700' %>">
+                    <%= item.isVegetarian ? 'Veg' : 'Non-Veg' %>
+                  </span>
                 </div>
               </div>
-              <p class="text-gray-800 font-medium mb-1 text-sm">₹<%= item.price %></p>
-              <!-- <p class="text-gray-600 text-xs line-clamp-2 mb-3"><%= item.description %></p> -->
+
+              <!-- Discount Badge (if applicable) -->
+              <% if (item.discount > 0) { %>
+                <div class="absolute top-2 right-2">
+                  <span class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                    <%= item.discount %>% OFF
+                  </span>
+                </div>
+              <% } %>
+
+              <!-- Category Badge -->
+              <div class="absolute bottom-2 right-2">
+                <span class="bg-black/60 text-white text-xs px-2 py-1 rounded-full capitalize backdrop-blur-sm">
+                  <%= item.category %>
+                </span>
+              </div>
             </div>
 
-            <!-- Add to Cart Button -->
-             <form action="/customer/cart/add" method="POST" class="w-full">
-              <input type="hidden" name="itemId" value="<%= item._id %>">
-              <input type="hidden" name="quantity" value="1">
-              <input type="hidden" name="redirectTo" value="<%= req.originalUrl %>">
-              <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white py-1 rounded text-xs">
-              Add To Cart
-              </button>
-            </form>
+            <!-- Content -->
+            <div class="p-3">
+              <!-- Item Name -->
+              <h3 class="font-semibold text-gray-800 text-sm mb-2 line-clamp-2 leading-tight">
+                <%= item.name %>
+              </h3>
+
+              <!-- Price Section -->
+              <div class="mb-3">
+                <% if (item.discount > 0) { %>
+                  <div class="flex items-center gap-2">
+                    <span class="text-lg font-bold text-gray-900">
+                      ₹<%= Math.round(item.price - (item.price * item.discount / 100)) %>
+                    </span>
+                    <span class="text-xs text-gray-500 line-through">
+                      ₹<%= item.price %>
+                    </span>
+                  </div>
+                <% } else { %>
+                  <span class="text-lg font-bold text-gray-900">₹<%= item.price %></span>
+                <% } %>
+              </div>
+
+              <!-- Add to Cart Button -->
+              <form action="/customer/cart/add" method="POST" class="w-full" onsubmit="showCartMessage(event, '<%= item.name %>')">
+                <input type="hidden" name="itemId" value="<%= item._id %>">
+                <input type="hidden" name="quantity" value="1">
+                <input type="hidden" name="redirectTo" value="<%= req.originalUrl %>">
+                <button type="submit" 
+                        class="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white py-2.5 rounded-xl text-sm font-medium transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-sm hover:shadow-md">
+                  <i class="fas fa-plus mr-1"></i>Add to Cart
+                </button>
+              </form>
+            </div>
           </div>
         <% }) %>
       </div>
     </div>
 
+    <!-- Back to Search Button (Fixed) -->
+    <% if (results.length > 0) { %>
+      <div class="fixed bottom-24 right-4 z-40">
+        <a href="/customer/search" 
+           class="bg-blue-500 hover:bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 transform hover:scale-110">
+          <i class="fas fa-search text-lg"></i>
+        </a>
+      </div>
+    <% } %>
 
+    <!-- Cart Success Message Toast -->
+    <div id="cartToast" class="fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-full shadow-lg z-50 opacity-0 transition-all duration-300 pointer-events-none">
+      <div class="flex items-center gap-2">
+        <i class="fas fa-check-circle"></i>
+        <span id="cartMessage">Item added to cart!</span>
+      </div>
+    </div>
 
-<!-- Footer -->
+    <!-- <%- include('./partials/customer-footer') %> -->
+
+    <script>
+      function showCartMessage(event, itemName) {
+        const toast = document.getElementById('cartToast');
+        const message = document.getElementById('cartMessage');
+        
+        // Update message with item name
+        message.textContent = `${itemName} added to cart!`;
+        
+        // Show toast
+        toast.classList.remove('opacity-0', 'pointer-events-none');
+        toast.classList.add('opacity-100');
+        
+        // Hide toast after 6 seconds
+        setTimeout(() => {
+          toast.classList.remove('opacity-100');
+          toast.classList.add('opacity-0', 'pointer-events-none');
+        }, 6000);
+      }
+
+      // Helper function to build query strings while preserving existing parameters
+      function buildQueryString(newParams) {
+        const urlParams = new URLSearchParams(window.location.search);
+        Object.keys(newParams).forEach(key => {
+          if (newParams[key] !== null && newParams[key] !== undefined) {
+            urlParams.set(key, newParams[key]);
+          } else {
+            urlParams.delete(key);
+          }
+        });
+        return urlParams.toString();
+      }
+    </script>
+
+    <style>
+      .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      
+      /* Smooth transitions for mobile interactions */
+      @media (max-width: 640px) {
+        .hover\:scale-105:hover {
+          transform: scale(1.02);
+        }
+      }
+      
+      /* Enhanced card hover effects for larger screens */
+      @media (min-width: 641px) {
+        .bg-white:hover {
+          transform: translateY(-2px);
+        }
+      }
+
+      /* Highlight search terms (optional enhancement) */
+      .highlight {
+        background-color: #fef3c7;
+        padding: 0 2px;
+        border-radius: 2px;
+      }
+    </style>
 <%- include('./partials/customer-footer') %>
-
+</body>
+</html>

@@ -144,43 +144,6 @@ export const updateFoodItem = async (req, res) => {
 };
 
 
-// delete food item
-
-export const deleteFoodItem = async (req, res) => {
-  const { id } = req.params;
-
-  try {
-    const deletedFood = await Food.findByIdAndDelete(id);
-
-    if (!deletedFood) {
-      req.flash("error", "Food item not found!");
-      return res.redirect("/admin/dashboard");
-    }
-
-    // Delete the image file if it exists
-    if (deletedFood.imageUrl) {
-      const imagePath = path.join(__dirname, "..", "public", deletedFood.imageUrl);
-      fs.unlink(imagePath, (err) => {
-        if (err) {
-           req.flash("error", "Error deleting food item: " + error.message);
-           return res.redirect("/admin/dashboard");
-        } 
-        // else {
-        //   console.log("Image deleted:", deletedFood.imageUrl);
-        // }
-      });
-    }
-
-    req.flash("success", "Food item deleted successfully!");
-    return res.redirect("/admin/dashboard");
-  } catch (error) {
-    req.flash("error", "Error deleting food item: " + error.message);
-    return res.redirect("/admin/dashboard");
-  }
-};
-
-
-
 
 // search food items
 export const searchFood = async (req, res) => {
@@ -383,3 +346,40 @@ export const fetchSalesData = async (req, res) => {
     res.redirect("/admin/sales-report");
   }
 };
+
+
+// future works
+// delete food item
+
+// export const deleteFoodItem = async (req, res) => {
+//   const { id } = req.params;
+
+//   try {
+//     const deletedFood = await Food.findByIdAndDelete(id);
+
+//     if (!deletedFood) {
+//       req.flash("error", "Food item not found!");
+//       return res.redirect("/admin/dashboard");
+//     }
+
+//     // Delete the image file if it exists
+//     if (deletedFood.imageUrl) {
+//       const imagePath = path.join(__dirname, "..", "public", deletedFood.imageUrl);
+//       fs.unlink(imagePath, (err) => {
+//         if (err) {
+//            req.flash("error", "Error deleting food item: " + error.message);
+//            return res.redirect("/admin/dashboard");
+//         } 
+//         // else {
+//         //   console.log("Image deleted:", deletedFood.imageUrl);
+//         // }
+//       });
+//     }
+
+//     req.flash("success", "Food item deleted successfully!");
+//     return res.redirect("/admin/dashboard");
+//   } catch (error) {
+//     req.flash("error", "Error deleting food item: " + error.message);
+//     return res.redirect("/admin/dashboard");
+//   }
+// };
