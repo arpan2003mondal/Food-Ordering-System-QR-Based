@@ -365,8 +365,7 @@ export const placeOrder = async (req, res) => {
 
     await newLiveOrder.save();
 
-    cart.status = "ordered";
-    await cart.save();
+    await Cart.deleteOne({ _id: cart._id });
 
     req.flash("success", `Order placed successfully! Your token number is ${token}.`);
     res.redirect("/customer/order-confirmation");
