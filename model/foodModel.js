@@ -34,6 +34,7 @@ const foodSchema = new mongoose.Schema(
     imageUrl: { type: String, required: true },
     ingredients: { type: String, default : "No Ingredients Details Available"},
     isVegetarian: { type: Boolean, default: false },
+    isAvailable: { type: Boolean, default: true },
   },
   {
     timestamps: true,

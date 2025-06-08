@@ -7,6 +7,8 @@ import {
   updateOrderStatus,
   reconfirmCancelledOrder,
   clearAllPastOrders,
+  getMenuManagement,
+  toggleItemAvailability,
 } from "../controllers/staffControllers.js";
 import { authenticateStaff } from "../middleware/staffAuthMiddleware.js";
 
@@ -33,6 +35,11 @@ staffRouter.post("/orders/:id/reconfirm", authenticateStaff, reconfirmCancelledO
 
 // Clear all past orders
 staffRouter.delete("/past-orders/clear-all", authenticateStaff, clearAllPastOrders);
+
+// Staff Menu Management Routes
+staffRouter.get('/menu', authenticateStaff,getMenuManagement);
+
+staffRouter.post('/menu/:itemId/toggle-availability', authenticateStaff,toggleItemAvailability);
 
 
 export default staffRouter;

@@ -116,6 +116,7 @@ export const updateFoodItem = async (req, res) => {
   const updateData = req.body;
 
   updateData.isVegetarian = req.body.isVegetarian === "on";
+  updateData.isAvailable = true;
   updateData.price = parseFloat(req.body.price);
   updateData.discount = parseFloat(req.body.discount) || 0;
 

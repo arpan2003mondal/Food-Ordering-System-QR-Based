@@ -5,6 +5,7 @@ import LiveOrder from "../model/liveOrder.js";
 import Order from "../model/orderModel.js";
 import moment from "moment";
 import logger from "../utils/logger.js";
+import Food from "../model/foodModel.js";
 
 
 // staff login code
@@ -120,8 +121,78 @@ export const getPastOrders = async (req, res) => {
   }
 };
 
+  // Get Menu Management Page
+export const getMenuManagement =  async (req, res) => {
+    try {
+      // Fetch all food items and sort by name alphabetically
+      const foodItems = await Food.find({}).sort({ name: 1 });
+      
+      // Calculate available and unavailable items count
+      const availableItems = foodItems.filter(item => item.isAvailable).length;
+      const unavailableItems = foodItems.filter(item => !item.isAvailable).length;
+      
+      res.render('staff/menu-management', {
+        foodItems,
+        availableItems,
+        unavailableItems,
+        title: 'Menu Management'
+      });
+    } catch (error) {
+      console.error('Error fetching menu data:', error);
+      req.flash('error', 'Error loading menu management page');
+      res.redirect('/staff/dashboard');
+    }
+  }
 
+  // Toggle Individual Item Availability
+export const toggleItemAvailability = async (req, res) => {
+    try {
+      const { itemId } = req.params;
+      const { isAvailable } = req.body;
+      
+      // Find the food item by ID
+      const foodItem = await Food.findById(itemId);
+      
+      if (!foodItem) {
+        return res.status(404).json({ 
+          success: false, 
+          message: 'Food item not found' 
+        });
+      }
 
+      // Update availability
+      foodItem.isAvailable = isAvailable;
+      await foodItem.save();
+
+      const status = isAvailable ? 'available' : 'unavailable';
+      
+      // If it's an AJAX request, return JSON
+      if (req.headers.accept && req.headers.accept.includes('application/json')) {
+        return res.json({ 
+          success: true, 
+          message: `${foodItem.name} marked as ${status}`,
+          item: foodItem
+        });
+      }
+
+      // Otherwise, redirect with flash message
+      req.flash('success', `${foodItem.name} has been marked as ${status}`);
+      res.redirect('/staff/menu');
+      
+    } catch (error) {
+      console.error('Error toggling item availability:', error);
+      
+      if (req.headers.accept && req.headers.accept.includes('application/json')) {
+        return res.status(500).json({ 
+          success: false, 
+          message: 'Error updating item availability' 
+        });
+      }
+
+      req.flash('error', 'Error updating item availability');
+      res.redirect('/staff/menu');
+    }
+}
 
 
 // order status update : pending - accepted -- ready -- served
