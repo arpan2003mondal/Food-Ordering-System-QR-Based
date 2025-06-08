@@ -1,35 +1,108 @@
 <!-- Footer -->
-<footer class="fixed bottom-0 left-0  w-full bg-white border-t border-gray-200 shadow-md z-50 font-[Inter]">
-  <div class="flex justify-around items-center px-4 py-2 bg-yellow-300 text-gray-700 text-xs">
+<footer class="fixed bottom-0 left-0 w-full bg-yellow-300 border-t border-gray-200 shadow-md z-50 font-[Inter]">
+  <div class="flex justify-around items-center px-4 py-1 text-gray-700">
 
-    <a href="/customer/category" class="flex flex-col items-center justify-center hover:text-green-600 transition-colors">
-      <i class="fas fa-th-list text-lg mb-1"></i>
-      <span>Category</span>
+    <a href="/customer/category" class="nav-item flex flex-col items-center justify-center transition-all duration-200" data-page="category">
+      <i class="fas fa-th-large text-base mb-0.5"></i>
+      <span class="text-xs">Category</span>
     </a>
 
-    <a href="/customer/all-menu" class="flex flex-col items-center justify-center hover:text-green-600 transition-colors">
-      <i class="fas fa-utensils text-lg mb-1"></i>
-      <span>Menu</span>
+    <a href="/customer/all-menu" class="nav-item flex flex-col items-center justify-center transition-all duration-200" data-page="menu">
+      <i class="fas fa-utensils text-base mb-0.5"></i>
+      <span class="text-xs">Menu</span>
     </a>
 
-    <a href="/customer/cart/view" class="flex flex-col items-center justify-center hover:text-green-600 transition-colors">
-      <i class="fas fa-shopping-cart text-lg mb-1"></i>
-      <span>Cart</span>
+    <a href="/customer/cart/view" class="nav-item flex flex-col items-center justify-center transition-all duration-200 relative" data-page="cart">
+      <i class="fas fa-shopping-cart text-base mb-0.5"></i>
+      <span class="text-xs">Cart</span>
     </a>
 
-    <!-- <a href="#" class="flex flex-col items-center justify-center hover:text-green-600 transition-colors">
-      <i class="fas fa-wallet text-lg mb-1"></i>
-      <span>Payment</span>
-    </a> -->
-
-    <a href="/customer/order-confirmation" class="flex flex-col items-center justify-center hover:text-green-600 transition-colors">
-      <i class="fas fa-receipt text-lg mb-1"></i>
-      <span>Orders</span>
+    <a href="/customer/order-confirmation" class="nav-item flex flex-col items-center justify-center transition-all duration-200" data-page="orders">
+      <i class="fas fa-receipt text-base mb-0.5"></i>
+      <span class="text-xs">Orders</span>
     </a>
+
   </div>
 </footer>
 
+<style>
+  /* Navigation item base styles */
+  .nav-item {
+    color: #374151; /* gray-700 */
+    min-height: 50px;
+  }
 
-    <script src="/javascripts/flashMessages.js"></script>
+  /* Active page styling - Bold icons and text */
+  .nav-item.active {
+    color: #16a34a; /* green-600 */
+    font-weight: 600;
+  }
+
+  .nav-item.active i {
+    font-weight: 900; /* Extra bold for icons */
+    transform: scale(1.1);
+  }
+
+  .nav-item.active span {
+    font-weight: 600; /* Bold text */
+  }
+
+  /* Hover effects matching food cards */
+  .nav-item:hover {
+    color: #16a34a;
+    transform: translateY(-1px);
+  }
+
+  .nav-item:hover i {
+    transform: scale(1.05);
+  }
+
+  /* Touch feedback for mobile */
+  .nav-item:active {
+    transform: scale(0.95);
+  }
+
+  /* Smooth transitions */
+  .nav-item, .nav-item i, .nav-item span {
+    transition: all 0.2s ease;
+  }
+</style>
+
+<script>
+  // Add active state based on current page
+  document.addEventListener('DOMContentLoaded', function() {
+    const currentPath = window.location.pathname;
+    const navItems = document.querySelectorAll('.nav-item');
+    
+    // Remove active class from all items first
+    navItems.forEach(item => item.classList.remove('active'));
+    
+    // Add active class to current page
+    navItems.forEach(item => {
+      const href = item.getAttribute('href');
+      
+      // Check for exact matches or partial matches
+      if (currentPath === href || 
+          (href.includes('/category') && currentPath.includes('/category')) ||
+          (href.includes('/all-menu') && currentPath.includes('/menu')) ||
+          (href.includes('/cart') && currentPath.includes('/cart')) ||
+          (href.includes('/order') && currentPath.includes('/order'))) {
+        item.classList.add('active');
+      }
+    });
+
+    // Add click handlers for immediate visual feedback
+    navItems.forEach(item => {
+      item.addEventListener('click', function() {
+        // Remove active from all items
+        navItems.forEach(nav => nav.classList.remove('active'));
+        // Add active to clicked item
+        this.classList.add('active');
+      });
+    });
+  });
+</script>
+
+<script src="/javascripts/flashMessages.js"></script>
 </body>
 </html>
