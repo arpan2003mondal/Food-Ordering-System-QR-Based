@@ -145,7 +145,7 @@ export const updateOrderStatus = async (req, res) => {
       return res.redirect("/staff/dashboard");
     }
 
-    // Optional: implement status transition rules
+    // Status transition rules
     const current = liveOrder.status;
     const allowedTransitions = {
       pending: ["accepted", "cancelled"],
@@ -164,34 +164,39 @@ export const updateOrderStatus = async (req, res) => {
     liveOrder.status = status;
     await liveOrder.save();
 
-    // If completed or cancelled, create a permanent order record
-    if (status === "completed" || status === "cancelled") {
-      // Avoid duplicate permanent order if it already exists (optional)
-      const existingOrder = await Order.findOne({ token: liveOrder.token, tableId: liveOrder.tableId });
+    // ✅ Only save to Order model if status is "completed"
+    if (status === "completed") {
+      const existingOrder = await Order.findOne({
+        token: liveOrder.token,
+        tableId: liveOrder.tableId,
+      });
+
       if (!existingOrder) {
-        const permanentOrder = new Order({
+        const completedOrder = new Order({
           tableId: liveOrder.tableId,
           sessionKey: liveOrder.sessionKey,
           items: liveOrder.items,
           totalAmount: liveOrder.totalAmount,
-          status: status,
+          status: "completed",
           token: liveOrder.token,
           createdAt: liveOrder.createdAt,
-          // Add any other fields if necessary, like completedAt for completed
-          ...(status === "completed" && { completedAt: new Date() }),
+          completedAt: new Date(), // ✅ Add completion timestamp
         });
-        await permanentOrder.save();
+
+        await completedOrder.save();
       }
     }
 
     req.flash("success", `Order marked as ${status}`);
     return res.redirect("/staff/dashboard");
+
   } catch (error) {
     console.error("Order Status Update Error:", error);
     req.flash("error", "Failed to update order status");
     return res.redirect("/staff/dashboard");
   }
 };
+
 
 // reconfirm past orders
 export const reconfirmCancelledOrder = async (req, res) => {
@@ -211,7 +216,7 @@ export const reconfirmCancelledOrder = async (req, res) => {
     }
 
     // Reconfirm order by setting it back to accepted
-    liveOrder.status = "accepted";
+    liveOrder.status = "pending";
     await liveOrder.save();
 
     req.flash("success", `Order token ${liveOrder.token} reconfirmed as accepted`);

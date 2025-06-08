@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/admin-header', { title: 'View Staff' }) %>
+  </head>
+  <body class="bg-gray-100 p-10 pt-24">
+    <%- include('../partials/admin-nav') %>
+
+      <!-- Flash Messages -->
+        <div class="fixed top-0 left-0 w-full z-50">
+        <%- include('../partials/alert') %>
+        </div>
+        
+    <div class="max-w-6xl mx-auto bg-white shadow-md rounded-lg p-6">
+      <h1 class="text-2xl font-bold mb-6 text-center text-gray-800">All Staff</h1>
+
+     <table class="min-w-full border border-gray-300">
+        <thead class="bg-gray-200">
+            <tr>
+            <th class="text-center px-6 py-3 text-sm font-semibold text-gray-900">Name</th>
+            <th class="text-center px-6 py-3 text-sm font-semibold text-gray-900">Username</th>
+            <th class="text-center px-6 py-3 text-sm font-semibold text-gray-900">Salary</th>
+            <th class="text-center px-6 py-3 text-sm font-semibold text-gray-900">Action</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white">
+            <% staffList.forEach((staff) => { %>
+            <tr>
+                <td class="text-center px-6 py-4 text-gray-800"><%= staff.name %></td>
+                <td class="text-center px-6 py-4 text-gray-800"><%= staff.username %></td>
+                <td class="text-center px-6 py-4 text-gray-800">₹<%= staff.salary %></td>
+                <td class="text-center px-6 py-4">
+                <a href="/api/admin/dashboard/edit-staff/<%= staff._id %>" class="text-blue-600 hover:underline">Edit</a>
+                </td>
+            </tr>
+            <% }) %>
+        </tbody>
+    </table>
+
+    </div>
+  </body>
+</html>

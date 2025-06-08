@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/admin-header', { title: "Sales Report" }) %>
+  </head>
+  <body class="bg-gray-100">
+    <%- include('../partials/admin-nav') %>
+
+    <div class="max-w-5xl mx-auto mt-6 p-4 bg-white rounded shadow">
+      <h1 class="text-2xl font-bold mb-4">Sales Report</h1>
+
+      <form action="/api/admin/dashboard/sales-report" method="POST" class="mb-6 flex gap-4">
+        <select name="filter" class="border rounded p-2">
+          <option value="today" <%= filterType === 'today' ? 'selected' : '' %>>Today's Sales</option>
+          <option value="month" <%= filterType === 'month' ? 'selected' : '' %>>This Month's Sales</option>
+        </select>
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Generate</button>
+      </form>
+
+      <% if (salesData) { %>
+        <div class="mb-4 text-lg font-semibold">
+          Total Sales: ₹<%= salesData.totalSales.toFixed(2) %>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <% salesData.itemSummary.forEach(item => { %>
+            <div class="bg-white border rounded p-4 shadow">
+              <h2 class="font-bold text-lg mb-1"><%= item.name %></h2>
+              <p class="text-sm">Price: ₹<%= item.price %></p>
+              <p class="text-sm">Quantity Sold: <%= item.quantity %></p>
+              <p class="text-sm font-semibold">Total: ₹<%= item.total.toFixed(2) %></p>
+            </div>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <p class="text-gray-600">Select a filter and click "Generate" to view sales data.</p>
+      <% } %>
+    </div>
+
+    <%- include('../partials/admin-footer') %>
+  </body>
+</html>

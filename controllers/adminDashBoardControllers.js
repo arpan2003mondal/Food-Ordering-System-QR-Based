@@ -8,6 +8,9 @@ import Food from "../model/foodModel.js";
 import adminModel from "../model/adminModel.js";
 import staffModel from "../model/staffModel.js";
 import { hashPassword } from "../utils/hashPassword.js";
+// controllers/adminSalesController.js
+import Order from "../model/orderModel.js";
+
 
 
 
@@ -223,9 +226,9 @@ export const renderAddStaffPage = (req, res) => {
 
 // register staff in the staff database
 export const registerStaff = async (req, res) => {
-  const { name, username, password } = req.body;
+  const { name, username, password, salary } = req.body;
 
-  if (!name || !username || !password) {
+  if (!name || !username || !password || !salary) {
     req.flash("error", "All fields are required");
     return res.redirect("/api/admin/dashboard/register-staff");
   }
@@ -237,20 +240,141 @@ export const registerStaff = async (req, res) => {
       return res.redirect("/api/admin/dashboard/register-staff");
     }
 
-    const hashed = await hashPassword(password);
+    const hashed = await hashPassword(password); // Optional if using plaintext for development
 
     await staffModel.create({
       name,
       username,
       password: hashed,
       role: "staff",
+      salary,
     });
 
     req.flash("success", "Staff registered successfully");
-    return res.redirect("/api/admin/dashboard");
+    return res.redirect("/api/admin/dashboard/view-staff");
   } catch (error) {
     console.error("Error registering staff:", error);
     req.flash("error", "Something went wrong");
     return res.redirect("/api/admin/dashboard/register-staff");
+  }
+};
+
+// view all staffs 
+export const viewAllStaff = async (req, res) => {
+  try {
+    const staffList = await staffModel.find();
+    res.render("admin/view-staff", { staffList });
+  } catch (error) {
+    console.error("Error fetching staff:", error);
+    req.flash("error", "Could not fetch staff");
+    res.redirect("/api/admin/dashboard");
+  }
+};
+
+// staff controls 
+// Show edit form
+export const renderEditStaffPage = async (req, res) => {
+  try {
+    const staff = await staffModel.findById(req.params.id);
+    if (!staff) {
+      req.flash("error", "Staff not found");
+      return res.redirect("/api/admin/dashboard/view-staff");
+    }
+
+    res.render("admin/edit-staff", { staff });
+  } catch (error) {
+    console.error("Error fetching staff:", error);
+    req.flash("error", "Error loading staff");
+    res.redirect("/api/admin/dashboard/view-staff");
+  }
+};
+
+// Update staff
+export const updateStaff = async (req, res) => {
+  const { name, username, password, salary } = req.body;
+
+  try {
+    const updateData = { name, username, salary };
+
+    if (password && password.trim() !== "") {
+      updateData.password = await hashPassword(password);
+    }
+
+    await staffModel.findByIdAndUpdate(req.params.id, updateData);
+
+    req.flash("success", "Staff updated successfully");
+
+    res.redirect("/api/admin/dashboard/view-staff");
+  } catch (error) {
+    console.error("Error updating staff:", error);
+    req.flash("error", "Update failed");
+    res.redirect("/api/admin/dashboard/view-staff");
+  }
+};
+
+
+export const showSalesReport = (req, res) => {
+   try {
+    res.status(200).render("admin/sales-report", { salesData: null, filterType: null });
+  } catch (error) {
+    
+    req.flash("error", "Error loading sales page.");
+    res.redirect("/api/admin/dashboard");
+  }
+};
+
+export const fetchSalesData = async (req, res) => {
+  const { filter } = req.body;
+  let matchCondition = { status: "completed" };
+
+  const now = new Date();
+  const startOfToday = new Date(now.setHours(0, 0, 0, 0));
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+  if (filter === "today") {
+    matchCondition.createdAt = { $gte: startOfToday };
+  } else if (filter === "month") {
+    matchCondition.createdAt = { $gte: startOfMonth };
+  }
+
+  try {
+    const orders = await Order.find(matchCondition).populate("items.foodId");
+
+    let totalSales = 0;
+    const itemSummary = {};
+
+    orders.forEach(order => {
+      totalSales += order.totalAmount;
+
+      order.items.forEach(item => {
+        const id = item.foodId._id;
+        const name = item.foodId.name;
+        const price = item.foodId.price;
+
+        if (!itemSummary[id]) {
+          itemSummary[id] = {
+            name,
+            price,
+            quantity: 0,
+            total: 0,
+          };
+        }
+
+        itemSummary[id].quantity += item.quantity;
+        itemSummary[id].total += item.quantity * price;
+      });
+    });
+
+    res.render("admin/sales-report", {
+      salesData: {
+        totalSales,
+        itemSummary: Object.values(itemSummary),
+      },
+      filterType: filter,
+    });
+  } catch (error) {
+    console.error("Error fetching sales data:", error);
+    req.flash("error", "Failed to fetch sales data.");
+    res.redirect("/admin/sales-report");
   }
 };
