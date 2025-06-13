@@ -130,6 +130,41 @@
                 <%= item.name %>
               </h3>
 
+               <!-- Rating Section -->
+          <div class="mb-2">
+            <% if (item.numReviews > 0) { %>
+              <div class="flex items-center gap-1">
+                  <!-- Rating Number -->
+                <span class="text-xs font-medium text-gray-700">
+                  <%= item.averageRating.toFixed(1) %>
+                </span>
+                <!-- Star Display -->
+                <div class="flex items-center">
+                  <% for (let i = 1; i <= 5; i++) { %>
+                    <span class="text-xs <%= i <= Math.round(item.averageRating) ? 'text-yellow-400' : 'text-gray-300' %>">
+                      ★
+                    </span>
+                  <% } %>
+                </div>
+                <!-- Rating Number and Review Count -->
+                <span class="text-xs text-gray-500">
+                  (<%= item.numReviews %> <%= item.numReviews === 1 ? 'review' : 'reviews' %>)
+                </span>
+              </div>
+            <% } else { %>
+              <div class="flex items-center gap-1">
+                <!-- Empty stars for no reviews -->
+                <div class="flex items-center">
+                  <% for (let i = 1; i <= 5; i++) { %>
+                    <span class="text-xs text-gray-300">★</span>
+                  <% } %>
+                </div>
+                <span class="text-xs text-gray-500">No reviews yet</span>
+              </div>
+            <% } %>
+          </div>
+
+
               <!-- Price Section -->
               <div class="mb-3">
                 <% if (item.discount > 0) { %>

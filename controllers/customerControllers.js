@@ -29,8 +29,8 @@ export const qrScanRoute = async (req, res) => {
 // NEW: Home Page Route - Shows popular items, categories, and all food items
 export const viewHomePage = async (req, res) => {
   try {
-    // Fetch all available food items
-    const allFoodItems = await Food.find({ isAvailable: true }).sort({ name: 1 });
+    // Fetch non discounted available food items
+    const allFoodItems = await Food.find({ isAvailable: true ,discount: { $eq: 0 }}).sort({ name: 1 });
     
     // Get unique categories
     const categories = [...new Set(allFoodItems.map(item => item.category))];
@@ -126,11 +126,14 @@ export const getAllFoods = async (req, res) => {
   try {
    // Fetch only available food items and sort alphabetically
     const foodItems = await Food.find({ isAvailable: true }).sort({ name: 1 });
+    // const cart = await Cart.findOne({ tableId, sessionKey, status: "active" }).populate("items.foodId");
+    // const cartItemCount  = cart.items.length;
 
     res.render("customer/all-menu", {
       foodItems,
       messages: req.flash(),
-      req
+      req,
+      // cartItemCount,
     });
   } catch (error) {
     req.flash("error", "Failed to load menu.");

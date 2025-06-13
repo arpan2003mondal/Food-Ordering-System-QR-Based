@@ -24,96 +24,126 @@
       </div>
     </div>
 
-    <!-- Menu Items Grid -->
-    <div class="px-4 pb-24">
-      <div class="grid grid-cols-2 gap-3 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
-        <% foodItems.forEach(item => { %>
-          <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
-            <!-- Image Container -->
-            <div class="relative">
-              <img src="<%= item.imageUrl %>" alt="<%= item.name %>" 
-                   class="w-full h-32 sm:h-36 object-cover" />
-              
-              <!-- Veg/Non-Veg Badge -->
-              <div class="absolute top-2 left-2">
-                <div class="flex items-center gap-1 bg-white/90 backdrop-blur-sm rounded-full px-2 py-1">
-                  <span class="w-2 h-2 rounded-full <%= item.isVegetarian ? 'bg-green-600' : 'bg-red-600' %>"></span>
-                  <span class="text-xs font-medium <%= item.isVegetarian ? 'text-green-700' : 'text-red-700' %>">
-                    <%= item.isVegetarian ? 'Veg' : 'Non-Veg' %>
-                  </span>
-                </div>
-              </div>
-
-              <!-- Discount Badge (if applicable) -->
-              <% if (item.discount > 0) { %>
-                <div class="absolute top-2 right-2">
-                  <span class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-                    <%= item.discount %>% OFF
-                  </span>
-                </div>
-              <% } %>
-            </div>
-
-            <!-- Content -->
-            <div class="p-3">
-              <!-- Item Name -->
-              <h3 class="font-semibold text-gray-800 text-sm mb-2 line-clamp-2 leading-tight">
-                <%= item.name %>
-              </h3>
-
-              <!-- Category -->
-              <p class="text-xs text-blue-600 font-medium mb-2">
-                <%= item.category %>
-              </p>
-
-              <!-- Price Section -->
-              <div class="mb-3">
-                <% if (item.discount > 0) { %>
-                  <div class="flex items-center gap-2">
-                    <span class="text-lg font-bold text-gray-900">
-                      ₹<%= Math.round(item.price - (item.price * item.discount / 100)) %>
-                    </span>
-                    <span class="text-xs text-gray-500 line-through">
-                      ₹<%= item.price %>
-                    </span>
-                  </div>
-                <% } else { %>
-                  <span class="text-lg font-bold text-gray-900">₹<%= item.price %></span>
-                <% } %>
-              </div>
-
-              <!-- Add to Cart Button -->
-              <form action="/customer/cart/add" method="POST" class="w-full">
-                <input type="hidden" name="itemId" value="<%= item._id %>">
-                <input type="hidden" name="quantity" value="1">
-                <button type="submit" 
-                        class="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white py-2.5 rounded-xl text-sm font-medium transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-sm hover:shadow-md">
-                  <i class="fas fa-plus mr-1"></i>Add to Cart
-                </button>
-              </form>
+   <!-- Menu Items Grid -->
+<div class="px-4 pb-24">
+  <div class="grid grid-cols-2 gap-3 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
+    <% foodItems.forEach(item => { %>
+      <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+        <!-- Image Container -->
+        <div class="relative">
+          <img src="<%= item.imageUrl %>" alt="<%= item.name %>" 
+               class="w-full h-32 sm:h-36 object-cover" />
+          
+          <!-- Veg/Non-Veg Badge -->
+          <div class="absolute top-2 left-2">
+            <div class="flex items-center gap-1 bg-white/90 backdrop-blur-sm rounded-full px-2 py-1">
+              <span class="w-2 h-2 rounded-full <%= item.isVegetarian ? 'bg-green-600' : 'bg-red-600' %>"></span>
+              <span class="text-xs font-medium <%= item.isVegetarian ? 'text-green-700' : 'text-red-700' %>">
+                <%= item.isVegetarian ? 'Veg' : 'Non-Veg' %>
+              </span>
             </div>
           </div>
-        <% }) %>
-      </div>
 
-      <!-- No Items Message -->
-      <% if (foodItems.length === 0) { %>
-        <div class="text-center py-16">
-          <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <i class="fas fa-utensils text-2xl text-gray-400"></i>
-          </div>
-          <h3 class="text-lg font-semibold text-gray-600 mb-2">No Items Available</h3>
-          <p class="text-gray-500 text-sm">Check back later for delicious food items!</p>
+          <!-- Discount Badge (if applicable) -->
+          <% if (item.discount > 0) { %>
+            <div class="absolute top-2 right-2">
+              <span class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                <%= item.discount %>% OFF
+              </span>
+            </div>
+          <% } %>
         </div>
-      <% } %>
+
+        <!-- Content -->
+        <div class="p-3">
+          <!-- Item Name -->
+          <h3 class="font-semibold text-gray-800 text-sm mb-2 line-clamp-2 leading-tight">
+            <%= item.name %>
+          </h3>
+
+          <!-- Rating Section -->
+          <div class="mb-2">
+            <% if (item.numReviews > 0) { %>
+              <div class="flex items-center gap-1">
+                <!-- Rating Number -->
+                <span class="text-xs font-medium text-gray-700">
+                  <%= item.averageRating.toFixed(1) %>
+                </span>
+                <!-- Star Display -->
+                <div class="flex items-center">
+                  <% for (let i = 1; i <= 5; i++) { %>
+                    <span class="text-xs <%= i <= Math.round(item.averageRating) ? 'text-yellow-400' : 'text-gray-300' %>">
+                      ★
+                    </span>
+                  <% } %>
+                </div>
+                <!--  Review Count -->
+                <span class="text-xs text-gray-500">
+                  (<%= item.numReviews %> <%= item.numReviews === 1 ? 'review' : 'reviews' %>)
+                </span>
+              </div>
+            <% } else { %>
+              <div class="flex items-center gap-1">
+                <!-- Empty stars for no reviews -->
+                <div class="flex items-center">
+                  <% for (let i = 1; i <= 5; i++) { %>
+                    <span class="text-xs text-gray-300">★</span>
+                  <% } %>
+                </div>
+                <span class="text-xs text-gray-500">No reviews yet</span>
+              </div>
+            <% } %>
+          </div>
+
+          <!-- Price Section -->
+          <div class="mb-3">
+            <% if (item.discount > 0) { %>
+              <div class="flex items-center gap-2">
+                <span class="text-lg font-bold text-gray-900">
+                  ₹<%= Math.round(item.price - (item.price * item.discount / 100)) %>
+                </span>
+                <span class="text-xs text-gray-500 line-through">
+                  ₹<%= item.price %>
+                </span>
+              </div>
+            <% } else { %>
+              <span class="text-lg font-bold text-gray-900">₹<%= item.price %></span>
+            <% } %>
+          </div>
+
+          <!-- Add to Cart Button -->
+          <form action="/customer/cart/add" method="POST" class="w-full">
+            <input type="hidden" name="itemId" value="<%= item._id %>">
+            <input type="hidden" name="quantity" value="1">
+            <button type="submit" 
+                    class="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white py-2.5 rounded-xl text-sm font-medium transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-sm hover:shadow-md">
+              <i class="fas fa-plus mr-1"></i>Add to Cart
+            </button>
+          </form>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+
+  <!-- No Items Message -->
+  <% if (foodItems.length === 0) { %>
+    <div class="text-center py-16">
+      <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <i class="fas fa-utensils text-2xl text-gray-400"></i>
+      </div>
+      <h3 class="text-lg font-semibold text-gray-600 mb-2">No Items Available</h3>
+      <p class="text-gray-500 text-sm">Check back later for delicious food items!</p>
     </div>
+  <% } %>
+</div>
 
     <style>
       .line-clamp-2 {
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
+         display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+          line-clamp: 2; /* Standard property */
+          overflow: hidden;
       }
       
       /* Smooth transitions for mobile interactions */

@@ -89,9 +89,41 @@
                   <%= item.name %>
                 </h3>
                 
-                <p class="text-sm text-blue-600 font-medium mb-3">
-                  <%= item.category %>
-                </p>
+                 <!-- Rating Section -->
+          <div class="mb-2">
+            <% if (item.numReviews > 0) { %>
+              <div class="flex items-center gap-1">
+                  <!-- Rating Number -->
+                <span class="text-xs font-medium text-gray-700">
+                  <%= item.averageRating.toFixed(1) %>
+                </span>
+                <!-- Star Display -->
+                <div class="flex items-center">
+                  <% for (let i = 1; i <= 5; i++) { %>
+                    <span class="text-xs <%= i <= Math.round(item.averageRating) ? 'text-yellow-400' : 'text-gray-300' %>">
+                      ★
+                    </span>
+                  <% } %>
+                </div>
+                <!-- Rating Number and Review Count -->
+  
+                <span class="text-xs text-gray-500">
+                  (<%= item.numReviews %> <%= item.numReviews === 1 ? 'review' : 'reviews' %>)
+                </span>
+              </div>
+            <% } else { %>
+              <div class="flex items-center gap-1">
+                <!-- Empty stars for no reviews -->
+                <div class="flex items-center">
+                  <% for (let i = 1; i <= 5; i++) { %>
+                    <span class="text-xs text-gray-300">★</span>
+                  <% } %>
+                </div>
+                <span class="text-xs text-gray-500">No reviews yet</span>
+              </div>
+            <% } %>
+          </div>
+
 
                 <div class="flex items-center justify-between mb-4">
                   <div class="flex items-center gap-2">
@@ -166,8 +198,8 @@
       <div class="max-w-sm mx-auto">
         <!-- Section Header -->
         <div class="flex items-center justify-between mb-4">
-          <h2 class="text-xl font-bold text-gray-800">All Items</h2>
-          <a href="/customer/all-menu" class="text-blue-600 text-sm font-medium">View All</a>
+          <h2 class="text-xl font-bold text-gray-800"> Available Items</h2>
+          <a href="/customer/all-menu" class="text-blue-600 text-sm font-medium">View All Items</a>
         </div>
 
         <!-- Food Items Grid -->
@@ -213,10 +245,41 @@
                     <%= item.name %>
                   </h3>
 
-                  <!-- Category -->
-                  <p class="text-xs text-blue-600 font-medium mb-2">
-                    <%= item.category %>
-                  </p>
+                 <!-- Rating Section -->
+          <div class="mb-2">
+            <% if (item.numReviews > 0) { %>
+              <div class="flex items-center gap-1">
+                  <!-- Rating Number -->
+                <span class="text-xs font-medium text-gray-700">
+                  <%= item.averageRating.toFixed(1) %>
+                </span>
+                <!-- Star Display -->
+                <div class="flex items-center">
+                  <% for (let i = 1; i <= 5; i++) { %>
+                    <span class="text-xs <%= i <= Math.round(item.averageRating) ? 'text-yellow-400' : 'text-gray-300' %>">
+                      ★
+                    </span>
+                  <% } %>
+                </div>
+                <!-- Rating Number and Review Count -->
+               
+                <span class="text-xs text-gray-500">
+                  (<%= item.numReviews %> <%= item.numReviews === 1 ? 'review' : 'reviews' %>)
+                </span>
+              </div>
+            <% } else { %>
+              <div class="flex items-center gap-1">
+                <!-- Empty stars for no reviews -->
+                <div class="flex items-center">
+                  <% for (let i = 1; i <= 5; i++) { %>
+                    <span class="text-xs text-gray-300">★</span>
+                  <% } %>
+                </div>
+                <span class="text-xs text-gray-500">No reviews yet</span>
+              </div>
+            <% } %>
+          </div>
+
 
                   <!-- Price Section -->
                   <div class="mb-3">
