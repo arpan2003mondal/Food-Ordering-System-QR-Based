@@ -1,19 +1,28 @@
-<div class="sticky top-0 bg-yellow-300 shadow-md px-4 py-3 z-40 w-full max-w-md mx-auto">
-  <form action="/customer/search" method="GET" class="flex w-full rounded-full border border-green-500 overflow-hidden">
-    <input
-      type="text"
-      name="q"
-      placeholder="Search for food..."
-      class="flex-grow p-2 text-sm focus:outline-none"
-      required
-    />
-    <button
-      type="submit"
-      class="bg-green-500 hover:bg-green-800 text-white px-4 flex items-center justify-center"
-    >
-      
-      <!-- If you use Font Awesome, replace above with: -->
-      <i class="fas fa-search"></i>
-    </button>
-  </form>
+<div class="sticky top-0 bg-yellow-300 shadow-lg px-4 py-3 z-40 w-full max-w-md mx-auto">
+  <!-- Logo and Search in same row -->
+  <div class="flex items-center gap-4">
+    <!-- Logo -->
+    <div class="flex-shrink-0">
+      <img src="/images/logo/logo.png" alt="QREATS" class="h-9 w-auto">
+    </div>
+    
+    <!-- Search Bar -->
+    <form action="/customer/search" method="GET" class="flex-1">
+      <div class="flex rounded-full bg-white shadow-md border border-gray-100 overflow-hidden">
+        <input
+          type="text"
+          name="q"
+          placeholder="Search for food..."
+          class="flex-grow py-2.5 px-4 text-sm bg-white focus:outline-none placeholder-gray-400 text-gray-700"
+          required
+        />
+        <button
+          type="submit"
+          class="bg-green-500 hover:bg-green-600 text-white px-4 py-2.5 flex items-center justify-center transition-colors duration-200"
+        >
+          <i class="fas fa-search text-sm"></i>
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

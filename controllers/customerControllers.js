@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import LiveOrder from "../model/liveOrder.js";
 
 
-// Qr Scanning : scans qr and session created
+// Qr Scanning : scans qr and session created - UPDATED to redirect to home
 export const qrScanRoute = async (req, res) => {
   const { tableId } = req.params;
 
@@ -14,16 +14,58 @@ export const qrScanRoute = async (req, res) => {
     req.session.tableId = tableId;
     req.session.sessionKey = uuidv4(); // Unique identifier per customer session
 
-    // Redirect to the category page
-    return res.redirect("/customer/category");
+    // Redirect to the home page instead of category page
+    return res.redirect("/customer/home");
   } catch (error) {
     // Flash an error message
     req.flash("error", "Something went wrong loading the page. Please scan the QR code again.");
-    return res.redirect("/scar-qr");
+    return res.redirect("/scan-qr");
   }
 };
 
-// Category : Show all category items
+// NEW: Home Page Route - Shows popular items, categories, and all food items
+export const viewHomePage = async (req, res) => {
+  try {
+    // Fetch all available food items
+    const allFoodItems = await Food.find({ isAvailable: true }).sort({ name: 1 });
+    
+    // Get unique categories
+    const categories = [...new Set(allFoodItems.map(item => item.category))];
+    
+    // Get popular/featured items (you can modify this logic based on your needs)
+    // For now, I'm getting items with highest price or you can add a 'featured' field to your model
+    const popularItems = await Food.find({ isAvailable: true })
+      .sort({ price: -1 }) // Sort by price descending to get premium items
+      .limit(5); // Get top 5 items
+    
+    // You can also get items with discounts if you have a discount field
+    const discountedItems = await Food.find({ isAvailable: true, discount: { $gt: 0 } })
+      .sort({ discount: -1 })
+      .limit(5);
+
+    res.render("customer/home", {
+      categories,
+      allFoodItems,
+      popularItems,
+      discountedItems, // Uncomment if you have discount field
+      messages: req.flash(),
+      req
+    });
+  } catch (error) {
+    console.error("Error loading home page:", error.message);
+    req.flash("error", "Something went wrong loading the home page.");
+    res.status(500).render("customer/home", {
+      categories: [],
+      allFoodItems: [],
+      popularItems: [],
+      messages: req.flash(),
+      req
+    });
+  }
+};
+
+
+// Category : Show all category items - UPDATED (keeping original for backward compatibility)
 export const viewCategory = async (req, res) => {
   try {
     // Fetch all food items and sort by name
@@ -45,34 +87,6 @@ export const viewCategory = async (req, res) => {
     });
   }
 };
-
-
-// Category Wise Menu : Show the food available under selected category
-// export const viewMenu = async (req, res) => {
-//   const { categoryName } = req.params;
-
-//   try {
-//     // Filter food items by category (case-insensitive match)
-//     const foodItems = await Food.find({
-//       category: { $regex: new RegExp(`^${categoryName}$`, "i") },
-//     });
-
-//     res.render("customer/category-menu", {
-//       category: categoryName,
-//       foodItems,
-//       messages: req.flash(),     // ✅ Include flash messages
-//       req,                       // ✅ Pass req for redirectTo = req.originalUrl
-//     });
-//   } catch (error) {
-//     // console.error("Error loading category menu:", error.message);
-//     req.flash("error", "Failed to load menu items for this category.");
-//     res.status(500).render("customer/all-menu", {
-//       category: categoryName,
-//       foodItems: [],
-//       messages: req.flash(),
-//     });
-//   }
-// };
 
 // Category Wise Menu : Show the food available under selected category
 export const viewMenu = async (req, res) => {
@@ -103,26 +117,28 @@ export const viewMenu = async (req, res) => {
   }
 };
 
+
 // All Menu Page : Shows the all dishes available
 export const getAllFoods = async (req, res) => {
   try {
    // Fetch only available food items and sort alphabetically
     const foodItems = await Food.find({ isAvailable: true }).sort({ name: 1 });
 
-
     res.render("customer/all-menu", {
       foodItems,
+      messages: req.flash(),
+      req
     });
   } catch (error) {
     req.flash("error", "Failed to load menu.");
-    res.status(500).redirect("/customer/category");
+    res.status(500).redirect("/customer/home"); // Redirect to home instead of category
   }
 };
 
-// // search food items by item name
+// Search food items by item name
 export const searchFood = async (req, res) => {
   const { q, category, veg, sort } = req.query;
-  const query = {};
+  const query = { isAvailable: true }; // Only search available items
 
   if (q) {
     query.name = { $regex: q, $options: "i" };
@@ -140,21 +156,21 @@ export const searchFood = async (req, res) => {
   let sortOption = {};
   if (sort === "price_asc") sortOption.price = 1;
   else if (sort === "price_desc") sortOption.price = -1;
+  else sortOption.name = 1; // Default sort by name
 
   try {
     const results = await Food.find(query).sort(sortOption);
 
     if (results.length === 0) {
-      req.flash("error", "No food items found.");
+      req.flash("error", "No food items found matching your search.");
       return res.render("customer/search-results", {
         results,
         query: q,
         messages: req.flash(),
-        req,  // pass req to template, like in viewMenu
+        req,
       });
     }
 
-    // req.flash("success", `${results.length} item(s) found.`);
     res.render("customer/search-results", {
       results,
       query: q,
@@ -162,13 +178,11 @@ export const searchFood = async (req, res) => {
       req,
     });
   } catch (err) {
-    // console.error("Error during food search:", err.message);
-    req.flash("error", "Search failed. Try again.");
-    res.redirect("/customer/category");
+    console.error("Error during food search:", err.message);
+    req.flash("error", "Search failed. Please try again.");
+    res.redirect("/customer/home"); // Redirect to home instead of category
   }
 };
-
-
 
 // Add to cart
 export const addToCart = async (req, res) => {
@@ -177,14 +191,14 @@ export const addToCart = async (req, res) => {
 
   if (!itemId || isNaN(quantity)) {
     req.flash("error", "Invalid request to add item.");
-    return res.redirect(redirectTo || "/customer/all-menu");
+    return res.redirect(redirectTo || "/customer/home");
   }
 
   try {
     const foodItem = await Food.findById(itemId);
-    if (!foodItem) {
-      req.flash("error", "Food item not found.");
-      return res.redirect(redirectTo || "/customer/all-menu");
+    if (!foodItem || !foodItem.isAvailable) {
+      req.flash("error", "Food item not found or not available.");
+      return res.redirect(redirectTo || "/customer/home");
     }
 
     let cart = await Cart.findOne({ tableId, sessionKey, status: "active" }).populate("items.foodId");
@@ -213,15 +227,15 @@ export const addToCart = async (req, res) => {
     }
 
     await cart.save();
-    req.flash("success", "Item added to cart!");
-    res.redirect(redirectTo || "/customer/all-menu");
+    req.flash("success", `${foodItem.name} added to cart successfully!`);
+    res.redirect(redirectTo || "/customer/home");
 
   } catch (err) {
-    req.flash("error", "Error adding item to cart.");
-    res.redirect(redirectTo || "/customer/category");
+    console.error("Error adding item to cart:", err.message);
+    req.flash("error", "Error adding item to cart. Please try again.");
+    res.redirect(redirectTo || "/customer/home");
   }
 };
-
 
 
 // View cart items

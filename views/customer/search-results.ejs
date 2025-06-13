@@ -9,6 +9,14 @@
 </head>
 <body class="bg-gray-50 min-h-screen">
 
+    <!-- Navigation Bar -->
+    <%- include('./partials/customer-nav') %>
+    
+    <!-- Flash Messages -->
+    <div class="fixed top-0 left-0 w-full z-50">
+      <%- include('../partials/alert') %>
+    </div>
+
     <!-- Search Header -->
     <div class="max-w-sm mx-auto px-4 pt-6 pb-4">
       <div class="bg-white rounded-2xl shadow-sm p-4">
@@ -73,10 +81,10 @@
                 No items match your search criteria
               <% } %>
             </p>
-            <a href="/customer/category" 
+            <a href="/customer/home" 
                class="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
               <i class="fas fa-arrow-left"></i>
-              Browse Categories
+              Go To Home
             </a>
           </div>
         <% } %>
@@ -155,14 +163,14 @@
     </div>
 
     <!-- Back to Search Button (Fixed) -->
-    <% if (results.length > 0) { %>
+    <!-- <% if (results.length > 0) { %>
       <div class="fixed bottom-24 right-4 z-40">
         <a href="/customer/search" 
            class="bg-blue-500 hover:bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 transform hover:scale-110">
           <i class="fas fa-search text-lg"></i>
         </a>
       </div>
-    <% } %>
+    <% } %> -->
 
     <!-- Cart Success Message Toast -->
     <div id="cartToast" class="fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-full shadow-lg z-50 opacity-0 transition-all duration-300 pointer-events-none">

@@ -4,6 +4,7 @@ import {
   addToCart,
   placeOrder,
   qrScanRoute,
+  viewHomePage,        // NEW: Home page controller
   viewCategory,
   viewCart,
   viewMenu,
@@ -15,19 +16,22 @@ import {
 
 const customerRouter = express.Router();
 
-// QR Code Scan Route
+// QR Code Scan Route - redirects to home page
 customerRouter.get("/home/:tableId", qrScanRoute);
 
-// redirect to category page
+// NEW: Home Page Route
+customerRouter.get("/home", authenticateCustomer, viewHomePage);
+
+// Category page (keeping for backward compatibility)
 customerRouter.get("/category", authenticateCustomer, viewCategory);
 
 // View menu Route
 customerRouter.get("/category/:categoryName", authenticateCustomer, viewMenu);
 
-// Get All Food Items 
+// Get All Food Items
 customerRouter.get("/all-menu", authenticateCustomer, getAllFoods);
 
-// search route 
+// Search route
 customerRouter.get("/search", authenticateCustomer, searchFood);
 
 // Add to Cart Route
