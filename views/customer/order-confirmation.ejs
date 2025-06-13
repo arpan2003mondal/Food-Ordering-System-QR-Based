@@ -134,8 +134,8 @@
                     </div>
                   </div>
                   
-                  <form action="/review/add" method="GET">
-                    <input type="hidden" name="foodId" value="<%= order._id %>">
+                  <form action="/customer/review/add" method="GET">
+                    <input type="hidden" name="orderId" value="<%= order._id %>">
                     <button type="submit"
                       class="group bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white text-sm font-semibold px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0 focus:ring-4 focus:ring-emerald-300/30 focus:outline-none">
                       <span class="flex items-center space-x-2">

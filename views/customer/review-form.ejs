@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./partials/customer-header', { title: 'Rate Your Order' }) %>
+
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen font-[Inter]">
+
+  <div class="max-w-xl mx-auto px-4 py-8">
+    <!-- Enhanced Header -->
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-full mb-4 shadow-lg">
+        <i class="fas fa-star text-white text-2xl"></i>
+      </div>
+      <h1 class="text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-2">
+        Rate Your Order
+      </h1>
+      <p class="text-gray-500">Your feedback helps us serve you better</p>
+    </div>
+
+    <form action="/customer/review/submit" method="POST" class="space-y-6">
+      <% order.items.forEach((item, index) => { %>
+        <!-- Enhanced Food Item Card -->
+        <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+          <!-- Food Item Header -->
+          <div class="flex items-start space-x-4 mb-6">
+            <div class="relative">
+              <img src="<%= item.foodId.imageUrl %>" 
+                   alt="<%= item.foodId.name %>" 
+                   class="w-20 h-20 rounded-xl object-cover shadow-md ring-2 ring-gray-100">
+              <!-- Category Badge -->
+              <div class="absolute -top-2 -right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full shadow-sm">
+                <i class="fas fa-leaf text-xs"></i>
+              </div>
+            </div>
+            <div class="flex-1">
+              <h2 class="text-xl font-semibold text-gray-800 mb-1"><%= item.foodId.name %></h2>
+              <p class="text-sm text-gray-500 mb-2">
+                <i class="fas fa-tag mr-1"></i>
+                <%= item.foodId.category %>
+              </p>
+              <div class="flex items-center space-x-2">
+                <span class="text-lg font-bold text-gray-800">₹<%= item.price || '299' %></span>
+                <span class="text-sm text-gray-500">•</span>
+                <span class="text-sm text-gray-500">Qty: <%= item.quantity || '1' %></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hidden foodId input -->
+          <input type="hidden" name="reviews[<%= index %>][foodId]" value="<%= item.foodId._id %>">
+
+   <!-- Enhanced Star Rating -->
+<div class="mb-6">
+    <label class="block mb-3 text-sm font-semibold text-gray-700 flex items-center">
+        <i class="fas fa-star text-yellow-400 mr-2"></i>
+        Rate this item
+    </label>
+    <div class="flex justify-center space-x-2 p-2 bg-gray-50 rounded-xl star-rating-container" data-rating="0">
+        <% for (let i = 1; i <= 5; i++) { %>
+        <div class="flex flex-col items-center">
+            <input type="radio" name="reviews[<%= index %>][rating]" value="<%= i %>" id="star<%= index %>-<%= i %>" class="hidden star-input">
+            <label for="star<%= index %>-<%= i %>" class="cursor-pointer text-gray-300 text-3xl transition-all duration-200 hover:text-yellow-300 hover:scale-110 star-label" data-rating="<%= i %>">
+                ★
+            </label>
+            <span class="text-xs text-gray-500 mt-1 font-medium"><%= i %></span>
+        </div>
+        <% } %>
+    </div>
+    <p class="text-center text-xs text-gray-500 mt-2">Tap to rate your experience</p>
+</div>
+
+          <!-- Enhanced Review Text -->
+          <div class="relative">
+            <label class="block mb-3 text-sm font-semibold text-gray-700 flex items-center">
+              <i class="fas fa-comment-alt text-blue-500 mr-2"></i>
+              Write a review (optional)
+            </label>
+            <div class="relative">
+              <textarea name="reviews[<%= index %>][reviewText]" 
+                        rows="3" 
+                        placeholder="Share your thoughts about taste, quality, packaging..."
+                        class="w-full p-4 border-2 border-gray-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent bg-gray-50 transition-all duration-200 resize-none hover:bg-white"></textarea>
+              <div class="absolute bottom-3 right-3 text-gray-300">
+                <i class="fas fa-pencil-alt text-sm"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+
+      <!-- Enhanced Submit Button -->
+      <div class="pt-4">
+        <button type="submit" 
+                class="w-full bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-semibold py-4 px-6 rounded-2xl shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl active:scale-95">
+          <i class="fas fa-paper-plane mr-2"></i>
+          Submit Reviews
+        </button>
+        <p class="text-center text-sm text-gray-400 mt-3">
+          Help other customers with your honest feedback
+        </p>
+      </div>
+    </form>
+  </div>
+
+  <!-- Enhanced CSS -->
+  <style>
+    /* Star rating hover effects */
+    .star-rating-group:hover label {
+      color: #fbbf24;
+    }
+    
+    /* Card animations */
+    .food-card {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .food-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Textarea focus animation */
+    textarea:focus {
+      transform: scale(1.02);
+    }
+    
+    /* Button press animation */
+    button:active {
+      transform: scale(0.98);
+    }
+    
+    /* Gradient text */
+    .gradient-text {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  </style>
+
+  <script>
+    // Star rating functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const starContainers = document.querySelectorAll('.star-rating-container');
+    
+    starContainers.forEach(container => {
+        const starLabels = container.querySelectorAll('.star-label');
+        const starInputs = container.querySelectorAll('.star-input');
+        
+        // Function to update star display
+        function updateStars(rating) {
+            starLabels.forEach((label, index) => {
+                if (index < rating) {
+                    label.classList.remove('text-gray-300');
+                    label.classList.add('text-yellow-400');
+                } else {
+                    label.classList.remove('text-yellow-400');
+                    label.classList.add('text-gray-300');
+                }
+            });
+            container.setAttribute('data-rating', rating);
+        }
+        
+        // Handle click events
+        starLabels.forEach((label, index) => {
+            label.addEventListener('click', function() {
+                const rating = parseInt(this.getAttribute('data-rating'));
+                
+                // Check the corresponding radio button
+                starInputs[index].checked = true;
+                
+                // Update visual display
+                updateStars(rating);
+            });
+        });
+        
+        // Handle hover effects
+        starLabels.forEach((label, index) => {
+            label.addEventListener('mouseenter', function() {
+                const rating = parseInt(this.getAttribute('data-rating'));
+                
+                // Show hover preview
+                starLabels.forEach((hoverLabel, hoverIndex) => {
+                    if (hoverIndex < rating) {
+                        hoverLabel.classList.remove('text-gray-300');
+                        hoverLabel.classList.add('text-yellow-300');
+                    } else {
+                        hoverLabel.classList.remove('text-yellow-300', 'text-yellow-400');
+                        hoverLabel.classList.add('text-gray-300');
+                    }
+                });
+            });
+            
+            label.addEventListener('mouseleave', function() {
+                const currentRating = parseInt(container.getAttribute('data-rating'));
+                updateStars(currentRating);
+            });
+        });
+    });
+});
+  </script>
+
+  <%- include('./partials/customer-footer') %>
+</body>
+</html>

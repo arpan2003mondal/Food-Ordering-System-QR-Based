@@ -35,6 +35,11 @@ const foodSchema = new mongoose.Schema(
     ingredients: { type: String, default : "No Ingredients Details Available"},
     isVegetarian: { type: Boolean, default: false },
     isAvailable: { type: Boolean, default: true },
+     
+    // ⭐️ New fields for ratings:
+    averageRating: { type: Number, default: 0 },
+    numReviews: { type: Number, default: 0 },
+  
   },
   {
     timestamps: true,

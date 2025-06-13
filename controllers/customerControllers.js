@@ -4,6 +4,9 @@ import moment from "moment";
 import { v4 as uuidv4 } from 'uuid';
 import LiveOrder from "../model/liveOrder.js";
 
+// review part 
+import Review from "../model/reviewModel.js";
+
 
 // Qr Scanning : scans qr and session created - UPDATED to redirect to home
 export const qrScanRoute = async (req, res) => {
@@ -441,6 +444,63 @@ export const renderOrderConfirmation = async (req, res) => {
     res.redirect("/customer/all-menu");
   }
 };
+
+
+// Show review form for order
+export const renderReviewForm = async (req, res) => {
+  const { orderId } = req.query;
+
+  try {
+    const order = await LiveOrder.findById(orderId).populate("items.foodId");
+    if (!order) {
+      req.flash("error", "Order not found.");
+      return res.redirect("/customer/order-confirmation");
+    }
+
+    res.render("customer/review-form", { order });
+  } catch (err) {
+    console.error(err);
+    req.flash("error", "Error loading review form.");
+    res.redirect("/customer/order-confirmation");
+  }
+};
+
+// Submit reviews for items in order
+export const submitReviews = async (req, res) => {
+  try {
+    const { reviews } = req.body; // Expecting array of reviews [{ foodId, rating, reviewText }]
+
+    for (const review of reviews) {
+      const { foodId, rating, reviewText } = review;
+
+      // Save to Review model
+      await Review.create({
+        foodId,
+        name: req.user?.name || "Guest", // adapt based on auth
+        rating,
+        reviewText,
+      });
+
+      // Update Food model
+      const allReviews = await Review.find({ foodId });
+      const avgRating =
+        allReviews.reduce((sum, r) => sum + r.rating, 0) / allReviews.length;
+
+      await Food.findByIdAndUpdate(foodId, {
+        averageRating: avgRating.toFixed(1),
+        numReviews: allReviews.length,
+      });
+    }
+
+    req.flash("success", "Thank you for your feedback!");
+    res.redirect("/customer/home");
+  } catch (err) {
+    console.error(err);
+    req.flash("error", "Something went wrong while submitting reviews.");
+    res.redirect("/customer/order-confirmation");
+  }
+};
+
 
 
 

@@ -11,7 +11,9 @@ import {
   getAllFoods,
   searchFood,
   updateCartItemQuantity,
-  renderOrderConfirmation
+  renderOrderConfirmation,
+  renderReviewForm,
+  submitReviews
 } from "../controllers/customerControllers.js";
 
 const customerRouter = express.Router();
@@ -50,6 +52,13 @@ customerRouter.put("/cart/update", authenticateCustomer, updateCartItemQuantity)
 // show my orders
 customerRouter.get("/order-confirmation", authenticateCustomer, renderOrderConfirmation);
 
+//====================add this routes=================
+
+customerRouter.get("/review/add",authenticateCustomer, renderReviewForm);
+customerRouter.post("/review/submit",authenticateCustomer, submitReviews);
+
+
+
 export default customerRouter;
 
 
@@ -67,3 +76,8 @@ export default customerRouter;
 // Delete from Cart Route
 // customerRouter.delete("/cart/delete", authenticateCustomer, deleteFromCart);
 
+
+// review routes
+
+// customerRouter.get("/reviews/:foodId",authenticateCustomer, getFoodReviews);
+// customerRouter.put("/review/update",authenticateCustomer, updateReview);
