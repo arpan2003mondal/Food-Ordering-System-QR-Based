@@ -30,17 +30,17 @@ export const qrScanRoute = async (req, res) => {
 export const viewHomePage = async (req, res) => {
   try {
     // Fetch non discounted available food items
-    const allFoodItems = await Food.find({ isAvailable: true ,discount: { $eq: 0 }}).sort({ name: 1 });
-    
+    const allFoodItems = await Food.find({ isAvailable: true, discount: { $eq: 0 } }).sort({ name: 1 });
+
     // Get unique categories
     const categories = [...new Set(allFoodItems.map(item => item.category))];
-    
+
     // Get popular/featured items (you can modify this logic based on your needs)
     // For now, I'm getting items with highest price or you can add a 'featured' field to your model
     const popularItems = await Food.find({ isAvailable: true })
       .sort({ price: -1 }) // Sort by price descending to get premium items
       .limit(5); // Get top 5 items
-    
+
     // You can also get items with discounts if you have a discount field
     const discountedItems = await Food.find({ isAvailable: true, discount: { $gt: 0 } })
       .sort({ discount: -1 })
@@ -124,7 +124,7 @@ export const viewMenu = async (req, res) => {
 // All Menu Page : Shows the all dishes available
 export const getAllFoods = async (req, res) => {
   try {
-   // Fetch only available food items and sort alphabetically
+    // Fetch only available food items and sort alphabetically
     const foodItems = await Food.find({ isAvailable: true }).sort({ name: 1 });
     // const cart = await Cart.findOne({ tableId, sessionKey, status: "active" }).populate("items.foodId");
     // const cartItemCount  = cart.items.length;
@@ -149,7 +149,7 @@ export const searchFood = async (req, res) => {
   if (q) {
     query.name = { $regex: q, $options: "i" };
   }
-  
+
   if (category) {
     // Case-insensitive match for category, like viewMenu
     query.category = { $regex: new RegExp(`^${category}$`, "i") };
@@ -226,10 +226,13 @@ export const addToCart = async (req, res) => {
         cart.items.push({ foodId: itemId, quantity: qty });
       }
 
-      cart.totalAmount = cart.items.reduce(
-        (sum, item) => (item.foodId?.price || 0) * item.quantity + sum,
-        0
-      );
+      cart.totalAmount = cart.items.reduce((sum, item) => {
+        const price = item.foodId?.price || 0;
+        const discount = item.foodId?.discount || 0;
+        const discountedPrice = price - (price * discount) / 100;
+        return sum + discountedPrice * item.quantity;
+      }, 0);
+
     }
 
     await cart.save();
@@ -259,10 +262,13 @@ export const viewCart = async (req, res) => {
       });
     }
 
-    cart.totalAmount = cart.items.reduce(
-      (sum, item) => sum + (item.foodId?.price || 0) * item.quantity,
-      0
-    );
+    cart.totalAmount = cart.items.reduce((sum, item) => {
+      const price = item.foodId?.price || 0;
+      const discount = item.foodId?.discount || 0;
+      const discountedPrice = price - (price * discount) / 100;
+      return sum + discountedPrice * item.quantity;
+    }, 0);
+
     await cart.save();
 
     res.render("customer/cart", {
@@ -287,16 +293,16 @@ export const updateCartItemQuantity = async (req, res) => {
 
   try {
     // ✅ Same query pattern as viewCart
-    let cart = await Cart.findOne({ 
-      tableId, 
+    let cart = await Cart.findOne({
+      tableId,
       sessionKey,  // This was missing!
-      status: "active" 
+      status: "active"
     }).populate("items.foodId");
 
     if (!cart) {
-      return res.status(404).json({ 
-        success: false, 
-        message: "Cart not found!" 
+      return res.status(404).json({
+        success: false,
+        message: "Cart not found!"
       });
     }
 
@@ -305,9 +311,9 @@ export const updateCartItemQuantity = async (req, res) => {
     );
 
     if (itemIndex === -1) {
-      return res.status(404).json({ 
-        success: false, 
-        message: "Item not in cart!" 
+      return res.status(404).json({
+        success: false,
+        message: "Item not in cart!"
       });
     }
 
@@ -322,16 +328,19 @@ export const updateCartItemQuantity = async (req, res) => {
     }
 
     // ✅ Use same calculation as viewCart
-    cart.totalAmount = cart.items.reduce(
-      (sum, item) => sum + (item.foodId?.price || 0) * item.quantity,
-      0
-    );
+    cart.totalAmount = cart.items.reduce((sum, item) => {
+      const price = item.foodId?.price || 0;
+      const discount = item.foodId?.discount || 0;
+      const discountedPrice = price - (price * discount) / 100;
+      return sum + discountedPrice * item.quantity;
+    }, 0);
+
 
     await cart.save();
 
-    res.status(200).json({ 
-      success: true, 
-      message: "Cart updated!", 
+    res.status(200).json({
+      success: true,
+      message: "Cart updated!",
       cart
     });
 

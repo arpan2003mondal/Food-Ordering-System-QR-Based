@@ -101,6 +101,24 @@
       });
     });
   });
+
+  function showCartMessage(event, itemName) {
+        const toast = document.getElementById('cartToast');
+        const message = document.getElementById('cartMessage');
+        
+        // Update message with item name
+        message.textContent = `${itemName} added to cart!`;
+        
+        // Show toast
+        toast.classList.remove('opacity-0', 'pointer-events-none');
+        toast.classList.add('opacity-100');
+        
+        // Hide toast after 6 seconds
+        setTimeout(() => {
+          toast.classList.remove('opacity-100');
+          toast.classList.add('opacity-0', 'pointer-events-none');
+        }, 6000);
+      }
 </script>
 
 <script src="/javascripts/flashMessages.js"></script>

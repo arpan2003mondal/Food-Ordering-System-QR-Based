@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
- 
-  <%- include('./partials/customer-header', { title: 'Cart' }) %>
- 
+
+<%- include('./partials/customer-header', { title: 'Cart' }) %>
+
   <body class="bg-gray-100 min-h-screen">
 
-   <!-- Cart Page Header -->
-  <div class="w-full bg-yellow-300 text-gray-700 text-center py-3 shadow-md font-[Inter]">
-    <!-- <h1 class="text-base font-semibold">Cart Page</h1> -->
-  </div>
+    <!-- Cart Page Header -->
+    <div class="w-full bg-yellow-300 text-gray-700 text-center py-3 shadow-md font-[Inter]">
+      <!-- <h1 class="text-base font-semibold">Cart Page</h1> -->
+    </div>
 
 
     <!-- Flash Messages -->
@@ -22,11 +22,12 @@
         <a href="javascript:history.back()" class="text-gray-500 text-lg">✕</a>
       </div>
 
-      <% if (cart.items.length > 0) { %>
-       <% cart.items.forEach(item => { %>
+      <% if (cart.items.length> 0) { %>
+        <% cart.items.forEach(item=> { %>
           <div class="flex items-center mb-4">
-            <img src="<%= item.foodId.imageUrl || 'default.jpg' %>" alt="<%= item.foodId.name %>" class="w-14 h-14 rounded-full object-cover" />
-            
+            <img src="<%= item.foodId.imageUrl || 'default.jpg' %>" alt="<%= item.foodId.name %>"
+              class="w-14 h-14 rounded-full object-cover" />
+
             <div class="ml-3 flex-1">
               <div class="flex items-center gap-1">
                 <!-- Veg/Non-Veg Icon -->
@@ -34,63 +35,92 @@
                    <%= item.foodId.isVegetarian ? 'bg-green-600' : 'bg-red-600' %>">
                 </div>
 
-                <h2 class="font-semibold text-sm"><%= item.foodId.name %></h2>
+                <h2 class="font-semibold text-sm">
+                  <%= item.foodId.name %>
+                </h2>
               </div>
-              <p class="text-gray-600 text-sm">₹ <%= item.foodId.price.toFixed(2) %></p>
+              <!-- <p class="text-gray-600 text-sm">₹ <%= item.foodId.price.toFixed(2) %></p> -->
+
+              <div>
+                <% const price=item.foodId.price; const discount=item.foodId.discount || 0; const discountedPrice=price
+                  - (price * discount) / 100; %>
+
+                  <% if (discount> 0) { %>
+                    <p class="text-gray-900 text-sm font-semibold">
+                      ₹ <%= discountedPrice.toFixed(2) %>
+                        <span class="line-through text-gray-500 text-xs ml-2">
+                          ₹ <%= price.toFixed(2) %>
+                        </span>
+                        <span class="text-green-600 text-xs ml-1">
+                          (<%= discount %>% OFF)
+                        </span>
+                    </p>
+                    <% } else { %>
+                      <p class="text-gray-500 text-sm">
+                        ₹ <%= price.toFixed(2) %>
+                      </p>
+                      <% } %>
+
+              </div>
             </div>
-            
+
             <div class="flex items-center bg-green-100 rounded-full px-2">
-              <button onclick="updateQty('<%= item.foodId._id %>', 'decrease')" class="text-green-700 font-bold px-2">−</button>
-              <span class="px-2 font-medium"><%= item.quantity %></span>
-              <button onclick="updateQty('<%= item.foodId._id %>', 'increase')" class="text-green-700 font-bold px-2">+</button>
+              <button onclick="updateQty('<%= item.foodId._id %>', 'decrease')"
+                class="text-green-700 font-bold px-2">−</button>
+              <span class="px-2 font-medium">
+                <%= item.quantity %>
+              </span>
+              <button onclick="updateQty('<%= item.foodId._id %>', 'increase')"
+                class="text-green-700 font-bold px-2">+</button>
             </div>
           </div>
-       <% }) %>
+          <% }) %>
 
 
             <!-- Fixed Total and Checkout Section -->
             <div class="fixed bottom-20 left-0 w-full bg-white rounded-2xl shadow-md px-4 py-3">
-              
+
               <div class="flex justify-between font-bold text-lg mb-3">
                 <span>Total :</span>
-                <span>₹ <%= cart.totalAmount.toFixed(2) %></span>
+               <span>₹ <%= Math.round(cart.totalAmount) %></span>
+
               </div>
 
               <!-- Payment Notice -->
               <p class="text-sm text-yellow-600 bg-yellow-100 p-3 rounded-md mb-4 font-medium text-center">
-                Please make the payment using the UPI QR code available on your table with 
-                <span class="text-red-600 font-semibold underline">Token No</span> after checkout. 
+                Please make the payment using the UPI QR code available on your table with
+                <span class="text-red-600 font-semibold underline">Token No</span> after checkout.
                 Orders without payment confirmation will not be accepted.
               </p>
 
 
               <form action="/customer/placeOrder" method="POST" class="flex justify-center">
-                <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-full font-semibold w-full max-w-xs">
+                <button type="submit"
+                  class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-full font-semibold w-full max-w-xs">
                   CHECK OUT
                 </button>
               </form>
 
             </div>
 
-                <% } else { %>
-            <div>
+            <% } else { %>
+              <div>
                 <p class="text-center text-gray-500">Your cart is empty.</p>
                 <% } %>
-            </div>
+              </div>
 
-    <script>
-      function updateQty(itemId, action) {
-        fetch(`/customer/cart/update?itemId=${itemId}&action=${action}`, {
-          method: 'PUT'
-        })
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) location.reload();
-          else alert(data.message);
-        })
-        .catch(err => console.error("Error updating cart:", err));
-      }
-    </script>
+              <script>
+                function updateQty(itemId, action) {
+                  fetch(`/customer/cart/update?itemId=${itemId}&action=${action}`, {
+                    method: 'PUT'
+                  })
+                    .then(res => res.json())
+                    .then(data => {
+                      if (data.success) location.reload();
+                      else alert(data.message);
+                    })
+                    .catch(err => console.error("Error updating cart:", err));
+                }
+              </script>
 
-    <%- include('./partials/customer-footer') %>
-
+              <%- include('./partials/customer-footer') %>
