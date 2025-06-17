@@ -505,7 +505,7 @@ export const submitReviews = async (req, res) => {
     }
 
     req.flash("success", "Thank you for your feedback!");
-    res.redirect("/customer/home");
+    res.redirect("/customer/order-confirmation");
   } catch (err) {
     console.error(err);
     req.flash("error", "Something went wrong while submitting reviews.");
