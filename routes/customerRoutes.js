@@ -13,7 +13,7 @@ import {
   updateCartItemQuantity,
   renderOrderConfirmation,
   renderReviewForm,
-  submitReviews
+  submitReviews,
 } from "../controllers/customerControllers.js";
 
 const customerRouter = express.Router();
@@ -32,6 +32,7 @@ customerRouter.get("/category/:categoryName", authenticateCustomer, viewMenu);
 
 // Get All Food Items
 customerRouter.get("/all-menu", authenticateCustomer, getAllFoods);
+
 
 // Search route
 customerRouter.get("/search", authenticateCustomer, searchFood);
@@ -81,3 +82,6 @@ export default customerRouter;
 
 // customerRouter.get("/reviews/:foodId",authenticateCustomer, getFoodReviews);
 // customerRouter.put("/review/update",authenticateCustomer, updateReview);
+
+// GET /food/details?itemId=abc123
+// customerRouter.get('/food/details',authenticateCustomer, getFoodDetails); // from your controller?

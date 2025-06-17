@@ -514,6 +514,26 @@ export const submitReviews = async (req, res) => {
 };
 
 
+// controllers/foodController.js
+// export const getFoodDetails = async (req, res) => {
+//   const { itemId } = req.query;
+
+//   if (!itemId) {
+//     return res.status(400).json({ success: false, message: "Item ID is required." });
+//   }
+
+//   try {
+//     const foodItem = await Food.findById(itemId);
+//     if (!foodItem) {
+//       return res.status(404).json({ success: false, message: "Food item not found." });
+//     }
+
+//     res.status(200).json({ success: true, foodItem });
+//   } catch (error) {
+//     res.status(500).json({ success: false, message: "Server error", error: error.message });
+//   }
+// };
+
 
 
 // <-- Future Works -->

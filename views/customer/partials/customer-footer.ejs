@@ -102,6 +102,8 @@
     });
   });
 
+  
+
   function showCartMessage(event, itemName) {
         const toast = document.getElementById('cartToast');
         const message = document.getElementById('cartMessage');
@@ -119,6 +121,37 @@
           toast.classList.add('opacity-0', 'pointer-events-none');
         }, 6000);
       }
+
+  // async function showFoodDetails(itemId) {
+  //   try {
+  //     const res = await fetch(`customer/food/details?itemId=${itemId}`);
+  //     const data = await res.json();
+
+  //     if (!data.success) {
+  //       alert(data.message || "Could not load food details");
+  //       return;
+  //     }
+
+  //     const food = data.foodItem;
+  //     document.getElementById('food-name').textContent = food.name;
+  //     document.getElementById('food-description').textContent = food.description;
+  //     document.getElementById('food-category').textContent = food.category;
+  //     document.getElementById('food-price').textContent = `₹${food.price}`;
+  //     document.getElementById('food-ingredients').textContent = food.ingredients;
+  //     document.getElementById('food-image').src = food.imageUrl;
+  //     document.getElementById('food-rating').textContent = `⭐ ${food.averageRating.toFixed(1)} (${food.numReviews} reviews)`;
+
+  //     document.getElementById('food-dialog').classList.remove('hidden');
+  //   } catch (err) {
+  //     console.error(err);
+  //     alert("Something went wrong!");
+  //   }
+  // }
+
+  // function closeFoodDialog() {
+  //   document.getElementById('food-dialog').classList.add('hidden');
+  // }
+
 </script>
 
 <script src="/javascripts/flashMessages.js"></script>

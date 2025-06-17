@@ -61,6 +61,14 @@
                   <%= item.name %>
                 </h3>
 
+                <!-- <h3
+                  class="font-semibold text-gray-800 text-sm mb-2 line-clamp-2 leading-tight cursor-pointer hover:text-emerald-600 transition"
+                  onclick="showFoodDetails('<%= item._id %>')">
+                  <%= item.name %>
+                </h3> -->
+
+
+
                 <!-- Rating Section -->
                 <div class="mb-2">
                   <% if (item.numReviews> 0) { %>
@@ -150,7 +158,41 @@
         </div>
       </div>
 
+      <!-- Food Detail Dialog -->
+      <div id="food-dialog" class="hidden fixed inset-0 z-50 bg-black bg-opacity-40 flex items-center justify-center">
+        <div class="bg-white w-full max-w-md mx-4 p-5 rounded-lg shadow-lg relative animate-fade-in-up">
+          <button onclick="closeFoodDialog()"
+            class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl">&times;</button>
+          <img id="food-image" class="w-full h-48 object-cover rounded mb-4" src="" alt="Food Image" />
+          <h2 id="food-name" class="text-xl font-bold mb-2"></h2>
+          <p id="food-description" class="text-gray-700 mb-2"></p>
+          <p id="food-category" class="text-sm text-gray-500 mb-1"></p>
+          <p id="food-price" class="text-green-600 font-semibold mb-1"></p>
+          <p id="food-rating" class="text-yellow-500 text-sm mb-1"></p>
+          <p id="food-ingredients" class="text-sm text-gray-600"></p>
+        </div>
+      </div>
+
+
+
       <style>
+        .animate-fade-in-up {
+          animation: fadeInUp 0.3s ease-out;
+        }
+
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+
         .line-clamp-2 {
           display: -webkit-box;
           -webkit-box-orient: vertical;
