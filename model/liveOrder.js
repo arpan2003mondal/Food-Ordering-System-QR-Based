@@ -35,6 +35,10 @@ const liveOrderSchema = new mongoose.Schema({
     enum: ["pending", "accepted", "ready","completed","cancelled"],
     default: "pending",
   },
+  cancelMessage: {
+    type: String, 
+    default: null,
+  },
   createdAt: {
     type: Date,
     default: Date.now,
