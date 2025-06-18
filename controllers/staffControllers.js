@@ -239,7 +239,7 @@ export const updateOrderStatus = async (req, res) => {
       const randomTime = waitTimes[Math.floor(Math.random() * waitTimes.length)];
 
       const messages = 
-        `The item will be available after approximately ${randomTime} minutes. Please try ordering again later.`;
+        [`The item will be available after approximately ${randomTime} minutes. Please try ordering again later.`];
 
       const randomMessage = messages[Math.floor(Math.random() * messages.length)];
       liveOrder.cancelMessage = randomMessage;
